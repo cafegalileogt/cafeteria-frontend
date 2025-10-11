@@ -1,0 +1,116 @@
+import { StyleSheet } from "react-native";
+
+export default StyleSheet.create({
+  page: {
+    flex: 1,
+    backgroundColor: "#E3F0F9",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    padding: 20,
+  },
+  circle: {
+    width: 500,
+    height: 500,
+    backgroundColor: "#AAAAAA",
+    borderRadius: 250,
+    position: "absolute",
+    top: -100,
+    alignItems: "center",
+  },
+  img: {
+    width: "60%",
+    height: "60%",
+    position: "absolute",
+    top: 80,
+    resizeMode: "contain",
+  },
+  bgimg: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 250,
+  },
+  container: {
+    flex: 0.6,
+    width: "100%",
+    backgroundColor: "#FEFEFE",
+    alignItems: "center",
+    borderRadius: 20,
+    padding: 20,
+  },
+  text: {
+    color: "#000000",
+    fontSize: 16,
+  },
+  textinput: {
+    color: "#000000",
+    fontSize: 16,
+  },
+  btn: {
+    alignItems: "center",
+    backgroundColor: "#B89A59",
+    width: "80%",
+    height: "10%",
+    justifyContent: "center",
+    borderRadius: 10,
+  },
+  box: {
+    width: "90%",
+    justifyContent: "flex-start",
+    alignContent: "left",
+    padding: 25,
+  },
+  switchButtons: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginBottom: 25,
+    backgroundColor: "#eee",
+    borderRadius: 20,
+    padding: 5,
+  },
+  activeTab: {
+    backgroundColor: "#C69C6D",
+    paddingVertical: 10,
+    paddingHorizontal: 30,
+    borderRadius: 20,
+  },
+  inactiveTab: {
+    backgroundColor: "#eee",
+    paddingVertical: 10,
+    paddingHorizontal: 30,
+    borderRadius: 20,
+  },
+  activeText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 14,
+  },
+  inactiveText: {
+    color: "#888",
+    fontSize: 14,
+  },
+  input: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
+    paddingVertical: 10,
+    marginBottom: 25,
+    fontSize: 14,
+  },
+  loginButton: {
+    backgroundColor: "#C69C6D",
+    paddingVertical: 14,
+    borderRadius: 25,
+    alignItems: "center",
+    marginTop: 10,
+  },
+  loginText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 14,
+  },
+  forgotText: {
+    textAlign: "center",
+    color: "#666",
+    marginTop: 15,
+    fontSize: 13,
+  },
+});
