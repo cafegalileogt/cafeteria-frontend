@@ -6,7 +6,7 @@ export default StyleSheet.create({
     backgroundColor: "#E3F0F9",
     alignItems: "center",
     justifyContent: "flex-end",
-    padding: 25,
+    padding: 20,
   },
   circle: {
     width: 500,
@@ -35,6 +35,7 @@ export default StyleSheet.create({
     backgroundColor: "#FEFEFE",
     alignItems: "center",
     borderRadius: 20,
+    padding: 20,
   },
   text: {
     color: "#000000",

@@ -1,21 +1,56 @@
-import { Text, View, Image, TextInput, TouchableOpacity } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  ScrollView,
+} from "react-native";
 import { useState } from "react";
 import styles from "../styles/indexStyle";
+import { useRouter } from "expo-router";
 
 export default function App() {
-  const handleLogin = () => {};
+  const handleLogin = () => {
+    if (!email || !password) {
+      Alert.alert("Error", "Debes llenar todos los campos.");
+      return;
+    }
+
+    if (!email.endsWith("@galileo.edu")) {
+      Alert.alert("Error", "Solo se permiten correos de dominio @galileo.edu");
+      return;
+    }
+
+    router.push("/user/home");
+  };
 
   const handleRegister = () => {
     if (!email || !password || !confirmPassword) {
       Alert.alert("Error", "Todos los campos son obligatorios.");
       return;
     }
+
+    if (!email.endsWith("@galileo.edu")) {
+      Alert.alert("Correo inválido", "Debe ser un correo @galileo.edu");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      Alert.alert("Error", "Las contraseñas no coinciden");
+      return;
+    }
+
+    router.push("/user/home");
   };
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [activeTab, setActiveTab] = useState("login");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const router = useRouter();
 
   return (
     <View style={styles.page}>
@@ -94,7 +129,7 @@ export default function App() {
               </TouchableOpacity>
 
               {/* Enlace a recuperación */}
-              <TouchableOpacity onPress={() => router.push("/forgot")}>
+              <TouchableOpacity onPress={() => router.push("/screens/passRec")}>
                 <Text style={styles.forgotText}>¿Olvidaste tu contraseña?</Text>
               </TouchableOpacity>
             </>
