@@ -7,10 +7,10 @@ import {
   Alert,
 } from "react-native";
 import { useState } from "react";
-import styles from "../../styles/indexStyle";
+import styles from "../../styles/userLoginStyle";
 import { useRouter } from "expo-router";
 
-export default function App() {
+export default function Login() {
   const handleLogin = () => {
     if (!email || !password) {
       Alert.alert("Error", "Debes llenar todos los campos.");
@@ -61,6 +61,7 @@ export default function App() {
         <Image
           source={require("../../../assets/Galileo Cafe-Blanco.png")}
           style={styles.img}
+          resizeMode="contain"
         ></Image>
       </View>
       <View style={styles.container}>
