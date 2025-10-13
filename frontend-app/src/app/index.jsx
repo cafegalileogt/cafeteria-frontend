@@ -1,18 +1,22 @@
 import { Platform, View } from "react-native";
-import { useRootNavigationState, useRouter, Slot } from "expo-router";
+import { useRouter } from "expo-router";
 import { useEffect } from "react";
 
 export default function App() {
   const router = useRouter();
 
-  if (Platform.OS === "web") {
+  useEffect(() => {
     setTimeout(() => {
-      router.replace("/admin/login");
-    }, 1);
-  } else if (Platform.OS === "android") {
-    setTimeout(() => {
-      router.replace("/user/login");
-    }, 1);
-  }
-  return <View />;
+      if (Platform.OS === "web") {
+        return router.replace("/admin/login");
+      } else if (Platform.OS === "android") {
+        return router.replace("/user/login");
+      }
+    }, 100);
+  }, []);
+
+  return (
+    // Agregar pantalla de espera
+    <View></View>
+  );
 }
