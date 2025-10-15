@@ -10,9 +10,11 @@ import {
 import { useState } from "react";
 import styles from "../styles/indexStyle";
 import { useRouter } from "expo-router";
+import { registerUser } from "../../services/api";
+import { loginUser } from "../../services/api";
 
 export default function App() {
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!email || !password) {
       Alert.alert("Error", "Debes llenar todos los campos.");
       return;
@@ -22,11 +24,16 @@ export default function App() {
       Alert.alert("Error", "Solo se permiten correos de dominio @galileo.edu");
       return;
     }
+    const dataLogin = await loginUser(email,password);
+    if(!dataLogin.token){
+      Alert.alert(dataLogin.message)
+      return
+    }
 
     router.push("/user/home");
   };
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (!email || !password || !confirmPassword) {
       Alert.alert("Error", "Todos los campos son obligatorios.");
       return;
@@ -42,9 +49,23 @@ export default function App() {
       return;
     }
 
-    router.push("/user/home");
+    const data = await registerUser(name,email, password);
+    console.log("data", data);
+
+    if (data.status !== 201) {
+      Alert.alert("Error", data?.data?.message || "Error en el registro");
+      return;
+    }
+
+    Alert.alert("Éxito", "Registro exitoso. Revisa tu correo para activar tu cuenta.");
+    setActiveTab("login");
+    setName("");
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
   };
 
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [activeTab, setActiveTab] = useState("login");
@@ -136,6 +157,15 @@ export default function App() {
           ) : (
             <>
               {/* Formulario Registro */}
+              <Text style={styles.text}>Nombre</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Nombre"
+                keyboardType="email-address"
+                value={name}
+                onChangeText={setName}
+                autoCapitalize="none"
+              />
               <Text style={styles.text}>Correo Electrónico</Text>
               <TextInput
                 style={styles.input}
