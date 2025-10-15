@@ -9,9 +9,12 @@ import {
 import { useState } from "react";
 import styles from "../../styles/userLoginStyle";
 import { useRouter } from "expo-router";
+import { loginUser, registerUser } from "../../../services/api";
 
 export default function Login() {
-  const handleLogin = () => {
+  const router = useRouter();
+
+  const handleLogin = async () => {
     if (!email || !password) {
       Alert.alert("Error", "Debes llenar todos los campos.");
       return;
@@ -21,11 +24,16 @@ export default function Login() {
       Alert.alert("Error", "Solo se permiten correos de dominio @galileo.edu");
       return;
     }
+    const dataLogin = await loginUser(email, password);
+    if (!dataLogin.token) {
+      Alert.alert(dataLogin.message);
+      return;
+    }
 
     router.push("/user/home");
   };
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (!email || !password || !confirmPassword) {
       Alert.alert("Error", "Todos los campos son obligatorios.");
       return;
@@ -41,27 +49,41 @@ export default function Login() {
       return;
     }
 
-    router.push("/user/home");
+    const data = await registerUser(name, email, password);
+    console.log("data", data);
+
+    if (data.status !== 201) {
+      Alert.alert("Error", data?.data?.message || "Error en el registro");
+      return;
+    }
+
+    Alert.alert(
+      "Éxito",
+      "Registro exitoso. Revisa tu correo para activar tu cuenta."
+    );
+    setActiveTab("login");
+    setName("");
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
   };
 
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [activeTab, setActiveTab] = useState("login");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const router = useRouter();
-
   return (
     <View style={styles.page}>
       <View style={styles.circle}>
         <Image
-          source={require("../../../assets/coffee-background.jpg")}
+          source={require("../../assets/coffee-background.jpg")}
           style={styles.bgimg}
         ></Image>
         <Image
-          source={require("../../../assets/Galileo Cafe-Blanco.png")}
+          source={require("../../assets/Galileo Cafe-Blanco.png")}
           style={styles.img}
-          resizeMode="contain"
         ></Image>
       </View>
       <View style={styles.container}>
@@ -136,6 +158,15 @@ export default function Login() {
           ) : (
             <>
               {/* Formulario Registro */}
+              <Text style={styles.text}>Nombre</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Nombre"
+                keyboardType="email-address"
+                value={name}
+                onChangeText={setName}
+                autoCapitalize="none"
+              />
               <Text style={styles.text}>Correo Electrónico</Text>
               <TextInput
                 style={styles.input}
