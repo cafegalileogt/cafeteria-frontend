@@ -17,12 +17,16 @@ export default StyleSheet.create({
     top: -100,
     alignItems: "center",
   },
+  rectangle: {
+    width: 1000,
+    height: 1000,
+    alignItems: "center",
+  },
   img: {
     width: "60%",
     height: "60%",
     position: "absolute",
     top: 80,
-    resizeMode: "contain",
   },
   bgimg: {
     width: "100%",
