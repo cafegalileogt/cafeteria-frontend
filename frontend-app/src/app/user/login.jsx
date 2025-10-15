@@ -78,12 +78,13 @@ export default function Login() {
     <View style={styles.page}>
       <View style={styles.circle}>
         <Image
-          source={require("../../assets/coffee-background.jpg")}
+          source={require("../../../assets/coffee-background.jpg")}
           style={styles.bgimg}
         ></Image>
         <Image
-          source={require("../../assets/Galileo Cafe-Blanco.png")}
+          source={require("../../../assets/Galileo Cafe-Blanco.png")}
           style={styles.img}
+          resizeMode="contain"
         ></Image>
       </View>
       <View style={styles.container}>
