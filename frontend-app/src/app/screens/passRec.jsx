@@ -2,14 +2,23 @@ import { useState } from "react";
 import { useRouter } from "expo-router";
 import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
 import styles from "../../styles/passRecStyle";
+import { recoveryPassword } from "../../../services/api";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
   const router = useRouter();
 
-  const handleResetPassword = () => {
+  const handleResetPassword = async() => {
     if (!email.endsWith("@galileo.edu")) {
       Alert.alert("Error", "Solo se permiten correos de dominio @galileo.edu");
+      return;
+    }
+
+    const recovery = await recoveryPassword(email);
+    console.log('Respuesta de Recovery Password: ', recovery)
+    
+    if (recovery.status !== 200) {
+      Alert.alert("Error",  "Ocurrió un problema, intenta de nuevo");
       return;
     }
 
