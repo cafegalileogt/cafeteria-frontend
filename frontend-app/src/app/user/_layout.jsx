@@ -11,7 +11,11 @@ export default function layout() {
       screenOptions={{
         tabBarStyle: {
           display: hidePages.includes(page) ? "none" : "flex",
+          paddingTop: 5,
+          paddingBottom: 5,
         },
+        tabBarActiveTintColor: "#B89A59",
+        tabBarInactiveTintColor: "#CCCCCC",
       }}
     >
       <Tabs.Screen
@@ -23,27 +27,40 @@ export default function layout() {
         name="home"
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home-outline" color={color} size={size} />
+            <Ionicons name="home" color={color} size={size * 1.3} />
           ),
           headerShown: false,
+          tabBarLabel: "",
         }}
       />
       <Tabs.Screen
         name="favoritos"
         options={{
-          tabBarIcon: ({ color, size }) => <Ionicons name="heart-outline" />,
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="heart" color={color} size={size * 1.3} />
+          ),
+          headerShown: false,
+          tabBarLabel: "",
         }}
       />
       <Tabs.Screen
         name="perfil"
         options={{
-          tabBarIcon: ({ color, size }) => <Ionicons name="person-outline" />,
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="person" color={color} size={size * 1.3} />
+          ),
+          headerShown: false,
+          tabBarLabel: "",
         }}
       />
       <Tabs.Screen
         name="carrito"
         options={{
-          tabBarIcon: ({ color, size }) => <Ionicons name="cart-outline" />,
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="cart" color={color} size={size * 1.3} />
+          ),
+          headerShown: false,
+          tabBarLabel: "",
         }}
       />
     </Tabs>
