@@ -14,9 +14,9 @@ import { FontAwesome } from "@expo/vector-icons";
 
 export default function HomeScreen() {
   const [activeCategory, setActiveCategory] = useState("Desayunos");
-  const [activeIcon, setActiveIcon] = useState("home");
   const router = useRouter();
 
+  // Datos simulados 
   const menu = {
     Desayunos: [
       { name: "Torito", price: "Q35.50" },
@@ -44,10 +44,10 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Encabezado */}
+      {/* Header con fondo */}
       <View style={styles.headerContainer}>
         <Image
-          source={require("../../../assets/Galileo Fondo-Comida.png")} 
+          source={require("../../../assets/Galileo Fondo-Comida.png")}
           style={styles.headerImage}
         />
         <View style={styles.overlay} />
@@ -58,8 +58,9 @@ export default function HomeScreen() {
         />
       </View>
 
+      {/* Contenido principal */}
       <View style={styles.mainSection}>
-        {/* Barra Lateral */}
+        {/* Sidebar de categorías */}
         <View style={styles.sidebar}>
           {Object.keys(menu).map((category, i) => (
             <TouchableOpacity
@@ -88,8 +89,7 @@ export default function HomeScreen() {
           ))}
         </View>
 
-
-        {/* Productos */}
+        {/* Lista de productos */}
         <View style={styles.menuSection}>
           <Text style={styles.sectionTitle}>{activeCategory}</Text>
           <ScrollView
@@ -109,25 +109,6 @@ export default function HomeScreen() {
             ))}
           </ScrollView>
         </View>
-      </View>
-
-      <View style={styles.footer}>
-        {[
-          { name: "user" },
-          { name: "heart" },
-          { name: "home" },
-          { name: "shopping-cart" },
-        ].map((icon, i) => (
-          <TouchableOpacity key={i} onPress={() => setActiveIcon(icon.name)}>
-            <FontAwesome
-              name={icon.name}
-              style={[
-                styles.footerIcon,
-                activeIcon === icon.name && styles.footerIconActive,
-              ]}
-            />
-          </TouchableOpacity>
-        ))}
       </View>
     </View>
   );

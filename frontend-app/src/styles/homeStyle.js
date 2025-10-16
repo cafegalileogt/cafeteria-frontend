@@ -7,7 +7,7 @@ export default StyleSheet.create({
     backgroundColor: "#fff",
   },
 
-  // Header
+  
   headerContainer: {
     position: "relative",
     height: height * 0.25,
@@ -16,7 +16,7 @@ export default StyleSheet.create({
   headerImage: {
     width: "100%",
     height: "100%",
-    borderBottomLeftRadius: 100,
+    resizeMode: "cover", 
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
@@ -24,9 +24,9 @@ export default StyleSheet.create({
   },
   welcome: {
     position: "absolute",
-    top: "80%",
+    bottom: 15,
     left: 20,
-    fontSize: 22,
+    fontSize: width < 500 ? 20 : 22,
     fontFamily: "Nunito",
     color: "#000",
   },
@@ -34,18 +34,18 @@ export default StyleSheet.create({
     position: "absolute",
     top: 20,
     right: 20,
-    width: 110,
-    height: 50,
+    width: width * 0.28,
+    height: height * 0.06,
     resizeMode: "contain",
   },
 
-  // Contenido principal
+  // Contenido Principal
   mainSection: {
     flex: 1,
     flexDirection: "row",
   },
 
-  // Barra lateral
+  // categorías
   sidebar: {
     width: "25%",
     alignItems: "center",
@@ -58,7 +58,7 @@ export default StyleSheet.create({
     borderRadius: 20,
     alignItems: "center",
     marginVertical: 12,
-    width: 80,
+    width: width < 500 ? 70 : 80,
     paddingVertical: 8,
   },
   categoryActive: {
@@ -87,12 +87,12 @@ export default StyleSheet.create({
   // Productos
   menuSection: {
     flex: 1,
-    padding: 15,
+    padding: width < 500 ? 10 : 15,
   },
   sectionTitle: {
     fontFamily: "Playfair Display",
     fontWeight: "900",
-    fontSize: 38,
+    fontSize: width < 500 ? 30 : 38,
     color: "#000",
     marginVertical: 15,
     textAlign: "center",
@@ -103,20 +103,20 @@ export default StyleSheet.create({
     justifyContent: "space-around",
   },
   card: {
-    width: "30%",
+    width: width < 500 ? "40%" : "30%",
     alignItems: "center",
     marginBottom: 25,
   },
   placeholderImage: {
-    width: 75,
-    height: 75,
+    width: width < 500 ? 65 : 75,
+    height: width < 500 ? 65 : 75,
     borderRadius: 10,
     backgroundColor: "#D9D9D9",
     justifyContent: "center",
     alignItems: "center",
   },
   placeholderText: {
-    fontSize: 22,
+    fontSize: width < 500 ? 18 : 22,
     fontWeight: "bold",
     color: "#7b5e2a",
   },
@@ -129,24 +129,6 @@ export default StyleSheet.create({
   foodPrice: {
     fontFamily: "Inria Sans",
     fontSize: 12,
-    color: "#B89A59",
-  },
-
-  // Footer
-  footer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    borderTopWidth: 1,
-    borderColor: "#eee",
-    paddingVertical: 12,
-    backgroundColor: "#fff",
-  },
-  footerIcon: {
-    fontSize: 28,
-    color: "#ccc",
-  },
-  footerIconActive: {
     color: "#B89A59",
   },
 });
