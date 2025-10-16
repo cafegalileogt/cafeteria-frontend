@@ -106,7 +106,7 @@ export default StyleSheet.create({
     alignItems: "center",
     marginTop: 10,
   },
-    logoutButton: {
+  logoutButton: {
     backgroundColor: "#cb482bff",
     paddingVertical: 14,
     borderRadius: 25,
