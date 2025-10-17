@@ -1,22 +1,13 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-  StyleSheet,
-} from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
 import styles from "../../styles/homeStyle";
-import { logout } from "../../../services/api";
 import { useRouter } from "expo-router";
-import { FontAwesome } from "@expo/vector-icons";
 
 export default function HomeScreen() {
   const [activeCategory, setActiveCategory] = useState("Desayunos");
   const router = useRouter();
 
-  // Datos simulados 
+  // Datos simulados
   const menu = {
     Desayunos: [
       { name: "Torito", price: "Q35.50" },
@@ -49,12 +40,14 @@ export default function HomeScreen() {
         <Image
           source={require("../../../assets/Galileo Fondo-Comida.png")}
           style={styles.headerImage}
+          resizeMode="cover"
         />
         <View style={styles.overlay} />
-        <Text style={styles.welcome}>Bienvenido</Text>
+        <Text style={styles.welcome}>Bienvenido Usuario</Text>
         <Image
           source={require("../../../assets/Galileo Cafe-Negro.png")}
           style={styles.logo}
+          resizeMode="contain"
         />
       </View>
 

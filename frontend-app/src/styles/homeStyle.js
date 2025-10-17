@@ -7,16 +7,14 @@ export default StyleSheet.create({
     backgroundColor: "#fff",
   },
 
-  
   headerContainer: {
     position: "relative",
-    height: height * 0.25,
+    height: height * 0.15,
     justifyContent: "center",
   },
   headerImage: {
     width: "100%",
     height: "100%",
-    resizeMode: "cover", 
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
@@ -24,9 +22,8 @@ export default StyleSheet.create({
   },
   welcome: {
     position: "absolute",
-    bottom: 15,
     left: 20,
-    fontSize: width < 500 ? 20 : 22,
+    fontSize: width < 500 ? 24 : 26,
     fontFamily: "Nunito",
     color: "#000",
   },
@@ -36,7 +33,6 @@ export default StyleSheet.create({
     right: 20,
     width: width * 0.28,
     height: height * 0.06,
-    resizeMode: "contain",
   },
 
   // Contenido Principal
@@ -49,7 +45,7 @@ export default StyleSheet.create({
   sidebar: {
     width: "25%",
     alignItems: "center",
-    borderRightWidth: 1,
+    borderRightWidth: 3,
     borderRightColor: "#B89A59",
     paddingVertical: 15,
   },
@@ -103,7 +99,7 @@ export default StyleSheet.create({
     justifyContent: "space-around",
   },
   card: {
-    width: width < 500 ? "40%" : "30%",
+    width: "30%",
     alignItems: "center",
     marginBottom: 25,
   },
@@ -132,4 +128,3 @@ export default StyleSheet.create({
     color: "#B89A59",
   },
 });
-
