@@ -1,11 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
 import styles from "../../styles/homeStyle";
-import { useRouter } from "expo-router";
 
 export default function HomeScreen() {
   const [activeCategory, setActiveCategory] = useState("Desayunos");
-  const router = useRouter();
 
   // Datos simulados
   const menu = {

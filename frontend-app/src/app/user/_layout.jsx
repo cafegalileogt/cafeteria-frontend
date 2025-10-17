@@ -63,6 +63,11 @@ export default function layout() {
           tabBarLabel: "",
         }}
       />
+      <Tabs.Screen
+        name="vistaProducto"
+        hidden="true"
+        options={{ href: null, headerShown: false }}
+      />
     </Tabs>
   );
 }
