@@ -13,7 +13,7 @@ export default StyleSheet.create({
   },
   box: {
     width: "100%",
-    flex: 0.5,
+    flex: 0.4,
     alignItems: "center",
   },
   title: {
@@ -72,7 +72,7 @@ export default StyleSheet.create({
   },
   addText: {
     color: "#fff",
-    fontWeight: "bold",
-    fontSize: 14,
+    fontWeight: "900",
+    fontSize: 16,
   },
 });
