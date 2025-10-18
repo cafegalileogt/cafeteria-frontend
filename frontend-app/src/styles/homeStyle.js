@@ -121,6 +121,7 @@ export default StyleSheet.create({
     fontSize: 14,
     color: "#000",
     marginTop: 6,
+    textAlign: "center",
   },
   foodPrice: {
     fontFamily: "Inria Sans",

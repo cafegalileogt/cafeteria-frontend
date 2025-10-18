@@ -5,7 +5,7 @@ import { useSegments } from "expo-router";
 export default function layout() {
   const segment = useSegments();
   const page = segment[segment.length - 1];
-  const hidePages = ["login"];
+  const hidePages = ["login", "vistaProducto"];
   return (
     <Tabs
       screenOptions={{

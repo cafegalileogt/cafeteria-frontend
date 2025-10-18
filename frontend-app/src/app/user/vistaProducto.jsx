@@ -2,6 +2,7 @@ import { View, Text, Image, TouchableOpacity } from "react-native";
 import styles from "../../styles/vistaProductoStyle";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import Producto from "../../components/producto";
 
 export default function vistaProducto() {
   const router = useRouter();
@@ -30,6 +31,7 @@ export default function vistaProducto() {
       <TouchableOpacity onPress={() => backPage()}>
         <Ionicons name={"arrow-back-outline"} style={styles.arrow} />
       </TouchableOpacity>
+      <Producto></Producto>
     </View>
   );
 }
