@@ -131,7 +131,6 @@ useEffect(() => {
           >
             {currentMenu[activeCategory]?.map((item, index) => (
               <View key={index} style={styles.card}>
-                
                 <Image source={{ uri: item.imagen }}style={styles.placeholderImage}/>              
                 <Text style={styles.foodName}>{item.name}</Text>
                 <Text style={styles.foodPrice}>{item.price}</Text>
