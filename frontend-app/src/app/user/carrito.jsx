@@ -56,7 +56,7 @@ export default function Carrito() {
           resizeMode="cover"
         />
         <View style={styles.overlay} />
-        <Text style={styles.welcome}>Bienvenido Byron</Text>
+        <Text style={styles.welcome}>Bienvenido Usuario</Text>
         <Image
           source={require("../../../assets/Galileo Cafe-Negro.png")}
           style={styles.logo}
