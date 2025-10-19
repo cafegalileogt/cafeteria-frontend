@@ -84,3 +84,51 @@ export async function logout(){
   };
 
 }
+
+export async function getCategoryNames() {
+  let response = await fetch(`${BASE_URL}/api/v1/products/getCategories`, {
+    method: "GET", 
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  let data = {};
+  try {
+    const json = await response.json();
+    data = json || null;
+  } catch (err) {
+    console.warn("No se pudo parsear JSON:", err);
+  }
+
+  return {
+    status: response.status,
+    data,
+  };
+}
+
+export async function getMenu() {
+  let response = await fetch(`${BASE_URL}/api/v1/products/productos_categorias`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+
+
+  let data = {};
+  try {
+    const json = await response.json();
+
+    data = json.result || [];
+  } catch (err) {
+    console.warn("No se pudo parsear JSON:", err);
+  }
+
+  return {
+    status: response.status,
+    data,
+  };
+}
+  
