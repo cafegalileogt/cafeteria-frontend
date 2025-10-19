@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
 import styles from "../../styles/homeStyle";
+import { useRouter } from "expo-router";
 
 export default function HomeScreen() {
   const [activeCategory, setActiveCategory] = useState("Desayunos");
@@ -29,6 +30,12 @@ export default function HomeScreen() {
       { name: "Licuado", price: "Q12.00" },
       { name: "Café", price: "Q10.00" },
     ],
+  };
+
+  const router = useRouter();
+
+  const viewProduct = () => {
+    router.push("/user/vistaProducto");
   };
 
   return (
@@ -90,9 +97,11 @@ export default function HomeScreen() {
             {menu[activeCategory].map((item, index) => (
               <View key={index} style={styles.card}>
                 <View style={styles.placeholderImage}>
-                  <Text style={styles.placeholderText}>
-                    {item.name.charAt(0)}
-                  </Text>
+                  <TouchableOpacity onPress={viewProduct}>
+                    <Text style={styles.placeholderText}>
+                      {item.name.charAt(0)}
+                    </Text>
+                  </TouchableOpacity>
                 </View>
                 <Text style={styles.foodName}>{item.name}</Text>
                 <Text style={styles.foodPrice}>{item.price}</Text>

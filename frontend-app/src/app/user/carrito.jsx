@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
-import styles from "../../styles/carritoStyle";
 import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import styles from "../../styles/carritoStyle";
 
 export default function Carrito() {
-  const router = useRouter();
-
   const [productos, setProductos] = useState([
     { id: 1, nombre: "Torito", precio: 35.5, cantidad: 1 },
     { id: 2, nombre: "Huevos Rancheros", precio: 65.0, cantidad: 1 },
   ]);
+
+  const [confirmando, setConfirmando] = useState(false);
+  const [orderId, setOrderId] = useState(null);
 
   const aumentar = (id) => {
     setProductos((prev) =>
@@ -36,7 +36,14 @@ export default function Carrito() {
   );
 
   const confirmarOrden = () => {
-    router.push("/user/confirmacion");
+    const randomOrder = Math.floor(10000 + Math.random() * 90000);
+    setOrderId(randomOrder);
+    setConfirmando(true);
+  };
+
+  const volverCarrito = () => {
+    setConfirmando(false);
+    setOrderId(null);
   };
 
   return (
@@ -49,7 +56,7 @@ export default function Carrito() {
           resizeMode="cover"
         />
         <View style={styles.overlay} />
-        <Text style={styles.welcome}>Bienvenido Usuario</Text>
+        <Text style={styles.welcome}>Bienvenido Byron</Text>
         <Image
           source={require("../../../assets/Galileo Cafe-Negro.png")}
           style={styles.logo}
@@ -57,42 +64,65 @@ export default function Carrito() {
         />
       </View>
 
-      {/* Título */}
-      <Text style={styles.title}>Carrito</Text>
+      {!confirmando ? (
+        <>
+          <Text style={styles.title}>Carrito</Text>
 
-      {/* Productos */}
-      <ScrollView style={{ flex: 1 }}>
-        {productos.map((item) => (
-          <View key={item.id} style={styles.productContainer}>
-            <Text style={styles.productName}>{item.nombre}</Text>
-            <View style={styles.quantityContainer}>
-              <TouchableOpacity onPress={() => disminuir(item.id)}>
-                <Ionicons name="remove-circle-outline" size={28} color="#B89A59" />
-              </TouchableOpacity>
-              <Text style={styles.quantityText}>{item.cantidad}</Text>
-              <TouchableOpacity onPress={() => aumentar(item.id)}>
-                <Ionicons name="add-circle-outline" size={28} color="#B89A59" />
-              </TouchableOpacity>
-            </View>
-            <Text style={styles.productPrice}>
-              Q{(item.precio * item.cantidad).toFixed(2)}
-            </Text>
+          <ScrollView style={{ flex: 1 }}>
+            {productos.map((item) => (
+              <View key={item.id} style={styles.productContainer}>
+                <Text style={styles.productName}>{item.nombre}</Text>
+                <View style={styles.quantityContainer}>
+                  <TouchableOpacity onPress={() => disminuir(item.id)}>
+                    <Ionicons
+                      name="remove-circle-outline"
+                      size={28}
+                      color="#B89A59"
+                    />
+                  </TouchableOpacity>
+                  <Text style={styles.quantityText}>{item.cantidad}</Text>
+                  <TouchableOpacity onPress={() => aumentar(item.id)}>
+                    <Ionicons name="add-circle-outline" size={28} color="#B89A59" />
+                  </TouchableOpacity>
+                </View>
+                <Text style={styles.productPrice}>
+                  Q{(item.precio * item.cantidad).toFixed(2)}
+                </Text>
+              </View>
+            ))}
+          </ScrollView>
+
+          <View style={styles.totalContainer}>
+            <Text style={styles.totalText}>Total</Text>
+            <Text style={styles.totalAmount}>Q{total.toFixed(2)}</Text>
           </View>
-        ))}
-      </ScrollView>
 
-      {/* Total */}
-      <View style={styles.totalContainer}>
-        <Text style={styles.totalText}>Total:</Text>
-        <Text style={styles.totalAmount}>Q{total.toFixed(2)}</Text>
-      </View>
+          <TouchableOpacity style={styles.confirmButton} onPress={confirmarOrden}>
+            <Text style={styles.confirmText}>Confirmar</Text>
+          </TouchableOpacity>
+        </>
+      ) : (
+        // 🔸 Pantalla de confirmación
+        <View style={styles.confirmacionContainer}>
+          <Text style={styles.confirmTitle}>¡Ya casi está listo!</Text>
 
-      {/* Botón Confirmar */}
-      <TouchableOpacity style={styles.confirmButton} onPress={confirmarOrden}>
-        <Text style={styles.confirmText}>Confirmar orden</Text>
-      </TouchableOpacity>
+          <View style={styles.confirmBox}>
+            <Text style={styles.orderText}>No. de Orden</Text>
+            <Text style={styles.orderNumber}>{orderId}</Text>
+            <TouchableOpacity style={styles.confirmButton} onPress={volverCarrito}>
+              <Text style={styles.confirmText}>Aceptar</Text>
+            </TouchableOpacity>
+          </View>
+
+          <Text style={styles.note}>
+            ¡Ahora puedes acercarte a la cafetería a cancelar la orden, recuerda
+            dar tu nombre o número de orden!
+          </Text>
+        </View>
+      )}
     </View>
   );
 }
+
 
 

@@ -1,5 +1,11 @@
-import { Text, Image, TouchableOpacity, View, TextInput } from "react-native";
-import { Component } from "react";
+import {
+  Text,
+  Image,
+  TouchableOpacity,
+  View,
+  TextInput,
+  Alert,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Styles from "../styles/productoStyle";
 import { useState } from "react";
@@ -16,6 +22,9 @@ export default function Producto() {
       setCount((prevCount) => prevCount - 1);
     }
   };
+
+  const showAlert = () =>
+    Alert.alert("Info", "Tu producto se ha agregado al carrito");
 
   return (
     <View style={Styles.container}>
@@ -36,7 +45,7 @@ export default function Producto() {
       <Text style={Styles.price}>Q35.95</Text>
       <View style={Styles.rectangle}>
         <TouchableOpacity style={Styles.element} onPress={decrementCount}>
-          <Ionicons name="remove-circle-outline" size={"48px"} />
+          <Ionicons name="remove-circle-outline" size={48} />
         </TouchableOpacity>
         <TextInput
           style={Styles.input}
@@ -44,9 +53,9 @@ export default function Producto() {
           keyboardType="numeric"
         />
         <TouchableOpacity style={Styles.element} onPress={incrementCount}>
-          <Ionicons name="add-circle-outline" size={"48px"} />
+          <Ionicons name="add-circle-outline" size={48} />
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.button}>
+        <TouchableOpacity style={Styles.button} onPress={showAlert}>
           <Text style={Styles.addText}>Agregar</Text>
         </TouchableOpacity>
       </View>

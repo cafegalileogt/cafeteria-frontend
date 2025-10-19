@@ -23,7 +23,7 @@ export default StyleSheet.create({
   welcome: {
     position: "absolute",
     left: 20,
-    fontSize: width < 500 ? 24 : 26,
+    fontSize: 24,
     fontFamily: "Nunito",
     color: "#000",
   },

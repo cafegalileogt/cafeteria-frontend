@@ -7,7 +7,6 @@ export default StyleSheet.create({
     backgroundColor: "#fff",
   },
 
-  // Header
   headerContainer: {
     position: "relative",
     height: height * 0.15,
@@ -24,7 +23,7 @@ export default StyleSheet.create({
   welcome: {
     position: "absolute",
     left: 20,
-    fontSize: width < 500 ? 22 : 24,
+    fontSize: 22,
     fontFamily: "Nunito",
     color: "#000",
   },
@@ -32,36 +31,29 @@ export default StyleSheet.create({
     position: "absolute",
     top: 20,
     right: 20,
-    width: width * 0.25,
+    width: width * 0.28,
     height: height * 0.06,
   },
-
-  // Título
   title: {
-    fontSize: 26,
+    fontSize: 34,
+    fontFamily: "Playfair Display",
+    fontWeight: "900",
     color: "#B89A59",
-    fontWeight: "bold",
-    alignSelf: "center",
-    marginVertical: 15,
-    fontFamily: "Nunito",
+    textAlign: "center",
+    marginVertical: 10,
   },
-
-  // Productos
   productContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 20,
     marginVertical: 10,
-    borderBottomWidth: 1,
-    borderColor: "#eee",
-    paddingBottom: 10,
   },
   productName: {
     flex: 1,
-    fontSize: 16,
-    color: "#000",
+    fontSize: 18,
     fontFamily: "Inter",
+    color: "#000",
   },
   productPrice: {
     fontSize: 16,
@@ -78,28 +70,24 @@ export default StyleSheet.create({
     fontSize: 18,
     paddingHorizontal: 6,
   },
-
-  // Total
   totalContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginHorizontal: 25,
-    marginTop: 25,
+    marginVertical: 20,
     borderTopWidth: 1,
     borderColor: "#B89A59",
     paddingTop: 10,
   },
   totalText: {
-    fontSize: 18,
+    fontSize: 20,
     color: "#000",
   },
   totalAmount: {
-    fontSize: 18,
+    fontSize: 20,
     color: "#000",
-    fontWeight: "bold",
+    fontWeight: "700",
   },
-
-  // Botón Confirmar
   confirmButton: {
     backgroundColor: "#B89A59",
     alignSelf: "center",
@@ -111,13 +99,59 @@ export default StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    marginVertical: 20,
+    marginBottom: 20,
   },
   confirmText: {
     color: "#fff",
-    fontSize: 18,
+    fontSize: 20,
     textAlign: "center",
     fontFamily: "Nunito",
   },
+
+  // Estilos para confirmación
+  confirmacionContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  confirmTitle: {
+    fontSize: 34,
+    fontFamily: "Playfair Display",
+    fontWeight: "900",
+    color: "#B89A59",
+    textAlign: "center",
+    marginVertical: 20,
+  },
+  confirmBox: {
+    alignSelf: "center",
+    backgroundColor: "#f9f9f9",
+    width: width * 0.85,
+    borderRadius: 10,
+    padding: 20,
+    shadowColor: "#000",
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 5,
+    elevation: 4,
+  },
+  orderText: {
+    fontSize: 20,
+    textAlign: "center",
+    marginBottom: 10,
+  },
+  orderNumber: {
+    fontSize: 32,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 20,
+  },
+  note: {
+    textAlign: "center",
+    fontSize: 15,
+    marginTop: 30,
+    paddingHorizontal: 20,
+  },
 });
+
+
 
