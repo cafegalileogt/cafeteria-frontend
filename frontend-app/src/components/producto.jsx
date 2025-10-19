@@ -6,11 +6,13 @@ import {
   TextInput,
   Alert,
 } from "react-native";
+// import styles from "./styles/homeStyle";
+
 import { Ionicons } from "@expo/vector-icons";
 import Styles from "../styles/productoStyle";
 import { useState } from "react";
 
-export default function Producto() {
+export default function Producto({name,price,imagen,descripcion}) {
   const [count, setCount] = useState(0);
 
   const incrementCount = () => {
@@ -29,20 +31,16 @@ export default function Producto() {
   return (
     <View style={Styles.container}>
       <View style={Styles.box}>
-        <Image
-          style={Styles.image}
-          source={require("../../assets/image-placeholder.svg")}
-          resizeMode="contain"
-        />
+         <Image
+            source={{ uri: imagen }} 
+            style={Styles.image}
+          />
       </View>
-      <Text style={Styles.title}>Torito</Text>
+      <Text style={Styles.title}>{name}</Text>
       <Text style={Styles.text}>
-        Delicioso pan de hamburguesa, dorado con mangequilla, 1 torta de nuestra
-        mejor carne, 1 huevo estrellado, con nuestro aderezo de la casa, tomate,
-        cebolla y lechuga. Todos nuestros desayunos están acompañados de papas
-        fritas, café o jugo.
+        {descripcion}
       </Text>
-      <Text style={Styles.price}>Q35.95</Text>
+      <Text style={Styles.price}>{price}</Text>
       <View style={Styles.rectangle}>
         <TouchableOpacity style={Styles.element} onPress={decrementCount}>
           <Ionicons name="remove-circle-outline" size={48} />

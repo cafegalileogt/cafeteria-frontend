@@ -1,11 +1,13 @@
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import styles from "../../styles/vistaProductoStyle";
 import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import { useRouter,useLocalSearchParams } from "expo-router";
 import Producto from "../../components/producto";
 
-export default function vistaProducto() {
-  const router = useRouter();
+export default function vistaProducto({item}) {
+ const router = useRouter();
+  const params = useLocalSearchParams();
+  const { name, price, imagen, descripcion } = params;
 
   const backPage = () => {
     router.push("/user/home");
@@ -31,7 +33,12 @@ export default function vistaProducto() {
       <TouchableOpacity onPress={() => backPage()}>
         <Ionicons name={"arrow-back-outline"} style={styles.arrow} />
       </TouchableOpacity>
-      <Producto></Producto>
+      <Producto
+        name={name}
+        price={price}
+        imagen={imagen}
+        descripcion={descripcion}
+      />
     </View>
   );
 }

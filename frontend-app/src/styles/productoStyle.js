@@ -5,11 +5,13 @@ export default StyleSheet.create({
     flex: 1,
     alignItems: "center",
     width: "100%",
+    
     justifyContent: "flex-start",
   },
   image: {
     width: "100%",
     height: "100%",
+    resizeMode: "cover"
   },
   box: {
     width: "100%",
