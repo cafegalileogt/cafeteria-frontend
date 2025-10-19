@@ -37,7 +37,6 @@ useEffect(() => {
         const categoryObj = categories.find(
           (cat) => cat.id_categoria === item.id_categoria
         );
-
         const categoryName = categoryObj
           ? categoryObj.nombre
           : `Categoría ${item.id_categoria}`;
@@ -132,11 +131,8 @@ useEffect(() => {
           >
             {currentMenu[activeCategory]?.map((item, index) => (
               <View key={index} style={styles.card}>
-                <View style={styles.placeholderImage}>
-                  <Text style={styles.placeholderText}>
-                    {item.name.charAt(0)}
-                  </Text>
-                </View>
+                
+                <Image source={{ uri: item.imagen }}style={styles.placeholderImage}/>              
                 <Text style={styles.foodName}>{item.name}</Text>
                 <Text style={styles.foodPrice}>{item.price}</Text>
               </View>
