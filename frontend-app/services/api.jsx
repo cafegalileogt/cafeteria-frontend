@@ -36,7 +36,6 @@ export async function loginUser(email, password) {
     await setToken(data.token);
   }
 
-  console.log("Data de login:", data);
   return data;
 }
 
@@ -75,7 +74,6 @@ export async function logout() {
 
 export async function getCategoryNames() {
   const token = await getToken();
-  console.log("Token:", token);
 
   const response = await fetch(`${BASE_URL}/api/v1/products/getCategories`, {
     method: "GET",
@@ -120,12 +118,13 @@ export async function getMenu() {
 }
 
 //  Crear orden
-export async function createOrder(cartItems, totalAmount) {
+export async function createOrder(cartItems, totalAmount,orderId) {
   const token = await getToken();
 
   const bodyData = {
     order: {
       total: Number(totalAmount),
+      numero_orden:Number(orderId),
     },
     details: cartItems.map((item) => ({
       id_producto: Number(item.id_producto || item.id),
@@ -138,7 +137,6 @@ export async function createOrder(cartItems, totalAmount) {
     })),
   };
 
-  console.log(" Payload enviado a la API:", JSON.stringify(bodyData, null, 2));
 
   try {
     const response = await fetch(`${BASE_URL}/api/v1/orders/create`, {

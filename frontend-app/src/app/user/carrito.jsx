@@ -40,17 +40,17 @@ export default function Carrito() {
     }
 
     try {
-    
+      const numeroOrden =  Math.floor(10000 + Math.random() * 90000);
       const productosFormateados = cartItems.map((item) => ({
         id: item.id_producto,
         cantidad: item.count,
         precio_unitario: parseFloat(item.price.replace("Q", "").trim()),
       }));
 
-      const response = await createOrder(productosFormateados, total);
+      const response = await createOrder(productosFormateados, total,numeroOrden);
+      
 
       if (response.status === 200 || response.status === 201) {
-        const numeroOrden = response.data.numero_orden || response.data.id || Math.floor(10000 + Math.random() * 90000);
         setOrderId(numeroOrden);
         setConfirmando(true);
       } else {
