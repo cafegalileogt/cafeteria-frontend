@@ -1,4 +1,5 @@
 const BASE_URL = "http://localhost:3000";
+  import { getToken } from "./storage";
 
 export async function registerUser(name, email, password) {
   let response = await fetch(`${BASE_URL}/api/v1/users/register-student`, {
@@ -23,21 +24,22 @@ export async function registerUser(name, email, password) {
 }
 
 export async function loginUser(email, password) {
-  let response = await fetch(`${BASE_URL}/api/v1/auth/login`, {
+  const response = await fetch(`${BASE_URL}/api/v1/auth/login`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
   });
 
   let data = {}; 
   try {
     data = await response.json();
-    
   } catch (err) {
     console.warn("No se pudo parsear JSON:", err);
   }
+
+if (response.ok && data.token) {
+  await getToken(data.token);
+}
   console.log("Data de login", data);
   return data;
 }
@@ -109,11 +111,13 @@ export async function getCategoryNames() {
 }
 
 export async function getMenu() {
+  const token = await getToken(); 
   let response = await fetch(`${BASE_URL}/api/v1/products/productos_categorias`, {
     method: "GET",
     credentials:"include",
     headers: {
       "Content-Type": "application/json",
+      Authorization: token ? `Bearer ${token}` : "",
     },
   });
   let data = {};
