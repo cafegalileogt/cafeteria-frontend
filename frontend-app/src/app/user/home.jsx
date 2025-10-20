@@ -149,5 +149,3 @@ const viewProduct = (item) => {
     </View>
   );
 }
-
-

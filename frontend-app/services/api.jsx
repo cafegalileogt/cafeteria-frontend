@@ -88,11 +88,13 @@ export async function logout(){
 }
 
 export async function getCategoryNames() {
+  const token = await getToken(); 
   let response = await fetch(`${BASE_URL}/api/v1/products/getCategories`, {
     method: "GET", 
     credentials:"include",
     headers: {
       "Content-Type": "application/json",
+      Authorization: token ? `Bearer ${token}` : "",
     },
   });
 
