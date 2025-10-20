@@ -1,26 +1,21 @@
 const BASE_URL = "http://localhost:3000";
-  import { getToken, setToken} from "./storage";
+import { getToken, setToken } from "./storage";
 
 export async function registerUser(name, email, password) {
-  let response = await fetch(`${BASE_URL}/api/v1/users/register-student`, {
+  const response = await fetch(`${BASE_URL}/api/v1/users/register-student`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ name, email, password }),
   });
 
   let data = {};
   try {
-    data = await response.json(); 
+    data = await response.json();
   } catch (err) {
     console.warn("No se pudo parsear JSON:", err);
   }
 
-  return {
-    status: response.status,
-    data,
-  };
+  return { status: response.status, data };
 }
 
 export async function loginUser(email, password) {
@@ -30,69 +25,61 @@ export async function loginUser(email, password) {
     body: JSON.stringify({ email, password }),
   });
 
-  let data = {}; 
+  let data = {};
   try {
     data = await response.json();
   } catch (err) {
     console.warn("No se pudo parsear JSON:", err);
   }
 
-if (response.ok && data.token) {
-  await setToken(data.token);
-}
-  console.log("Data de login", data);
+  if (response.ok && data.token) {
+    await setToken(data.token);
+  }
+
+  console.log("Data de login:", data);
   return data;
 }
 
-
-export async function recoveryPassword(email){
-    let response = await fetch(`${BASE_URL}/api/v1/auth/forgot-password`, {
-        method:"POST",
-        headers:{
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({email}),
-    });
-    let data={};
-    try{
-        data = await response.json();
-    }catch(err){
-        console.warn("no se pudo parsear Json: ",err);
-    }
-    return {
-        status: response.status,
-        data
-    }
-}
-
-export async function logout(){
-  let response = await fetch(`${BASE_URL}/api/v1/auth/logout`, {
+export async function recoveryPassword(email) {
+  const response = await fetch(`${BASE_URL}/api/v1/auth/forgot-password`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email }),
   });
 
   let data = {};
   try {
-    data = await response.json(); 
+    data = await response.json();
   } catch (err) {
     console.warn("No se pudo parsear JSON:", err);
   }
 
-  return {
-    status: response.status,
-    data,
-  };
+  return { status: response.status, data };
+}
 
+export async function logout() {
+  const response = await fetch(`${BASE_URL}/api/v1/auth/logout`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+  });
+
+  let data = {};
+  try {
+    data = await response.json();
+  } catch (err) {
+    console.warn("No se pudo parsear JSON:", err);
+  }
+
+  return { status: response.status, data };
 }
 
 export async function getCategoryNames() {
-  const token = await getToken(); 
-  console.log('token1: ', token)
-  let response = await fetch(`${BASE_URL}/api/v1/products/getCategories`, {
-    method: "GET", 
-    credentials:"include",
+  const token = await getToken();
+  console.log("Token:", token);
+
+  const response = await fetch(`${BASE_URL}/api/v1/products/getCategories`, {
+    method: "GET",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
       Authorization: token ? `Bearer ${token}` : "",
@@ -101,40 +88,82 @@ export async function getCategoryNames() {
 
   let data = {};
   try {
-    const json = await response.json();
-    data = json || null;
+    data = await response.json();
   } catch (err) {
     console.warn("No se pudo parsear JSON:", err);
   }
 
-  return {
-    status: response.status,
-    data,
-  };
+  return { status: response.status, data };
 }
 
 export async function getMenu() {
-  const token = await getToken(); 
-  let response = await fetch(`${BASE_URL}/api/v1/products/productos_categorias`, {
+  const token = await getToken();
+
+  const response = await fetch(`${BASE_URL}/api/v1/products/productos_categorias`, {
     method: "GET",
-    credentials:"include",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
       Authorization: token ? `Bearer ${token}` : "",
     },
   });
+
   let data = {};
   try {
     const json = await response.json();
-
     data = json.result || [];
   } catch (err) {
     console.warn("No se pudo parsear JSON:", err);
   }
 
-  return {
-    status: response.status,
-    data,
-  };
+  return { status: response.status, data };
 }
-  
+
+//  Crear orden
+export async function createOrder(cartItems, totalAmount) {
+  const token = await getToken();
+
+  const bodyData = {
+    order: {
+      total: Number(totalAmount),
+    },
+    details: cartItems.map((item) => ({
+      id_producto: Number(item.id_producto || item.id),
+      cantidad: Number(item.cantidad || item.count),
+      precio_unitario: Number(
+        item.precio_unitario || 
+        item.precio || 
+        parseFloat(item.price?.replace("Q", "").trim()) || 0
+      ),
+    })),
+  };
+
+  console.log(" Payload enviado a la API:", JSON.stringify(bodyData, null, 2));
+
+  try {
+    const response = await fetch(`${BASE_URL}/api/v1/orders/create`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+      body: JSON.stringify(bodyData),
+    });
+
+    let data = {};
+    try {
+      const json = await response.json();
+      data = json.result || json || {};
+    } catch (err) {
+      console.warn("No se pudo parsear JSON:", err);
+    }
+
+    console.log(" Respuesta de createOrder:", data);
+
+    return { status: response.status, data };
+  } catch (error) {
+    console.error(" Error en la petición createOrder:", error);
+    return { status: 500, data: {} };
+  }
+}
