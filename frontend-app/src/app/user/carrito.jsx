@@ -2,36 +2,35 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import styles from "../../styles/carritoStyle";
+import { useSearchParams } from "expo-router";
+import { useCart } from "../../../services/cartContext";
 
 export default function Carrito() {
-  const [productos, setProductos] = useState([
-    { id: 1, nombre: "Torito", precio: 35.5, cantidad: 1 },
-    { id: 2, nombre: "Huevos Rancheros", precio: 65.0, cantidad: 1 },
-  ]);
-
+  const carro = useCart();
+  console.log('carrito perro', carro)
+  const { cartItems, addToCart, removeFromCart } = useCart(); 
   const [confirmando, setConfirmando] = useState(false);
   const [orderId, setOrderId] = useState(null);
 
-  const aumentar = (id) => {
-    setProductos((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, cantidad: item.cantidad + 1 } : item
-      )
-    );
+  // Funciones para aumentar y disminuir cantidad
+  const aumentar = (id_producto) => {
+    const producto = cartItems.find(p => p.id_producto === id_producto);
+    if (producto) addToCart({ ...producto, count: 1 });
   };
 
-  const disminuir = (id) => {
-    setProductos((prev) =>
-      prev.map((item) =>
-        item.id === id && item.cantidad > 1
-          ? { ...item, cantidad: item.cantidad - 1 }
-          : item
-      )
-    );
+  const disminuir = (id_producto) => {
+    const producto = cartItems.find(p => p.id_producto === id_producto);
+    if (producto && producto.count > 1) {
+      // Se resta 1 usando addToCart con count negativo
+      addToCart({ ...producto, count: -1 });
+    } else if (producto && producto.count === 1) {
+      removeFromCart(id_producto);
+    }
   };
+  console.log("🛒 Carrito actual:", cartItems);
 
-  const total = productos.reduce(
-    (acc, item) => acc + item.precio * item.cantidad,
+ const total = cartItems.reduce(
+    (acc, item) => acc + parseFloat(item.price.replace("Q", "")) * item.count,
     0
   );
 
@@ -69,24 +68,20 @@ export default function Carrito() {
           <Text style={styles.title}>Carrito</Text>
 
           <ScrollView style={{ flex: 1 }}>
-            {productos.map((item) => (
-              <View key={item.id} style={styles.productContainer}>
-                <Text style={styles.productName}>{item.nombre}</Text>
+            {cartItems.map((item) => (
+              <View key={item.id_producto} style={styles.productContainer}>
+                <Text style={styles.productName}>{item.name}</Text>
                 <View style={styles.quantityContainer}>
-                  <TouchableOpacity onPress={() => disminuir(item.id)}>
-                    <Ionicons
-                      name="remove-circle-outline"
-                      size={28}
-                      color="#B89A59"
-                    />
+                  <TouchableOpacity onPress={() => disminuir(item.id_producto)}>
+                    <Ionicons name="remove-circle-outline" size={28} color="#B89A59" />
                   </TouchableOpacity>
-                  <Text style={styles.quantityText}>{item.cantidad}</Text>
-                  <TouchableOpacity onPress={() => aumentar(item.id)}>
+                  <Text style={styles.quantityText}>{item.count}</Text>
+                  <TouchableOpacity onPress={() => aumentar(item.id_producto)}>
                     <Ionicons name="add-circle-outline" size={28} color="#B89A59" />
                   </TouchableOpacity>
                 </View>
                 <Text style={styles.productPrice}>
-                  Q{(item.precio * item.cantidad).toFixed(2)}
+  Q{(parseFloat(item.price.replace("Q", "").trim()) * item.count).toFixed(2)}
                 </Text>
               </View>
             ))}

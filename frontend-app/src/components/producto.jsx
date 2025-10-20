@@ -6,13 +6,23 @@ import {
   TextInput,
   Alert,
 } from "react-native";
+import { useCart } from "../../services/cartContext";
+
+
 // import styles from "./styles/homeStyle";
 
 import { Ionicons } from "@expo/vector-icons";
 import Styles from "../styles/productoStyle";
 import { useState } from "react";
+import { push } from "expo-router/build/global-state/routing";
+import { useRouter } from "expo-router";
+import { useSearchParams } from "expo-router";
 
-export default function Producto({name,price,imagen,descripcion}) {
+export default function Producto({name,price,imagen,descripcion,id_producto}) {
+  const router = useRouter(); 
+  const { addToCart } = useCart();
+
+
   const [count, setCount] = useState(0);
 
   const incrementCount = () => {
@@ -27,6 +37,15 @@ export default function Producto({name,price,imagen,descripcion}) {
 
   const showAlert = () =>
     Alert.alert("Info", "Tu producto se ha agregado al carrito");
+
+const handleAdd = () => {
+  if (count > 0) {
+    addToCart({ id_producto, name, price, count });
+    Alert.alert("Info", "Producto agregado al carrito");
+  } else {
+    Alert.alert("Info", "Debes agregar al menos 1 producto");
+  }
+};
 
   return (
     <View style={Styles.container}>
@@ -53,7 +72,7 @@ export default function Producto({name,price,imagen,descripcion}) {
         <TouchableOpacity style={Styles.element} onPress={incrementCount}>
           <Ionicons name="add-circle-outline" size={48} />
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.button} onPress={showAlert}>
+        <TouchableOpacity style={Styles.button} onPress={handleAdd}>
           <Text style={Styles.addText}>Agregar</Text>
         </TouchableOpacity>
       </View>

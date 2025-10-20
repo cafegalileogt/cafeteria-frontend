@@ -7,7 +7,7 @@ import Producto from "../../components/producto";
 export default function vistaProducto({item}) {
  const router = useRouter();
   const params = useLocalSearchParams();
-  const { name, price, imagen, descripcion } = params;
+  const { name, price, imagen, descripcion,id_producto } = params;
 
   const backPage = () => {
     router.push("/user/home");
@@ -38,6 +38,7 @@ export default function vistaProducto({item}) {
         price={price}
         imagen={imagen}
         descripcion={descripcion}
+        id_producto={id_producto}
       />
     </View>
   );

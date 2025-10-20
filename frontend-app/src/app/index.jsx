@@ -16,7 +16,6 @@ export default function App() {
   }, []);
 
   return (
-    // Agregar pantalla de espera
     <View></View>
   );
 }

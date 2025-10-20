@@ -1,5 +1,5 @@
 const BASE_URL = "http://localhost:3000";
-  import { getToken } from "./storage";
+  import { getToken, setToken} from "./storage";
 
 export async function registerUser(name, email, password) {
   let response = await fetch(`${BASE_URL}/api/v1/users/register-student`, {
@@ -38,7 +38,7 @@ export async function loginUser(email, password) {
   }
 
 if (response.ok && data.token) {
-  await getToken(data.token);
+  await setToken(data.token);
 }
   console.log("Data de login", data);
   return data;
@@ -89,6 +89,7 @@ export async function logout(){
 
 export async function getCategoryNames() {
   const token = await getToken(); 
+  console.log('token1: ', token)
   let response = await fetch(`${BASE_URL}/api/v1/products/getCategories`, {
     method: "GET", 
     credentials:"include",

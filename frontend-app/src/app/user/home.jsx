@@ -30,6 +30,7 @@ useEffect(() => {
  useEffect(() => {
   async function fetchMenu() {
     try {
+      
       const newMenu = await getMenu();
 
       const groupedMenu = newMenu.data.reduce((acc, item) => {
@@ -47,6 +48,7 @@ useEffect(() => {
           price: `Q${item.precio}`,
           descripcion: item.descripcion,
           imagen: item.imagen_producto,
+          id_producto: item.id_producto,
         });
 
         return acc;
@@ -71,7 +73,8 @@ const viewProduct = (item) => {
     `name=${encodeURIComponent(item.name)}` +
     `&price=${encodeURIComponent(item.price)}` +
     `&imagen=${encodeURIComponent(item.imagen)}` +
-    `&descripcion=${encodeURIComponent(item.descripcion)}`
+    `&descripcion=${encodeURIComponent(item.descripcion)}`+
+    `&id_producto=${encodeURIComponent(item.id_producto)}`
   );
 };
   return (
