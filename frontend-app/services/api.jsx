@@ -34,14 +34,14 @@ export async function loginUser(email, password) {
   let data = {}; 
   try {
     data = await response.json();
+    
   } catch (err) {
     console.warn("No se pudo parsear JSON:", err);
   }
-
   console.log("Data de login", data);
-
   return data;
 }
+
 
 export async function recoveryPassword(email){
     let response = await fetch(`${BASE_URL}/api/v1/auth/forgot-password`, {
@@ -88,6 +88,7 @@ export async function logout(){
 export async function getCategoryNames() {
   let response = await fetch(`${BASE_URL}/api/v1/products/getCategories`, {
     method: "GET", 
+    credentials:"include",
     headers: {
       "Content-Type": "application/json",
     },
@@ -110,13 +111,11 @@ export async function getCategoryNames() {
 export async function getMenu() {
   let response = await fetch(`${BASE_URL}/api/v1/products/productos_categorias`, {
     method: "GET",
+    credentials:"include",
     headers: {
       "Content-Type": "application/json",
     },
   });
-
-
-
   let data = {};
   try {
     const json = await response.json();
