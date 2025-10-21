@@ -7,12 +7,9 @@ if (Platform.OS !== "web") {
 }
 
 export async function getToken() {
-  console.log("dentro de la funcion gettoken")
   if (Platform.OS === "web") {
-    console.log("1")
     return localStorage.getItem("token");
   } else {
-    console.log("2")
     return await AsyncStorage.getItem("token");
   }
 }

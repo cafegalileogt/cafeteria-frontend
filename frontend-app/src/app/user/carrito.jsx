@@ -4,9 +4,10 @@ import { Ionicons } from "@expo/vector-icons";
 import styles from "../../styles/carritoStyle";
 import { useCart } from "../../../services/cartContext";
 import { createOrder } from "../../../services/api";
-
+import { useRouter } from "expo-router";
 export default function Carrito() {
-  const { cartItems, addToCart, removeFromCart } = useCart();
+  const router = useRouter();
+  const { clearCart, cartItems, addToCart, removeFromCart } = useCart();
 
   const [confirmando, setConfirmando] = useState(false);
   const [orderId, setOrderId] = useState(null);
@@ -22,6 +23,7 @@ export default function Carrito() {
       if (producto.count > 1) {
         addToCart({ ...producto, count: -1 });
       } else {
+        
         removeFromCart(id_producto); 
       }
     }
@@ -62,8 +64,11 @@ export default function Carrito() {
   };
 
   const volverCarrito = () => {
+    
     setConfirmando(false);
     setOrderId(null);
+    clearCart();
+    router.push("/user/home");
   };
 
   return (

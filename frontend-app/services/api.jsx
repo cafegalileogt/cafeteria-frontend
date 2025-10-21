@@ -35,7 +35,6 @@ export async function loginUser(email, password) {
   if (response.ok && data.token) {
     await setToken(data.token);
   }
-
   return data;
 }
 
