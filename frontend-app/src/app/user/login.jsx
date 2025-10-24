@@ -152,7 +152,7 @@ export default function Login() {
               </TouchableOpacity>
 
               {/* Enlace a recuperación */}
-              <TouchableOpacity onPress={() => router.push("/screens/passRec")}>
+              <TouchableOpacity onPress={() => router.push("/passRec")}>
                 <Text style={styles.forgotText}>¿Olvidaste tu contraseña?</Text>
               </TouchableOpacity>
             </>

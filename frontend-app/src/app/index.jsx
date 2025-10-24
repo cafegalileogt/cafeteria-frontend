@@ -9,14 +9,13 @@ export default function App() {
     setTimeout(() => {
       if (Platform.OS === "web") {
         return router.replace("/admin/login");
-      } else if (Platform.OS === "android") {
+      } else if (Platform.OS === "android"|| Platform.OS === "ios") {
         return router.replace("/user/login");
       }
     }, 100);
   }, []);
 
   return (
-    // Agregar pantalla de espera
     <View></View>
   );
 }
