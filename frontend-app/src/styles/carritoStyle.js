@@ -151,7 +151,16 @@ export default StyleSheet.create({
     marginTop: 30,
     paddingHorizontal: 20,
   },
+  productContainer: {
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "space-between",
+  paddingHorizontal: 15,
+  marginVertical: 10,
+  borderBottomWidth: 0.5,
+  borderColor: "#ddd",
+  paddingBottom: 8,
+},
 });
-
 
 
