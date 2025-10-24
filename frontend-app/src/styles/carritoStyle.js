@@ -45,7 +45,7 @@ export default StyleSheet.create({
   productContainer: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
     paddingHorizontal: 20,
     marginVertical: 10,
   },
