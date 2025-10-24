@@ -5,24 +5,9 @@ import styles from "../../styles/carritoStyle";
 import { useCart } from "../../../services/cartContext";
 import { createOrder } from "../../../services/api";
 import { useRouter } from "expo-router";
-<<<<<<< Updated upstream
-import * as SplashScreen from "expo-splash-screen";
-import {
-  Nunito_500Medium,
-  Nunito_900Black,
-  Inter_400Regular,
-  useFonts,
-} from "@expo-google-fonts/nunito";
-
-=======
 import Header from "../../components/header";
->>>>>>> Stashed changes
+
 export default function Carrito() {
-  const [loaded, error] = useFonts({
-    Nunito_500Medium,
-    Nunito_900Black,
-    Inter_400Regular,
-  });
 
   const router = useRouter();
   const { clearCart, cartItems, addToCart, removeFromCart } = useCart();
@@ -89,16 +74,6 @@ export default function Carrito() {
     clearCart();
     router.push("/user/home");
   };
-
-  useEffect(() => {
-    if (loaded || error) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded, error]);
-
-  if (!loaded && !error) {
-    return null;
-  }
 
   return (
     <View style={styles.container}>

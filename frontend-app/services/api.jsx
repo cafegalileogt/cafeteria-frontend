@@ -116,7 +116,6 @@ export async function getMenu() {
   return { status: response.status, data };
 }
 
-//  Crear orden
 export async function createOrder(cartItems, totalAmount,orderId) {
   const token = await getToken();
 
@@ -163,4 +162,13 @@ export async function createOrder(cartItems, totalAmount,orderId) {
     console.error(" Error en la petición createOrder:", error);
     return { status: 500, data: {} };
   }
+}
+
+export async function getOrderHistoryByUser(){
+  const order123 = { numero_orden:123, articulos:3, total:70, fecha: "10/10/2025", estado:"Pendiente Pago" };
+  const order124 = { numero_orden:1234, articulos:2, total:170, fecha: "12/10/2025", estado:"Completada" }
+    const order125 = { numero_orden:125, articulos:2, total:1370, fecha: "12/08/2025", estado:"Completada" }
+
+  const result = [order123, order124,order125];
+  return result;
 }

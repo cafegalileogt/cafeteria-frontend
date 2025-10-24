@@ -6,7 +6,6 @@ export default function Header({ name, price, imagen, descripcion, id_producto }
   const {user} = useUser();
 return(
     <View style={styles.headerContainer}>
-        {/* Header */}
             <Image
             source={require("../../assets/Galileo Fondo-Comida.png")}
             style={styles.headerImage}

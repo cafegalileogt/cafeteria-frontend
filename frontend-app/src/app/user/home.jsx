@@ -2,23 +2,15 @@ import React, { useState, useEffect } from "react";
 import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
 import styles from "../../styles/homeStyle";
 import { useRouter } from "expo-router";
-<<<<<<< Updated upstream
-import { getMenu, getCategoryNames } from "../../../services/api";
-import * as SplashScreen from "expo-splash-screen";
-import { Nunito_500Medium, useFonts } from "@expo-google-fonts/nunito";
-=======
 import { getMenu,getCategoryNames } from "../../../services/api";
 import Header from "../../components/header";
->>>>>>> Stashed changes
 
 export default function HomeScreen() {
   const [activeCategory, setActiveCategory] = useState("Desayunos");
   const [menu, setMenu] = useState({});
   const [categories, setCategories] = useState([]);
 
-  const [loaded, error] = useFonts({
-    Nunito_500Medium,
-  });
+
 
   useEffect(() => {
     async function fetchCategories() {
@@ -86,16 +78,6 @@ export default function HomeScreen() {
         `&id_producto=${encodeURIComponent(item.id_producto)}`
     );
   };
-
-  useEffect(() => {
-    if (loaded || error) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded, error]);
-
-  if (!loaded && !error) {
-    return null;
-  }
 
   return (
     <View style={styles.container}>
