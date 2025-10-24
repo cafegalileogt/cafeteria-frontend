@@ -2,81 +2,96 @@ import React, { useState, useEffect } from "react";
 import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
 import styles from "../../styles/homeStyle";
 import { useRouter } from "expo-router";
-import { getMenu,getCategoryNames } from "../../../services/api";
+import { getMenu, getCategoryNames } from "../../../services/api";
+import * as SplashScreen from "expo-splash-screen";
+import { Nunito_500Medium, useFonts } from "@expo-google-fonts/nunito";
 
 export default function HomeScreen() {
   const [activeCategory, setActiveCategory] = useState("Desayunos");
   const [menu, setMenu] = useState({});
   const [categories, setCategories] = useState([]);
 
-useEffect(() => {
-  async function fetchCategories() {
-    try {
-      const response = await getCategoryNames();
+  const [loaded, error] = useFonts({
+    Nunito_500Medium,
+  });
 
-      if (response.status === 200 || response.ok) {
-        setCategories(response.data.result);
-      } else {
-        console.error("Error al obtener categorías:", response);
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const response = await getCategoryNames();
+
+        if (response.status === 200 || response.ok) {
+          setCategories(response.data.result);
+        } else {
+          console.error("Error al obtener categorías:", response);
+        }
+      } catch (error) {
+        console.error("Error al traer categorías:", error);
       }
-    } catch (error) {
-      console.error("Error al traer categorías:", error);
     }
-  }
 
-  fetchCategories();
-}, []);
+    fetchCategories();
+  }, []);
 
- useEffect(() => {
-  async function fetchMenu() {
-    try {
-      
-      const newMenu = await getMenu();
+  useEffect(() => {
+    async function fetchMenu() {
+      try {
+        const newMenu = await getMenu();
 
-      const groupedMenu = newMenu.data.reduce((acc, item) => {
-        const categoryObj = categories.find(
-          (cat) => cat.id_categoria === item.id_categoria
-        );
-        const categoryName = categoryObj
-          ? categoryObj.nombre
-          : `Categoría ${item.id_categoria}`;
+        const groupedMenu = newMenu.data.reduce((acc, item) => {
+          const categoryObj = categories.find(
+            (cat) => cat.id_categoria === item.id_categoria
+          );
+          const categoryName = categoryObj
+            ? categoryObj.nombre
+            : `Categoría ${item.id_categoria}`;
 
-        if (!acc[categoryName]) acc[categoryName] = [];
+          if (!acc[categoryName]) acc[categoryName] = [];
 
-        acc[categoryName].push({
-          name: item.nombre,
-          price: `Q${item.precio}`,
-          descripcion: item.descripcion,
-          imagen: item.imagen_producto,
-          id_producto: item.id_producto,
-        });
+          acc[categoryName].push({
+            name: item.nombre,
+            price: `Q${item.precio}`,
+            descripcion: item.descripcion,
+            imagen: item.imagen_producto,
+            id_producto: item.id_producto,
+          });
 
-        return acc;
-      }, {});
-      setMenu(groupedMenu);
-    } catch (error) {
-      console.error("Error al obtener menú:", error);
+          return acc;
+        }, {});
+        setMenu(groupedMenu);
+      } catch (error) {
+        console.error("Error al obtener menú:", error);
+      }
     }
-  }
 
-  if (categories.length > 0) {
-    fetchMenu();
-  }
-}, [categories]);
+    if (categories.length > 0) {
+      fetchMenu();
+    }
+  }, [categories]);
 
-const currentMenu = menu || {};
+  const currentMenu = menu || {};
   const router = useRouter();
-const viewProduct = (item) => {
-
+  const viewProduct = (item) => {
     router.push(
-    `/user/vistaProducto?` +
-    `name=${encodeURIComponent(item.name)}` +
-    `&price=${encodeURIComponent(item.price)}` +
-    `&imagen=${encodeURIComponent(item.imagen)}` +
-    `&descripcion=${encodeURIComponent(item.descripcion)}`+
-    `&id_producto=${encodeURIComponent(item.id_producto)}`
-  );
-};
+      `/user/vistaProducto?` +
+        `name=${encodeURIComponent(item.name)}` +
+        `&price=${encodeURIComponent(item.price)}` +
+        `&imagen=${encodeURIComponent(item.imagen)}` +
+        `&descripcion=${encodeURIComponent(item.descripcion)}` +
+        `&id_producto=${encodeURIComponent(item.id_producto)}`
+    );
+  };
+
+  useEffect(() => {
+    if (loaded || error) {
+      SplashScreen.hideAsync();
+    }
+  }, [loaded, error]);
+
+  if (!loaded && !error) {
+    return null;
+  }
+
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -114,7 +129,7 @@ const viewProduct = (item) => {
                   style={styles.iconPlaceholder}
                 />
               )}
-              
+
               <Text
                 style={[
                   styles.categoryText,
@@ -135,17 +150,17 @@ const viewProduct = (item) => {
             contentContainerStyle={styles.menuGrid}
           >
             {currentMenu[activeCategory]?.map((item, index) => (
-            <View key={index} style={styles.card}>
-               <TouchableOpacity onPress={() => viewProduct(item)}>
-                <Image
-                  source={{ uri: item.imagen }}
-                  style={styles.placeholderImage}
-                />
-              </TouchableOpacity>
+              <View key={index} style={styles.card}>
+                <TouchableOpacity onPress={() => viewProduct(item)}>
+                  <Image
+                    source={{ uri: item.imagen }}
+                    style={styles.placeholderImage}
+                  />
+                </TouchableOpacity>
                 <Text style={styles.foodName}>{item.name}</Text>
-              <Text style={styles.foodPrice}>{item.price}</Text>
-            </View>
-          ))}
+                <Text style={styles.foodPrice}>{item.price}</Text>
+              </View>
+            ))}
           </ScrollView>
         </View>
       </View>

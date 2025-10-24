@@ -1,11 +1,25 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import styles from "../../styles/carritoStyle";
 import { useCart } from "../../../services/cartContext";
 import { createOrder } from "../../../services/api";
 import { useRouter } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
+import {
+  Nunito_500Medium,
+  Nunito_900Black,
+  Inter_400Regular,
+  useFonts,
+} from "@expo-google-fonts/nunito";
+
 export default function Carrito() {
+  const [loaded, error] = useFonts({
+    Nunito_500Medium,
+    Nunito_900Black,
+    Inter_400Regular,
+  });
+
   const router = useRouter();
   const { clearCart, cartItems, addToCart, removeFromCart } = useCart();
 
@@ -23,18 +37,17 @@ export default function Carrito() {
       if (producto.count > 1) {
         addToCart({ ...producto, count: -1 });
       } else {
-        
-        removeFromCart(id_producto); 
+        removeFromCart(id_producto);
       }
     }
   };
 
   const total = cartItems.reduce(
-    (acc, item) => acc + parseFloat(item.price.replace("Q", "").trim()) * item.count,
+    (acc, item) =>
+      acc + parseFloat(item.price.replace("Q", "").trim()) * item.count,
     0
   );
 
-  
   const confirmarOrden = async () => {
     if (cartItems.length === 0) {
       console.warn("El carrito está vacío");
@@ -42,15 +55,18 @@ export default function Carrito() {
     }
 
     try {
-      const numeroOrden =  Math.floor(10000 + Math.random() * 90000);
+      const numeroOrden = Math.floor(10000 + Math.random() * 90000);
       const productosFormateados = cartItems.map((item) => ({
         id: item.id_producto,
         cantidad: item.count,
         precio_unitario: parseFloat(item.price.replace("Q", "").trim()),
       }));
 
-      const response = await createOrder(productosFormateados, total,numeroOrden);
-      
+      const response = await createOrder(
+        productosFormateados,
+        total,
+        numeroOrden
+      );
 
       if (response.status === 200 || response.status === 201) {
         setOrderId(numeroOrden);
@@ -64,12 +80,21 @@ export default function Carrito() {
   };
 
   const volverCarrito = () => {
-    
     setConfirmando(false);
     setOrderId(null);
     clearCart();
     router.push("/user/home");
   };
+
+  useEffect(() => {
+    if (loaded || error) {
+      SplashScreen.hideAsync();
+    }
+  }, [loaded, error]);
+
+  if (!loaded && !error) {
+    return null;
+  }
 
   return (
     <View style={styles.container}>
@@ -100,18 +125,29 @@ export default function Carrito() {
 
                 <View style={styles.quantityContainer}>
                   <TouchableOpacity onPress={() => disminuir(item.id_producto)}>
-                    <Ionicons name="remove-circle-outline" size={28} color="#B89A59" />
+                    <Ionicons
+                      name="remove-circle-outline"
+                      size={28}
+                      color="#B89A59"
+                    />
                   </TouchableOpacity>
 
                   <Text style={styles.quantityText}>{item.count}</Text>
 
                   <TouchableOpacity onPress={() => aumentar(item.id_producto)}>
-                    <Ionicons name="add-circle-outline" size={28} color="#B89A59" />
+                    <Ionicons
+                      name="add-circle-outline"
+                      size={28}
+                      color="#B89A59"
+                    />
                   </TouchableOpacity>
                 </View>
 
                 <Text style={styles.productPrice}>
-                  Q{(parseFloat(item.price.replace("Q", "").trim()) * item.count).toFixed(2)}
+                  Q
+                  {(
+                    parseFloat(item.price.replace("Q", "").trim()) * item.count
+                  ).toFixed(2)}
                 </Text>
               </View>
             ))}
@@ -122,12 +158,14 @@ export default function Carrito() {
             <Text style={styles.totalAmount}>Q{total.toFixed(2)}</Text>
           </View>
 
-          <TouchableOpacity style={styles.confirmButton} onPress={confirmarOrden}>
+          <TouchableOpacity
+            style={styles.confirmButton}
+            onPress={confirmarOrden}
+          >
             <Text style={styles.confirmText}>Confirmar</Text>
           </TouchableOpacity>
         </>
       ) : (
-      
         <View style={styles.confirmacionContainer}>
           <Text style={styles.confirmTitle}>¡Ya casi está listo!</Text>
 
@@ -135,7 +173,10 @@ export default function Carrito() {
             <Text style={styles.orderText}>No. de Orden</Text>
             <Text style={styles.orderNumber}>{orderId}</Text>
 
-            <TouchableOpacity style={styles.confirmButton} onPress={volverCarrito}>
+            <TouchableOpacity
+              style={styles.confirmButton}
+              onPress={volverCarrito}
+            >
               <Text style={styles.confirmText}>Aceptar</Text>
             </TouchableOpacity>
           </View>

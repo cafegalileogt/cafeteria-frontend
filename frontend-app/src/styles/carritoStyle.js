@@ -24,7 +24,7 @@ export default StyleSheet.create({
     position: "absolute",
     left: 20,
     fontSize: 22,
-    fontFamily: "Nunito",
+    fontFamily: "Nunito_500Medium",
     color: "#000",
   },
   logo: {
@@ -36,7 +36,7 @@ export default StyleSheet.create({
   },
   title: {
     fontSize: 34,
-    fontFamily: "Playfair Display",
+    fontFamily: "Nunito_900Black",
     fontWeight: "900",
     color: "#B89A59",
     textAlign: "center",
@@ -52,13 +52,13 @@ export default StyleSheet.create({
   productName: {
     flex: 1,
     fontSize: 18,
-    fontFamily: "Inter",
+    fontFamily: "Inter_400Regular",
     color: "#000",
   },
   productPrice: {
     fontSize: 16,
     color: "#B89A59",
-    fontFamily: "Inter",
+    fontFamily: "Inter_400Regular",
   },
   quantityContainer: {
     flexDirection: "row",
@@ -105,7 +105,7 @@ export default StyleSheet.create({
     color: "#fff",
     fontSize: 20,
     textAlign: "center",
-    fontFamily: "Nunito",
+    fontFamily: "Inter_400Regular",
   },
 
   // Estilos para confirmación
@@ -116,7 +116,7 @@ export default StyleSheet.create({
   },
   confirmTitle: {
     fontSize: 34,
-    fontFamily: "Playfair Display",
+    fontFamily: "Nunito_900Black",
     fontWeight: "900",
     color: "#B89A59",
     textAlign: "center",
@@ -138,6 +138,7 @@ export default StyleSheet.create({
     fontSize: 20,
     textAlign: "center",
     marginBottom: 10,
+    fontFamily: "Inter_400Regular",
   },
   orderNumber: {
     fontSize: 32,
@@ -152,6 +153,3 @@ export default StyleSheet.create({
     paddingHorizontal: 20,
   },
 });
-
-
-

@@ -24,7 +24,7 @@ export default StyleSheet.create({
     position: "absolute",
     left: 20,
     fontSize: width < 500 ? 24 : 26,
-    fontFamily: "Nunito",
+    fontFamily: "Nunito_500Medium",
     color: "#000",
   },
   logo: {
