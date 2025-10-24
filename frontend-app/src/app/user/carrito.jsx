@@ -5,6 +5,7 @@ import styles from "../../styles/carritoStyle";
 import { useCart } from "../../../services/cartContext";
 import { createOrder } from "../../../services/api";
 import { useRouter } from "expo-router";
+<<<<<<< Updated upstream
 import * as SplashScreen from "expo-splash-screen";
 import {
   Nunito_500Medium,
@@ -13,6 +14,9 @@ import {
   useFonts,
 } from "@expo-google-fonts/nunito";
 
+=======
+import Header from "../../components/header";
+>>>>>>> Stashed changes
 export default function Carrito() {
   const [loaded, error] = useFonts({
     Nunito_500Medium,
@@ -99,20 +103,7 @@ export default function Carrito() {
   return (
     <View style={styles.container}>
       {}
-      <View style={styles.headerContainer}>
-        <Image
-          source={require("../../../assets/Galileo Fondo-Comida.png")}
-          style={styles.headerImage}
-          resizeMode="cover"
-        />
-        <View style={styles.overlay} />
-        <Text style={styles.welcome}>Bienvenido Usuario</Text>
-        <Image
-          source={require("../../../assets/Galileo Cafe-Negro.png")}
-          style={styles.logo}
-          resizeMode="contain"
-        />
-      </View>
+      <Header></Header>
 
       {!confirmando ? (
         <>

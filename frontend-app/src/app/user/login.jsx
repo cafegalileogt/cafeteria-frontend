@@ -10,10 +10,11 @@ import { useState } from "react";
 import styles from "../../styles/userLoginStyle";
 import { useRouter } from "expo-router";
 import { loginUser, registerUser } from "../../../services/api";
+import { useUser } from "../../../services/userContext";
 
 export default function Login() {
   const router = useRouter();
-
+  const { setUser } = useUser();
   const handleLogin = async () => {
     if (!email || !password) {
       Alert.alert("Error", "Debes llenar todos los campos.");
@@ -25,11 +26,18 @@ export default function Login() {
       return;
     }
     const dataLogin = await loginUser(email, password);
+    
     if (!dataLogin.token) {
       Alert.alert(dataLogin.message);
       return;
     }
+    const result = dataLogin.result[0]
+    const nombreCompleto = result.nombre;
+    const primerNombre = nombreCompleto.split(" ")[0];
+    const userId = result.id_usuario;
+    const correo = result.correo_institucional;
 
+  setUser({ ...dataLogin, nombre: primerNombre, userId, nombreCompleto,correo });
     router.push("/user/home");
   };
 
@@ -50,7 +58,7 @@ export default function Login() {
     }
 
     const data = await registerUser(name, email, password);
-    console.log("data", data);
+
 
     if (data.status !== 201) {
       Alert.alert("Error", data?.data?.message || "Error en el registro");

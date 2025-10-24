@@ -2,9 +2,14 @@ import React, { useState, useEffect } from "react";
 import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
 import styles from "../../styles/homeStyle";
 import { useRouter } from "expo-router";
+<<<<<<< Updated upstream
 import { getMenu, getCategoryNames } from "../../../services/api";
 import * as SplashScreen from "expo-splash-screen";
 import { Nunito_500Medium, useFonts } from "@expo-google-fonts/nunito";
+=======
+import { getMenu,getCategoryNames } from "../../../services/api";
+import Header from "../../components/header";
+>>>>>>> Stashed changes
 
 export default function HomeScreen() {
   const [activeCategory, setActiveCategory] = useState("Desayunos");
@@ -94,21 +99,7 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.headerContainer}>
-        <Image
-          source={require("../../../assets/Galileo Fondo-Comida.png")}
-          style={styles.headerImage}
-          resizeMode="cover"
-        />
-        <View style={styles.overlay} />
-        <Text style={styles.welcome}>Bienvenido Usuario</Text>
-        <Image
-          source={require("../../../assets/Galileo Cafe-Negro.png")}
-          style={styles.logo}
-          resizeMode="contain"
-        />
-      </View>
+      <Header></Header>
 
       {/* Contenido principal */}
       <View style={styles.mainSection}>

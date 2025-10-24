@@ -1,10 +1,13 @@
 import { Slot } from "expo-router";
 import { CartProvider } from "../../services/cartContext"; 
+import { UserProvider } from "../../services/userContext"
 
 export default function RootLayout() {
   return (
-    <CartProvider>
-      <Slot />
-    </CartProvider>
+    <UserProvider>
+      <CartProvider>
+        <Slot />
+      </CartProvider>
+    </UserProvider>
   );
 }
