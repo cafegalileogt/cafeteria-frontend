@@ -3,7 +3,7 @@ import { Text, View } from "react-native";
 export default function Home() {
   return (
     <View>
-      <Text>Home Admin</Text>
+      <Text>Bienvenido a gestionar horario</Text>
     </View>
   );
 }
