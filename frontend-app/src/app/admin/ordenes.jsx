@@ -1,4 +1,10 @@
-import { FlatList, ScrollView, Text, View } from "react-native";
+import {
+  FlatList,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Styles from "../../styles/ordenesStyle";
 import {
   Nunito_900Black,
@@ -7,6 +13,7 @@ import {
 } from "@expo-google-fonts/nunito";
 import { SplashScreen } from "expo-router";
 import { useEffect, useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function Home() {
   const [data, setData] = useState([
@@ -42,12 +49,19 @@ export default function Home() {
     );
   };
 
+  const ordenarEstado = () => {};
+
   return (
     <View style={Styles.background}>
       <View style={Styles.page}>
         <Text style={Styles.title}>Órdenes</Text>
         <View style={Styles.separator} />
         <View style={Styles.container}>
+          <View style={Styles.toggle}>
+            <TouchableOpacity onPress={ordenarEstado}>
+              <Ionicons name="swap-vertical" size={42} />
+            </TouchableOpacity>
+          </View>
           <ScrollView>
             <View style={Styles.tabla}>
               <View style={Styles.header}>
