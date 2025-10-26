@@ -2,7 +2,6 @@ import {
   FlatList,
   ScrollView,
   Text,
-  TouchableNativeFeedbackComponent,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -15,9 +14,11 @@ import {
 import { SplashScreen } from "expo-router";
 import { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
+import { Dropdown } from "react-native-element-dropdown";
+import { Searchbar } from "react-native-paper";
 
 export default function Home() {
-  const [data, setData] = useState([
+  const product_data = [
     {
       nombre: "Torito",
       categoria: "Almuerzos",
@@ -48,24 +49,14 @@ export default function Home() {
       precio: "Q15",
       descripcion: "Galleta con chispas de chocolate",
     },
-  ]);
+  ];
 
   const [loaded, error] = useFonts({
     Nunito_900Black,
     Nunito_400Regular,
   });
 
-  useEffect(() => {
-    if (loaded || error) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded, error]);
-
-  if (!loaded && !error) {
-    return null;
-  }
-
-  const renderItem = ({ item, index }) => {
+  const renderItem = ({ item }) => {
     return (
       <View style={Styles.row}>
         <Text style={[Styles.cell, { width: "20%" }]}>{item.nombre}</Text>
@@ -84,16 +75,95 @@ export default function Home() {
     );
   };
 
-  const ordenarEstado = () => {};
+  const addProducto = () => {};
+
+  const addCategoria = () => {};
+
+  const category_data = [
+    { categoria: "Desayunos", value: "1" },
+    { categoria: "Almuerzos", value: "2" },
+    { categoria: "Postres", value: "3" },
+    { categoria: "Bebidas", value: "4" },
+  ];
+
+  const [value, setValue] = useState(null);
+  const [searchQuery, setSearchQuery] = useState(null);
+  const [activeTab, setActiveTab] = useState("menu");
+
+  useEffect(() => {
+    if (loaded || error) {
+      SplashScreen.hideAsync();
+    }
+  }, [loaded, error]);
+
+  if (!loaded && !error) {
+    return null;
+  }
 
   return (
     <View style={Styles.background}>
       <View style={Styles.page}>
-        <Text style={Styles.title}>Gestionar Menú</Text>
+        <View style={Styles.titleBar}>
+          <Text style={Styles.title}>Gestionar Menú</Text>
+          <View style={Styles.switchButtons}>
+            <TouchableOpacity
+              style={
+                activeTab === "menu" ? Styles.activeTab : Styles.inactiveTab
+              }
+              onPress={() => setActiveTab("menu")}
+            >
+              <Text
+                style={
+                  activeTab === "menu" ? Styles.activeText : Styles.inactiveText
+                }
+              >
+                Menú
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={
+                activeTab === "categoria"
+                  ? Styles.activeTab
+                  : Styles.inactiveTab
+              }
+              onPress={() => setActiveTab("categoria")}
+            >
+              <Text
+                style={
+                  activeTab === "categoria"
+                    ? Styles.activeText
+                    : Styles.inactiveText
+                }
+              >
+                Categoría
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
         <View style={Styles.separator} />
         <View style={Styles.container}>
           <View style={Styles.bar}>
-            <Text>Hello</Text>
+            <Dropdown
+              style={Styles.dropdown}
+              data={category_data}
+              maxHeight={300}
+              labelField="categoria"
+              valueField="value"
+              placeholder="Categoría"
+              value={value}
+              onChange={(item) => {
+                setValue(item.value);
+              }}
+              renderLeftIcon={() => null}
+            />
+            <Searchbar
+              style={Styles.searchbar}
+              placeholder="Buscar"
+              inputType="text"
+              onChangeText={setSearchQuery}
+              value={searchQuery}
+              inputStyle={{ minHeight: 0 }}
+            />
           </View>
           <ScrollView>
             <View style={Styles.tabla}>
@@ -114,13 +184,17 @@ export default function Home() {
                   Acciones
                 </Text>
               </View>
-              <FlatList
-                data={data}
-                renderItem={renderItem}
-                keyExtractor={(item, index) => index.toString()}
-              />
+              <FlatList data={product_data} renderItem={renderItem} />
             </View>
           </ScrollView>
+          <View style={Styles.bar}>
+            <TouchableOpacity style={Styles.button} onPress={addProducto}>
+              <Text style={Styles.btnText}>Agregar producto</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={Styles.button} onPress={addCategoria}>
+              <Text style={Styles.btnText}>Agregar categoría</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </View>
