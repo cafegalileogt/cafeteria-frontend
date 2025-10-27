@@ -23,6 +23,10 @@ export default StyleSheet.create({
     padding: 20,
     alignSelf: "center",
   },
+  subtitle: {
+    fontFamily: "Nunito_900Black",
+    fontSize: 22,
+  },
   separator: {
     borderBottomColor: "#B89A59",
     borderBottomWidth: StyleSheet.hairlineWidth * 5,
@@ -80,6 +84,7 @@ export default StyleSheet.create({
     justifyContent: "space-evenly",
     width: "100%",
     padding: 10,
+    alignItems: "center",
   },
   dropdown: {
     width: 200,
@@ -91,10 +96,22 @@ export default StyleSheet.create({
   },
   searchbar: {
     width: 500,
-    borderWidth: 1,
-    borderRadius: 5,
-    backgroundColor: "#EEEEEE",
     height: 30,
+    borderRadius: 5,
+    borderWidth: 1,
+    backgroundColor: "#EEEEEE",
+    color: "#000000",
+    paddingHorizontal: 4,
+    margin: 0,
+  },
+  inputContainer: {
+    backgroundColor: "transparent",
+  },
+  searchbarContainer: {
+    backgroundColor: "transparent",
+    borderTopWidth: 0,
+    borderBottomWidth: 0,
+    padding: 0,
   },
   button: {
     width: 260,
@@ -140,5 +157,52 @@ export default StyleSheet.create({
     color: "#888",
     fontSize: 14,
     textAlign: "center",
+  },
+  overlayWindow: {
+    width: 850,
+    height: 600,
+  },
+  saveButton: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    width: "100%",
+    paddingRight: 40,
+  },
+  columns: {
+    height: "80%",
+    width: "85%",
+    flexWrap: "wrap",
+    flexDirection: "column",
+    justifyContent: "space-evenly",
+    margin: 50,
+  },
+  rows: {
+    width: "50%",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+  },
+  input: {
+    width: 200,
+    height: 30,
+    borderRadius: 5,
+    borderWidth: 1,
+    padding: 4,
+    backgroundColor: "#EEEEEE",
+  },
+  square: {
+    width: 300,
+    height: 200,
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 10,
+  },
+  seleccionar: {
+    width: 120,
+    height: 25,
+    borderWidth: 1,
+    borderRadius: 10,
+    textAlign: "center",
+    marginVertical: 10,
   },
 });

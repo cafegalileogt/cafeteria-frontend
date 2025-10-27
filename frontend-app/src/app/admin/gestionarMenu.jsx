@@ -2,8 +2,10 @@ import {
   FlatList,
   ScrollView,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
+  Image,
 } from "react-native";
 import Styles from "../../styles/gestionarMenuStyle";
 import {
@@ -15,7 +17,7 @@ import { SplashScreen } from "expo-router";
 import { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { Dropdown } from "react-native-element-dropdown";
-import { Searchbar } from "react-native-paper";
+import { Overlay, SearchBar } from "react-native-elements";
 
 export default function Home() {
   const product_data = [
@@ -75,10 +77,6 @@ export default function Home() {
     );
   };
 
-  const addProducto = () => {};
-
-  const addCategoria = () => {};
-
   const category_data = [
     { categoria: "Desayunos", value: "1" },
     { categoria: "Almuerzos", value: "2" },
@@ -89,6 +87,32 @@ export default function Home() {
   const [value, setValue] = useState(null);
   const [searchQuery, setSearchQuery] = useState(null);
   const [activeTab, setActiveTab] = useState("menu");
+
+  const [descripcionText, onDescripcionText] = useState("");
+  const [precioText, onPrecioText] = useState("");
+  const [productoText, onProductoText] = useState("");
+
+  const [nombreText, onNombreText] = useState("");
+  const [horarioText, onHorarioText] = useState("");
+
+  const [productVisible, setProductVisible] = useState(false);
+  const [categoryVisible, setCategoryVisible] = useState(false);
+
+  const toggleProductOverlay = () => {
+    setProductVisible(!productVisible);
+  };
+
+  const toggleCategoryOverlay = () => {
+    setCategoryVisible(!categoryVisible);
+  };
+
+  const addProducto = () => {
+    toggleProductOverlay();
+  };
+
+  const addCategoria = () => {
+    toggleCategoryOverlay();
+  };
 
   useEffect(() => {
     if (loaded || error) {
@@ -156,12 +180,14 @@ export default function Home() {
               }}
               renderLeftIcon={() => null}
             />
-            <Searchbar
+            <SearchBar
               style={Styles.searchbar}
               placeholder="Buscar"
-              inputType="text"
+              searchIcon={false}
               onChangeText={setSearchQuery}
               value={searchQuery}
+              inputContainerStyle={Styles.inputContainer}
+              containerStyle={Styles.searchbarContainer}
               inputStyle={{ minHeight: 0 }}
             />
           </View>
@@ -195,6 +221,104 @@ export default function Home() {
               <Text style={Styles.btnText}>Agregar categoría</Text>
             </TouchableOpacity>
           </View>
+          <Overlay
+            isVisible={productVisible}
+            onBackdropPress={toggleProductOverlay}
+          >
+            <View style={Styles.overlayWindow}>
+              <Text style={Styles.title}>Agregar Producto</Text>
+              <View style={Styles.separator} />
+              <View style={Styles.rows}>
+                <View style={Styles.columns}>
+                  <Text style={Styles.subtitle}>Categoría</Text>
+                  <Dropdown
+                    style={Styles.dropdown}
+                    data={category_data}
+                    maxHeight={300}
+                    labelField="categoria"
+                    valueField="value"
+                    placeholder=""
+                    value={value}
+                    onChange={(item) => {
+                      setValue(item.value);
+                    }}
+                    renderLeftIcon={() => null}
+                  />
+                  <Text style={Styles.subtitle}>Descripción</Text>
+                  <TextInput
+                    style={Styles.input}
+                    onChangeText={onDescripcionText}
+                    value={descripcionText}
+                  />
+                  <Text style={Styles.subtitle}>Precio</Text>
+                  <TextInput
+                    style={Styles.input}
+                    onChangeText={onPrecioText}
+                    value={precioText}
+                  />
+                </View>
+                <View style={Styles.columns}>
+                  <Text style={Styles.subtitle}>Producto</Text>
+                  <TextInput
+                    style={Styles.input}
+                    onChangeText={onProductoText}
+                    value={productoText}
+                  />
+                  <View style={Styles.square}>
+                    <Ionicons name="cloud-upload-outline" size={48} />
+                    <Text>Elige un archivo (png, jpg, webp)</Text>
+                    <TouchableOpacity>
+                      <Text style={Styles.seleccionar}>Seleccionar</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+              <View style={Styles.saveButton}>
+                <TouchableOpacity style={Styles.button}>
+                  <Text style={Styles.btnText}>Guardar</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Overlay>
+          <Overlay
+            isVisible={categoryVisible}
+            onBackdropPress={toggleCategoryOverlay}
+          >
+            <View style={Styles.overlayWindow}>
+              <Text style={Styles.title}>Agregar Categoría</Text>
+              <View style={Styles.separator} />
+              <View style={Styles.rows}>
+                <View style={Styles.columns}>
+                  <Text style={Styles.subtitle}>Nombre</Text>
+                  <TextInput
+                    style={Styles.input}
+                    onChangeText={onNombreText}
+                    value={nombreText}
+                  />
+                  <Text style={Styles.subtitle}>Horario</Text>
+                  <TextInput
+                    style={Styles.input}
+                    onChangeText={onHorarioText}
+                    value={horarioText}
+                  />
+                </View>
+                <View style={Styles.columns}>
+                  <View style={Styles.square}>
+                    <Ionicons name="cloud-upload-outline" size={48} />
+                    <Text>Elige un archivo (png, jpg, webp)</Text>
+                    <TouchableOpacity>
+                      <Text style={Styles.seleccionar}>Seleccionar</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+              <View style={Styles.saveButton}>
+                <TouchableOpacity style={Styles.button}>
+                  <Text style={Styles.btnText}>Guardar</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Overlay>
         </View>
       </View>
     </View>
