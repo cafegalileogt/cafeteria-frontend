@@ -13,7 +13,6 @@ export default function AdminHeader() {
 
 
   const logout = () => {
-    console.log('correo: ', correo)
     logOutUser(correo);
     router.push("/admin/login");
   };

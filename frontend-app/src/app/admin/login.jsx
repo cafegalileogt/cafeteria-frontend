@@ -30,7 +30,6 @@ export default function Login() {
       Alert.alert("Error", "Solo se permiten correos de dominio @galileo.edu");
       return;
     }
-    console.log('Prueba login: ', email, password)
     const dataLogin = await loginUser(email, password);
     if (!dataLogin.token) {
       Alert.alert(dataLogin.message);

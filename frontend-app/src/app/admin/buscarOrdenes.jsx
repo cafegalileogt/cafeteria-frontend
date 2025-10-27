@@ -2,8 +2,12 @@ import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, ScrollView, Modal } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import styles from "../../styles/buscarOrdenesStyle";
+import { useAuth } from "../../../services/useAuth";
+ 
+
 
 export default function BuscarOrdenes() {
+
   const [filtro, setFiltro] = useState("numero");
   const [busqueda, setBusqueda] = useState("");
   const [ordenEncontrada, setOrdenEncontrada] = useState(null);

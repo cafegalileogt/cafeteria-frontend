@@ -30,7 +30,7 @@ export default function layout() {
     <Drawer
       screenOptions={{
        drawerStyle: showHeader
-          ? { backgroundColor: "#B89A59", width: 320 }
+          ? { backgroundColor: "#B89A59", width: 300 }
           : { display: "none" },
         headerRight: showHeader ? () => <AdminHeader /> : undefined,
         headerShown: showHeader,
@@ -40,8 +40,8 @@ export default function layout() {
           paddingBlock: 15,
           fontFamily: "Nunito_400Regular",
         },
-        drawerActiveBackgroundColor: "#998049",
-        drawerActiveTintColor: "#998049",
+        drawerActiveBackgroundColor: "#c5b083ff",
+        drawerActiveTintColor: "#c5b083ff",
         headerRight: () => <AdminHeader />,
         drawerType: "permanent"
       }}

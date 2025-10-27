@@ -14,8 +14,10 @@ import {
 import { SplashScreen } from "expo-router";
 import { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
+import { useAuth } from "../../../services/useAuth";
 
 export default function Home() {
+
   const [data, setData] = useState([
     { idOrden: "1235", nombre: "usuario01", estado: "Entregada" },
     { idOrden: "1236", nombre: "usuario02", estado: "Entregada" },

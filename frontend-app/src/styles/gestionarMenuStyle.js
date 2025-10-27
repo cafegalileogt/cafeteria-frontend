@@ -33,7 +33,7 @@ export default StyleSheet.create({
   },
   container: {
     height: "80%",
-    width: "90%",
+    width: "95%",
     alignSelf: "center",
     marginVertical: 20,
     borderColor: "#AAAAAA",
@@ -55,23 +55,24 @@ export default StyleSheet.create({
     borderColor: "#AAAAAA",
     backgroundColor: "#DDDDDD",
   },
-  row: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-  },
+row: {
+  flexDirection: "row",
+  justifyContent: "space-evenly",
+  borderBottomWidth: 1,
+  borderColor: "#AAAAAA",
+  alignItems: "center", 
+  minHeight: 50, 
+},
   cell: {
     fontFamily: "Nunito_400Regular",
     fontSize: 24,
     textAlign: "center",
     alignSelf: "center",
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
     borderColor: "#AAAAAA",
   },
   actions: {
     flexDirection: "row",
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
+
     borderColor: "#AAAAAA",
     justifyContent: "center",
   },
@@ -129,7 +130,7 @@ export default StyleSheet.create({
   switchButtons: {
     flexDirection: "row",
     position: "absolute",
-    right: 200,
+    right: 20,
     justifyContent: "center",
     backgroundColor: "#eee",
     borderRadius: 20,
@@ -205,4 +206,35 @@ export default StyleSheet.create({
     textAlign: "center",
     marginVertical: 10,
   },
+  cellText: {
+  fontFamily: "Nunito_400Regular",
+  fontSize: 20,
+  textAlign: "left",
+  paddingHorizontal: 6,
+  color: "#000",
+},
+
+nameCell: {
+  flexDirection: "row",
+  alignItems: "center",
+},
+
+iconImage: {
+  width: 34,
+  height: 34,
+  marginRight: 6,
+  borderRadius: 4,
+},
+
+headerText: {
+  fontFamily: "Nunito_900Black",
+  fontSize: 16,
+  textAlign: "left",
+  alignSelf: "center",
+  borderTopWidth: 1,
+  borderBottomWidth: 1,
+  borderColor: "#AAAAAA",
+  backgroundColor: "#DDDDDD",
+  paddingHorizontal: 6,
+},
 });
