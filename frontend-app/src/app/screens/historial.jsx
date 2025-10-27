@@ -59,9 +59,9 @@ export default function historial() {
     fetchHistory();
   }, []);
 
-  const detailModal = async (numero_orden) => {
-    setSelectedOrder(numero_orden);
-    const detalleResponse = await detalleOrden(numero_orden);
+  const detailModal = async (orden) => {
+    setSelectedOrder(orden);
+    const detalleResponse = await detalleOrden(orden.numero_orden);
     const productos = detalleResponse.data
       .map((item) => `${item.cantidad} ordenes de ${item.descripcion}`)
       .join("; ");
@@ -74,10 +74,22 @@ export default function historial() {
   };
   
   
-  const handleCancelOrder = async (numero_orden)=> {
+const handleCancelOrder = async (numero_orden) => {
+  try {
+    await cancelOrder(numero_orden, user);
+    setHistory((prev) =>
+      prev.map((order) =>
+        order.numero_orden === numero_orden
+          ? { ...order, estado: "Cancelada" }
+          : order
+      )
+    );
+    setSelectedOrder((prev) => ({ ...prev, estado: "Cancelada" }));
+  } catch (error) {
+    console.error("Error al cancelar la orden:", error);
+  }
+};
     
-      const cancel = await cancelOrder(numero_orden,user)
-    }
   return (
     <View style={styles.container}>
       <Header></Header>
@@ -105,7 +117,7 @@ export default function historial() {
             <TouchableOpacity
               onPress={() => {
                 setModalVisible(true);
-                detailModal(item.numero_orden);
+                detailModal(item);
               }}
               activeOpacity={0.8}
               key={index}
@@ -156,12 +168,21 @@ export default function historial() {
               <Text style={styles.modalCloseText}>Cerrar</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={() => handleCancelOrder(selectedOrder)} 
-              style={[styles.modalCloseButton, { backgroundColor: "#C0392B" }]}
-            >
-              <Text style={styles.modalCancelOrder}>Cancelar Orden</Text>
-            </TouchableOpacity>
+            {selectedOrder?.estado === "Cancelada" ? (
+              <TouchableOpacity
+                onPress={() => (selectedOrder.numero_orden)}
+                style={[styles.modalCloseButton, { backgroundColor: "#a2a0a0ff" }]}
+              >
+                <Text style={styles.modalCancelOrder}>Orden cancelada</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                onPress={() => handleCancelOrder(selectedOrder.numero_orden)}
+                style={[styles.modalCloseButton, { backgroundColor: "#C0392B" }]}
+              >
+                <Text style={styles.modalCancelOrder}>Cancelar Orden</Text>
+              </TouchableOpacity>
+            )}
           </View>
           </View>
         </View>

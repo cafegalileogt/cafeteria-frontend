@@ -1,10 +1,15 @@
 import AdminHeader from "../../components/adminHeader";
 import { useFonts, Nunito_400Regular } from "@expo-google-fonts/nunito";
-import { SplashScreen } from "expo-router";
+import { SplashScreen,useRouter, usePathname } from "expo-router";
 import { useEffect } from "react";
 import { Drawer } from "expo-router/drawer";
 
+
 export default function layout() {
+  const pathname = usePathname();
+
+  const showHeader = pathname !== "/admin/login";
+  
   const [loaded, error] = useFonts({
     Nunito_400Regular,
   });
@@ -19,13 +24,16 @@ export default function layout() {
     return null;
   }
 
+  
+
   return (
     <Drawer
       screenOptions={{
-        drawerStyle: {
-          backgroundColor: "#B89A59",
-          width: 320,
-        },
+       drawerStyle: showHeader
+          ? { backgroundColor: "#B89A59", width: 320 }
+          : { display: "none" },
+        headerRight: showHeader ? () => <AdminHeader /> : undefined,
+        headerShown: showHeader,
         drawerLabelStyle: {
           color: "white",
           fontSize: 28,
@@ -35,6 +43,7 @@ export default function layout() {
         drawerActiveBackgroundColor: "#998049",
         drawerActiveTintColor: "#998049",
         headerRight: () => <AdminHeader />,
+        drawerType: "permanent"
       }}
     >
       <Drawer.Screen
