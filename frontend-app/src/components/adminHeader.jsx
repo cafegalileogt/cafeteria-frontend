@@ -2,11 +2,19 @@ import { View, Text, Image, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Styles from "../styles/adminHeaderStyle";
 import { useRouter } from "expo-router";
+import { logOutUser } from "../../services/api";
+import { useUser } from "../../services/userContext";
+
 
 export default function AdminHeader() {
+  const {user} = useUser();
   const router = useRouter();
+  const correo = user?.result?.[0]?.correo_institucional;
+
 
   const logout = () => {
+    console.log('correo: ', correo)
+    logOutUser(correo);
     router.push("/admin/login");
   };
 

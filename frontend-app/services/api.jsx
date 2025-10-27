@@ -56,20 +56,18 @@ export async function recoveryPassword(email) {
   return { status: response.status, data };
 }
 
-export async function logout() {
+export async function logOutUser(correo) {
+  const _body = { email: correo};
+
   const response = await fetch(`${BASE_URL}/api/v1/auth/logout`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(_body),
+    credentials: "include"
   });
 
-  let data = {};
-  try {
-    data = await response.json();
-  } catch (err) {
-    console.warn("No se pudo parsear JSON:", err);
-  }
-
-  return { status: response.status, data };
+  const data = await response.json();
+  return data;
 }
 
 export async function getCategoryNames() {
@@ -150,8 +148,6 @@ export async function createOrder(cartItems, totalAmount,orderId) {
       console.warn("No se pudo parsear JSON:", err);
     }
 
-    console.log(" Respuesta de createOrder:", data);
-
     return { status: response.status, data };
   } catch (error) {
     console.error(" Error en la petición createOrder:", error);
@@ -180,7 +176,9 @@ export async function getOrderHistoryByUser(user){
 }
 
 export async function detalleOrden(orden){
+
   const url = `${BASE_URL}/api/v1/orders/detalle/${orden}`;
+
   const response = await fetch(url, {
     "method": "Get",
     credentials: "include",
@@ -193,7 +191,6 @@ export async function detalleOrden(orden){
   let data = {};
   try{
     data = await response.json();
-    console.log(data)
     return{orden, data};
   }catch(err){
     console.error('Error con Data de detalle orden', err)
@@ -220,7 +217,6 @@ export async function cancelOrder(numero_orden,user){
     });
     let data = {};
     data = await response.json;
-    console.log('response:', response.status)
     return{status: response.status}
   
   }catch(err){
