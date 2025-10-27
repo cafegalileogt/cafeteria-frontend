@@ -26,7 +26,7 @@ export default function Login() {
       return;
     }
 
-    router.push("/admin/home");
+    router.push("/admin/ordenes");
   };
   return (
     <View style={styles.page}>
