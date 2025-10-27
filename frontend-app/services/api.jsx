@@ -1,6 +1,5 @@
 const BASE_URL = "http://localhost:3000";
 import { getToken, setToken } from "./storage";
-const token =  getToken();
 
 export async function registerUser(name, email, password) {
   const response = await fetch(`${BASE_URL}/api/v1/users/register-student`, {
@@ -57,13 +56,13 @@ export async function recoveryPassword(email) {
 }
 
 export async function logOutUser(correo) {
-  const _body = { email: correo};
+  const _body = { email: correo };
 
   const response = await fetch(`${BASE_URL}/api/v1/auth/logout`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(_body),
-    credentials: "include"
+    credentials: "include",
   });
 
   const data = await response.json();
@@ -71,7 +70,7 @@ export async function logOutUser(correo) {
 }
 
 export async function getCategoryNames() {
-
+  let token = await getToken();
   const response = await fetch(`${BASE_URL}/api/v1/categories/getCategories/home`, {
     method: "GET",
     credentials: "include",
@@ -92,7 +91,7 @@ export async function getCategoryNames() {
 }
 
 export async function getMenu() {
-
+  let token = await getToken();
   const response = await fetch(`${BASE_URL}/api/v1/products/productos_categorias`, {
     method: "GET",
     credentials: "include",
@@ -113,19 +112,21 @@ export async function getMenu() {
   return { status: response.status, data };
 }
 
-export async function createOrder(cartItems, totalAmount,orderId) {
+export async function createOrder(cartItems, totalAmount, orderId) {
+  let token = await getToken();
   const bodyData = {
     order: {
       total: Number(totalAmount),
-      numero_orden:Number(orderId),
+      numero_orden: Number(orderId),
     },
     details: cartItems.map((item) => ({
       id_producto: Number(item.id_producto || item.id),
       cantidad: Number(item.cantidad || item.count),
       precio_unitario: Number(
-        item.precio_unitario || 
-        item.precio || 
-        parseFloat(item.price?.replace("Q", "").trim()) || 0
+        item.precio_unitario ||
+          item.precio ||
+          parseFloat(item.price?.replace("Q", "").trim()) ||
+          0
       ),
     })),
   };
@@ -154,77 +155,124 @@ export async function createOrder(cartItems, totalAmount,orderId) {
     return { status: 500, data: {} };
   }
 }
-export async function getOrderHistoryByUser(user){
+
+export async function getOrderHistoryByUser(user) {
+  let token = await getToken();
   const user_id = user.result[0].id_usuario;
   const url = `${BASE_URL}/api/v1/orders/historial/${user_id}`;
 
   const response = await fetch(url, {
-    method:"GET",
-    credentials:"include",
-    headers : {
+    method: "GET",
+    credentials: "include",
+    headers: {
       "Content-Type": "Application-Json",
       Authorization: token ? `Bearer ${token}` : "",
-    }
-  })
+    },
+  });
   let data = {};
-  try{
+  try {
     data = await response.json();
-  }catch(err){
-    console.loer('Error haciendo fetch a la DB', err)
+  } catch (err) {
+    console.loer("Error haciendo fetch a la DB", err);
   }
   return data;
 }
 
-export async function detalleOrden(orden){
-
-  const url = `${BASE_URL}/api/v1/orders/detalle/${orden}`;
-
-  const response = await fetch(url, {
-    "method": "Get",
-    credentials: "include",
-    headers: {
-      "Content-Type": "Application-Json",
-      Authorization: token ? `Bearer ${token}` : ""
-    }
-  }
-  )
-  let data = {};
-  try{
-    data = await response.json();
-    return{orden, data};
-  }catch(err){
-    console.error('Error con Data de detalle orden', err)
-  }
-}
-
-export async function cancelOrder(numero_orden,user){
-    const user_id = user.result[0].id_usuario;
-
-  const bodyData = { 
-    estado:'Cancelada',
-    id_personal: user_id 
-  }
+export async function getTodayOrders() {
+  let token = await getToken();
+  const url = `${BASE_URL}/api/v1/orders/list`;
 
   try {
-    const response = await fetch(`${BASE_URL}/api/v1/orders/actualizar_estado/${numero_orden}`, {
-      method: "PATCH",
-      credentials: "include",
+    const response = await fetch(url, {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: token ? `Bearer ${token}` : "",
       },
-      body: JSON.stringify(bodyData),
     });
+
+    const data = await response.json();
+    return { status: response.status, data };
+  } catch (err) {
+    console.error("Error al obtener las órdenes del día:", err);
+    return { status: 500, data: [] };
+  }
+}
+
+export async function detalleOrden(orden) {
+  let token = await getToken();
+  const url = `${BASE_URL}/api/v1/orders/detalle/${orden}`;
+
+  const response = await fetch(url, {
+    method: "Get",
+    credentials: "include",
+    headers: {
+      "Content-Type": "Application-Json",
+      Authorization: token ? `Bearer ${token}` : "",
+    },
+  });
+  let data = {};
+  try {
+    data = await response.json();
+    return { orden, data };
+  } catch (err) {
+    console.error("Error con Data de detalle orden", err);
+  }
+}
+
+export async function detalleOrden2(numero_orden) {
+  let token = await getToken();
+  const url = `${BASE_URL}/api/v1/orders/detalle/${numero_orden}`;
+
+  const response = await fetch(url, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token ? `Bearer ${token}` : "",
+    },
+  });
+
+  let data = {};
+  try {
+    data = await response.json();
+    return { orden: numero_orden, data };
+  } catch (err) {
+    console.error("Error obteniendo detalle de orden:", err);
+    return { orden: numero_orden, data: null, error: err.message };
+  }
+}
+export async function cancelOrder(numero_orden, user) {
+  let token = await getToken();
+  const user_id = user.result[0].id_usuario;
+
+  const bodyData = {
+    estado: "Cancelada",
+    id_personal: user_id,
+  };
+
+  try {
+    const response = await fetch(
+      `${BASE_URL}/api/v1/orders/actualizar_estado/${numero_orden}`,
+      {
+        method: "PATCH",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token ? `Bearer ${token}` : "",
+        },
+        body: JSON.stringify(bodyData),
+      }
+    );
     let data = {};
     data = await response.json;
-    return{status: response.status}
-  
-  }catch(err){
-    return { 
-      status: response.status || 500, 
-      error: true, 
+    return { status: response.status };
+  } catch (err) {
+    return {
+      status: response.status || 500,
+      error: true,
       message: err.message || "Error al procesar la respuesta",
-      data: null
+      data: null,
     };
   }
 }
