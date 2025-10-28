@@ -224,14 +224,14 @@ const handleSelectImage = async (tipo) => {
 
       console.log("✅ URL subida:", url);
 
-      // 🔹 Actualizar el producto o categoría según 'tipo'
+      // 🔹Actualizar el producto o categoría según 'tipo'
       if (tipo === "producto" && selectedProduct) {
         setSelectedProduct((prev) => ({ ...prev, imagen_producto: url }));
       } else if (tipo === "categoria" && selectedCategory) {
         setSelectedCategory((prev) => ({ ...prev, imagen_categoria: url }));
       }
     } else {
-      console.log("❌ Selección cancelada por el usuario");
+      console.log("❌Selección cancelada por el usuario");
     }
   } catch (error) {
     console.error("❌ Error seleccionando imagen:", error);

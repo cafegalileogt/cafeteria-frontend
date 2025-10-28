@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, ScrollView, Modal } from "reac
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams } from "expo-router";
 import styles from "../../styles/buscarOrdenesStyle";
-import { detalleOrden2, getTodayOrders } from "../../../services/api";
+import { detalleOrden2, getTodayOrders,updateOrden,getOrderbyId } from "../../../services/api";
 import { useAuth } from "../../../services/useAuth";
  
 
@@ -112,11 +112,13 @@ export default function BuscarOrdenes() {
       
       if (resultado.data && resultado.data.length > 0) {
         const nombreCliente = buscarNombreCliente(numeroOrden);
+
+        console.log('resultado data:', resultado.data);
         
         const ordenTransformada = {
           id: resultado.orden.toString(),
           cliente: nombreCliente,
-          estado: "Pendiente de Pago",
+          estado: resultado.data[0].estado || "Pendiente de Pago",
           productos: resultado.data.map(item => ({
             codigo: item.id_producto.toString(),
             descripcion: item.nombre,
@@ -193,14 +195,35 @@ export default function BuscarOrdenes() {
   const calcularTotal = (productos) =>
     productos.reduce((acc, p) => acc + p.cantidad * p.precio, 0);
 
-  const handleCobrar = () => {
-    if (ordenEncontrada && ordenEncontrada.estado === "Pendiente de Pago") {
+  const handleCobrar = async () => {
+  if (ordenEncontrada && ordenEncontrada.estado === "Pendiente de Pago") {
+    try {
+      setCargando(true);
+      console.log("Ejecutando COBRAR para orden:", ordenEncontrada.id);
+
+      // Llamar a tu función del API
+      const resultado = await updateOrden(ordenEncontrada.id);
+      console.log("Respuesta del backend (updateOrden):", resultado);
+
+      // (Opcional) si querés mostrar algo del resultado:
+      if (resultado.data) {
+        alert("Orden actualizada correctamente");
+      }
+
+      // Actualiza el estado visual local
       setOrdenEncontrada({
         ...ordenEncontrada,
         estado: "En Preparación",
       });
+
+    } catch (error) {
+      console.error("Error al ejecutar COBRAR:", error);
+      alert("Error al ejecutar COBRAR");
+    } finally {
+      setCargando(false);
     }
-  };
+  }
+};
 
   return (
     <ScrollView style={styles.container}>

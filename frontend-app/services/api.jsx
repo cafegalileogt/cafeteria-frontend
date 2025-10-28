@@ -215,6 +215,29 @@ export async function getTodayOrders() {
   }
 }
 
+
+export async function getOrderbyId(numero_orden) {
+  let token = await getToken();
+  const url = `${BASE_URL}/api/v1/orders/buscar/${numero_orden}`;
+  
+  const response = await fetch(url, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "Application-Json",
+      Authorization: token ? `Bearer ${token}` : "",
+    },
+  });
+  let data = {};
+  try {
+    data = await response.json();
+    console.log('Data recibida en getOrderbyId $$$$$$$$$$$$$$$$$$$$: ', data)
+    return { orden: numero_orden, data };
+  } catch (err) {
+    console.error("Error con Data de getOrderbyId", err);
+  }
+}
+
 export async function detalleOrden(orden) {
   let token = await getToken();
   const url = `${BASE_URL}/api/v1/orders/detalle/${orden}`;
@@ -237,6 +260,7 @@ export async function detalleOrden(orden) {
 }
 
 export async function detalleOrden2(numero_orden) {
+  console.log('Número de orden en detalleOrden2: ', numero_orden)
   let token = await getToken();
   const url = `${BASE_URL}/api/v1/orders/detalle/${numero_orden}`;
 
@@ -258,6 +282,38 @@ export async function detalleOrden2(numero_orden) {
     return { orden: numero_orden, data: null, error: err.message };
   }
 }
+
+
+export async function updateOrden(numero_orden) {
+  console.log("Actualizando estado de la orden:", numero_orden);
+  let token = await getToken();
+  const url = `${BASE_URL}/api/v1/orders/actualizar_estado/${numero_orden}`;
+
+  const body = {
+    estado: "En preparacion"
+  };
+
+  const response = await fetch(url, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token ? `Bearer ${token}` : "",
+    },
+    body: JSON.stringify(body),
+  });
+
+  let data = {};
+  try {
+    data = await response.json();
+    console.log("Respuesta de actualización:", data);
+    return { orden: numero_orden, data };
+  } catch (err) {
+    console.error("Error actualizando orden:", err);
+    return { orden: numero_orden, data: null, error: err.message };
+  }
+}
+
+
 export async function cancelOrder(numero_orden, user) {
   let token = await getToken();
   const user_id = user.result[0].id_usuario;
