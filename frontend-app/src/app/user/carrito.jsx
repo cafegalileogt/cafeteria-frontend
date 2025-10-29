@@ -85,39 +85,45 @@ export default function Carrito() {
           <Text style={styles.title}>Carrito</Text>
 
           <ScrollView style={{ flex: 1 }}>
-            {cartItems.map((item) => (
-              <View key={item.id_producto} style={styles.productContainer}>
-                <Text style={styles.productName}>{item.name}</Text>
+  {cartItems.length === 0 ? (
+    <Text style={{ textAlign: "center", marginTop: 50, fontSize: 16 }}>
+      No hay productos en el carrito 🛒
+    </Text>
+  ) : (
+    cartItems.map((item) => (
+      <View key={item.id_producto} style={styles.productContainer}>
+        <Text style={styles.productName}>{item.name}</Text>
 
-                <View style={styles.quantityContainer}>
-                  <TouchableOpacity onPress={() => disminuir(item.id_producto)}>
-                    <Ionicons
-                      name="remove-circle-outline"
-                      size={28}
-                      color="#B89A59"
-                    />
-                  </TouchableOpacity>
+        <View style={styles.quantityContainer}>
+          <TouchableOpacity onPress={() => disminuir(item.id_producto)}>
+            <Ionicons
+              name="remove-circle-outline"
+              size={28}
+              color="#B89A59"
+            />
+          </TouchableOpacity>
 
-                  <Text style={styles.quantityText}>{item.count}</Text>
+          <Text style={styles.quantityText}>{item.count}</Text>
 
-                  <TouchableOpacity onPress={() => aumentar(item.id_producto)}>
-                    <Ionicons
-                      name="add-circle-outline"
-                      size={28}
-                      color="#B89A59"
-                    />
-                  </TouchableOpacity>
-                </View>
+          <TouchableOpacity onPress={() => aumentar(item.id_producto)}>
+            <Ionicons
+              name="add-circle-outline"
+              size={28}
+              color="#B89A59"
+            />
+          </TouchableOpacity>
+        </View>
 
-                <Text style={styles.productPrice}>
-                  Q
-                  {(
-                    parseFloat(item.price.replace("Q", "").trim()) * item.count
-                  ).toFixed(2)}
-                </Text>
-              </View>
-            ))}
-          </ScrollView>
+        <Text style={styles.productPrice}>
+          Q
+          {(
+            parseFloat(item.price.replace("Q", "").trim()) * item.count
+          ).toFixed(2)}
+        </Text>
+      </View>
+    ))
+  )}
+</ScrollView>
 
           <View style={styles.totalContainer}>
             <Text style={styles.totalText}>Total</Text>

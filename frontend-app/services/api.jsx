@@ -97,7 +97,6 @@ export async function getCategoryNames() {
   let data = {};
   try {
     data = await response.json();
-      console.log('Response de getCategoryNames: ', data)
 
   } catch (err) {
     console.warn("No se pudo parsear JSON:", err);
@@ -489,11 +488,137 @@ export async function uploadImageToCloudinary(fileUri) {
     });
 
     const data = await uploadResponse.json();
-    console.log("✅ data de upload image:", data);
+    console.log("data de upload image:", data);
 
     return data;
   } catch (error) {
-    console.error("❌ Error subiendo imagen:", error);
+    console.error("Error subiendo imagen:", error);
     return null;
   }
 }
+
+export async function getFavorites(id_usuario, id_producto) {
+//   let token = await getToken();
+//  const url = `${BASE_URL}/api/v1/favorites/add`;
+
+ try{
+//   const response = await fetch(url, {
+//     method:"GET",
+//     headers: {
+//       "Content-Type": "application/json",
+//       "Authorization": token ? `Bearer ${token}` : "",
+//     }
+//   })
+//     const data = await response.json();
+//     let datadePrueba = {
+//       "is_Favorite": true
+//     }
+    let datadePrueba = {
+      "is_Favorite": true
+    }
+
+    return datadePrueba;
+    return { status: response.status, data };
+ }catch(err){
+    console.error("Error agregando a favoritos:", err);
+    return { status: 500, data: null, error: err.message };
+ }
+
+}
+
+
+export async function addToFavorites(id_usuario, id_producto) {
+  // let token = await getToken();
+  // const url = `${BASE_URL}/api/v1/favorites/add`;
+
+  // const bodyData = {
+  //   id_usuario: userId,
+  //   id_producto: productId,
+  // };
+
+  try {
+  //   const response = await fetch(url, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: token ? `Bearer ${token}` : "",
+  //     },
+  //     body: JSON.stringify(bodyData),
+  //   });
+
+  //   const data = await response.json();
+    let datadePrueba = {
+      "is_Favorite": true
+    }
+
+    return datadePrueba;
+    return { status: response.status, data };
+  } catch (err) {
+    console.error("Error agregando a favoritos:", err);
+    return { status: 500, data: null, error: err.message };
+  }
+} 
+
+export async function getAllFavoritesById(id_usuario) {
+// let token = await getToken();
+  // const url = `${BASE_URL}/api/v1/favorites/allFavoritesByUserId`;
+
+  // const bodyData = {
+  //   id_usuario: userId,
+  //   id_producto: productId,
+  // };
+
+  try {
+  //   const response = await fetch(url, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: token ? `Bearer ${token}` : "",
+  //     },
+  //     body: JSON.stringify(bodyData),
+  //   });
+
+  //   const data = await response.json();
+
+  //deben filtrar por estado, traer estado 1
+    let datadePrueba = ([
+    { 
+      "id_producto": "1",
+      "nombre": "panqueques",
+      "precio": '45',
+      "imagen_producto": "https://res.cloudinary.com/dlxw0jdft/image/upload/v1761615228/cafeteria-galileo/js3nymzx4xtjejanfzx2.webp"
+    },
+        { 
+      "id_producto": "2",
+      "nombre": "Omelettes",
+      "precio": '45',
+      "imagen_producto": "https://res.cloudinary.com/dlxw0jdft/image/upload/v1760999507/Omelette-1_yz6sqi.webp"
+    },
+        { 
+      "id_producto": "3",
+      "nombre": "Torito",
+      "precio": '50',
+      "imagen_producto": "https://res.cloudinary.com/dlxw0jdft/image/upload/v1760999508/Torito-1_qyrfmd.webp"
+    },
+        { 
+      "id_producto": "4",
+      "nombre": "Big Burger",
+      "precio": '50',
+      "imagen_producto": "https://res.cloudinary.com/dlxw0jdft/image/upload/v1760999563/almuerzo_mizkus.png"
+    },
+      { 
+      "id_producto": "5",
+      "nombre": "panqueques",
+      "precio": '45',
+      "imagen_producto": "https://res.cloudinary.com/dlxw0jdft/image/upload/v1761615228/cafeteria-galileo/js3nymzx4xtjejanfzx2.webp"
+    },
+    ]);
+    return datadePrueba;
+    return { status: response.status, data };
+  } catch (err) {
+    console.error("Error agregando a favoritos:", err);
+    return { status: 500, data: null, error: err.message };
+  }
+}
+
+

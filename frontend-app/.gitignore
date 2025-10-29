@@ -41,3 +41,8 @@ yarn-error.*
 /android
 
 .DS_Store
+
+.next
+node_modules
+
+*.log
