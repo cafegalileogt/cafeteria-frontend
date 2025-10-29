@@ -622,3 +622,450 @@ export async function getAllFavoritesById(id_usuario) {
 }
 
 
+
+export async function getSchedule() {
+// let token = await getToken();
+  // const url = `${BASE_URL}/api/v1/favorites/allFavoritesByUserId`;
+
+  // const bodyData = {
+  //   id_usuario: userId,
+  //   id_producto: productId,
+  // };
+
+  try {
+  //   const response = await fetch(url, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: token ? `Bearer ${token}` : "",
+  //     },
+  //     body: JSON.stringify(bodyData),
+  //   });
+
+  //   const data = await response.json();
+
+  //deben filtrar por estado, traer estado 1
+    
+  let datadePrueba = {
+  "dias_semana": [
+    {
+      "schedule_id": 1,
+      "dia": "Lunes",
+      "open_time": "07:00:00",
+      "close_time": "21:00:00",
+      "is_closed": 0
+    },
+    {
+      "schedule_id": 2,
+      "dia": "Martes",
+      "open_time": "07:00:00",
+      "close_time": "21:00:00",
+      "is_closed": 0
+    },
+    {
+      "schedule_id": 3,
+      "dia": "Miércoles",
+      "open_time": "07:00:00",
+      "close_time": "21:00:00",
+      "is_closed": 0
+    },
+    {
+      "schedule_id": 4,
+      "dia": "Jueves",
+      "open_time": "07:00:00",
+      "close_time": "21:00:00",
+      "is_closed": 0
+    },
+    {
+      "schedule_id": 5,
+      "dia": "Viernes",
+      "open_time": "07:00:00",
+      "close_time": "21:00:00",
+      "is_closed": 0
+    },
+    {
+      "schedule_id": 6,
+      "dia": "Sábado",
+      "open_time": "07:00:00",
+      "close_time": "21:00:00",
+      "is_closed": 0
+    },
+    {
+      "schedule_id": 7,
+      "dia": "Domingo",
+      "open_time": null,
+      "close_time": null,
+      "is_closed": 1
+    }
+  ],
+  "excepciones": [
+    {
+      "exception_id": 1,
+      "fecha": "2025-10-20",
+      "open_time": "07:00:00",
+      "close_time": "21:00:00",
+      "is_closed": 0,
+      "descripcion": "Día de la Revolución"
+    },
+    {
+      "exception_id": 2,
+      "fecha": "2025-12-25",
+      "open_time": null,
+      "close_time": null,
+      "is_closed": 1,
+      "descripcion": "Navidad"
+    }
+  ]
+}
+  
+    return datadePrueba;
+    return { status: response.status, data };
+  } catch (err) {
+    console.error("Error agregando a favoritos:", err);
+    return { status: 500, data: null, error: err.message };
+  }
+}
+
+export async function updateSchedule(dia, open_time, close_time, is_closed) {
+// let token = await getToken();
+  // const url = `${BASE_URL}/api/v1/schedule/updateSchedule/$[dia]`;
+
+  // const bodyData = {
+  //   id_usuario: userId,
+  //   id_producto: productId,
+  // };
+
+  try {
+  //   const response = await fetch(url, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: token ? `Bearer ${token}` : "",
+  //     },
+  //     body: JSON.stringify(bodyData),
+  //   });
+
+  //   const data = await response.json();
+
+  //deben filtrar por estado, traer estado 1
+    
+  let datadePrueba = {
+"Mensaje": "fecha actualizada correctamente"
+}
+
+  
+    return datadePrueba;
+    return { status: response.status, data };
+  } catch (err) {
+    console.error("Error agregando a favoritos:", err);
+    return { status: 500, data: null, error: err.message };
+  }
+}
+
+export async function createException(fecha, open_time, close_time, is_closed, description) {
+// let token = await getToken();
+  // const url = `${BASE_URL}/api/v1/schedule/updateSchedule/$[dia]`;
+
+  // const bodyData = {
+  //   id_usuario: userId,
+  //   id_producto: productId,
+  // };
+
+  try {
+  //   const response = await fetch(url, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: token ? `Bearer ${token}` : "",
+  //     },
+  //     body: JSON.stringify(bodyData),
+  //   });
+
+  //   const data = await response.json();
+
+  //deben filtrar por estado, traer estado 1
+    
+  let datadePrueba = {
+"Mensaje": "fecha actualizada correctamente"
+}
+
+  
+    return datadePrueba;
+    return { status: response.status, data };
+  } catch (err) {
+    console.error("Error agregando a favoritos:", err);
+    return { status: 500, data: null, error: err.message };
+  }
+}
+
+export async function deleteException(id_exception) {
+// let token = await getToken();
+  // const url = `${BASE_URL}/api/v1/schedule/updateSchedule/${id_exception}`;
+
+  // const bodyData = {
+  //   id_usuario: userId,
+  //   id_producto: productId,
+  // };
+
+  try {
+  //   const response = await fetch(url, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: token ? `Bearer ${token}` : "",
+  //     },
+  //     body: JSON.stringify(bodyData),
+  //   });
+
+  //   const data = await response.json();
+
+  //deben filtrar por estado, traer estado 1
+    
+  let datadePrueba = {
+"Mensaje": "Excepción elminada correctamente"
+}
+
+  
+    return datadePrueba;
+    return { status: response.status, data };
+  } catch (err) {
+    console.error("Error agregando a favoritos:", err);
+    return { status: 500, data: null, error: err.message };
+  }
+}
+
+
+
+export async function isOpenStore() {
+// let token = await getToken();
+  // const url = `${BASE_URL}/api/v1/schedule/isOpen`;
+
+  // const bodyData = {
+  //   id_usuario: userId,
+  //   id_producto: productId,
+  // };
+
+  try {
+  //   const response = await fetch(url, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: token ? `Bearer ${token}` : "",
+  //     },
+  //     body: JSON.stringify(bodyData),
+  //   });
+
+  //   const data = await response.json();
+
+  //deben filtrar por estado, traer estado 1
+    
+  let datadePrueba = {
+"Mensaje": "Cafetería abierta",
+"is_closed": false
+}
+
+  
+    return datadePrueba;
+    return { status: response.status, data };
+  } catch (err) {
+    console.error("Error agregando a favoritos:", err);
+    return { status: 500, data: null, error: err.message };
+  }
+}
+
+
+export async function getReportOrder(from, to) {
+// let token = await getToken();
+  // const url = `${BASE_URL}/api/v1/report/orders?${from}&to${to}`;
+
+  // const bodyData = {
+  //   id_usuario: userId,
+  //   id_producto: productId,
+  // };
+
+  try {
+  //   const response = await fetch(url, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: token ? `Bearer ${token}` : "",
+  //     },
+  //     body: JSON.stringify(bodyData),
+  //   });
+
+  //   const data = await response.json();
+
+  //deben filtrar por estado, traer estado 1
+    
+  let datadePrueba = {
+  "from": "2025-10-01",
+  "to": "2025-10-25",
+  "total_orders": 2,
+  "orders": [
+    {
+      "order_id": 89459,
+      "user_id": 2,
+      "email": "byron@galileo.com",
+      "fecha_actualizacion": "2025-10-25T10:15:00",
+      "estado": "Completada",
+      "total": 85.50,
+      "personal_id": 4,
+      "payment_id": 1
+    },
+    {
+      "order_id": 89460,
+      "user_id": 41,
+      "email": "karla@gmail.com",
+      "fecha_actualizacion": "2025-10-25T10:40:00",
+      "estado": "En preparación",
+      "total": 72.00,
+      "personal_id": 2,
+      "payment_id": null
+    }
+  ]
+}
+
+
+  
+    return datadePrueba;
+    return { status: response.status, data };
+  } catch (err) {
+    console.error("Error agregando a favoritos:", err);
+    return { status: 500, data: null, error: err.message };
+  }
+}
+
+export async function horasPicoReport(from, to) {
+// let token = await getToken();
+  // const url = `${BASE_URL}/api/v1/report/horasPico?${from}&to${to}`;
+
+  // const bodyData = {
+  //   id_usuario: userId,
+  //   id_producto: productId,
+  // };
+
+  try {
+  //   const response = await fetch(url, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: token ? `Bearer ${token}` : "",
+  //     },
+  //     body: JSON.stringify(bodyData),
+  //   });
+
+  //   const data = await response.json();
+
+  //deben filtrar por estado, traer estado 1
+    
+  let datadePrueba = {
+  "from": "2025-10-01",
+  "to": "2025-10-31",
+  "horas_pico": [
+    { "hour": "09:00", "orders": 40 },
+    { "hour": "10:00", "orders": 52 },
+    { "hour": "11:00", "orders": 38 },
+    { "hour": "12:00", "orders": 60 },
+    { "hour": "13:00", "orders": 70 }
+  ],
+  "most_active_hour": "13:00"
+}
+
+
+  
+    return datadePrueba;
+    return { status: response.status, data };
+  } catch (err) {
+    console.error("Error agregando a favoritos:", err);
+    return { status: 500, data: null, error: err.message };
+  }
+}
+
+export async function ventasReport(from, to) {
+// let token = await getToken();
+  // const url = `${BASE_URL}/api/v1/report/sales?${from}&to${to}`;
+
+  // const bodyData = {
+  //   id_usuario: userId,
+  //   id_producto: productId,
+  // };
+
+  try {
+  //   const response = await fetch(url, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: token ? `Bearer ${token}` : "",
+  //     },
+  //     body: JSON.stringify(bodyData),
+  //   });
+
+  //   const data = await response.json();
+
+  //deben filtrar por estado, traer estado 1
+    
+  let datadePrueba = {
+  "from": "2025-10-01",
+  "to": "2025-10-31",
+  "total_sales": 15625.75,
+  "daily_sales": [
+    { "date": "2025-10-01", "orders": 35, "total": 980.50 },
+    { "date": "2025-10-02", "orders": 28, "total": 820.75 },
+    { "date": "2025-10-03", "orders": 42, "total": 1150.00 }
+  ]
+}
+
+
+
+  
+    return datadePrueba;
+    return { status: response.status, data };
+  } catch (err) {
+    console.error("Error agregando a favoritos:", err);
+    return { status: 500, data: null, error: err.message };
+  }
+}
+
+export async function masVendidosReport(from, to) {
+// let token = await getToken();
+  // const url = `${BASE_URL}/api/v1/report/masVendidos?limit=10&${from}&to${to}`;
+
+  // const bodyData = {
+  //   id_usuario: userId,
+  //   id_producto: productId,
+  // };
+
+  try {
+  //   const response = await fetch(url, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: token ? `Bearer ${token}` : "",
+  //     },
+  //     body: JSON.stringify(bodyData),
+  //   });
+
+  //   const data = await response.json();
+
+  //deben filtrar por estado, traer estado 1
+    
+  let datadePrueba = {
+  "from": "2025-10-01",
+  "to": "2025-10-31",
+  "top_products": [
+    { "id_producto": 1, "name": "torito", "sold_times": 130, "total": 1950.00 },
+    { " id_producto": 2, "name": "Panqueques", "sold_times": 98, " total ": 1470.00 },
+    { " id_producto": 7, "name": "Hamburguesa", "sold_times": 85, " total ": 1020.00 }
+  ]
+}
+
+
+
+  
+    return datadePrueba;
+    return { status: response.status, data };
+  } catch (err) {
+    console.error("Error agregando a favoritos:", err);
+    return { status: 500, data: null, error: err.message };
+  }
+}
