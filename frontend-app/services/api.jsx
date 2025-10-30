@@ -497,61 +497,68 @@ export async function uploadImageToCloudinary(fileUri) {
   }
 }
 
-export async function getFavorites(id_usuario, id_producto) {
-//   let token = await getToken();
-//  const url = `${BASE_URL}/api/v1/favorites/add`;
+export async function getProductInfo( id_producto) {
+  console.log('ID de producto en getProductInfo: ', id_producto)
+  let token = await getToken();
+ const url = `${BASE_URL}/api/v1/favorites/getFavoriteByUserIdAndProductId/${id_producto}`;
 
  try{
-//   const response = await fetch(url, {
-//     method:"GET",
-//     headers: {
-//       "Content-Type": "application/json",
-//       "Authorization": token ? `Bearer ${token}` : "",
-//     }
-//   })
-//     const data = await response.json();
-//     let datadePrueba = {
-//       "is_Favorite": true
-//     }
-    let datadePrueba = {
-      "is_Favorite": true
-    }
-
-    return datadePrueba;
-    return { status: response.status, data };
+  const response = await fetch(url, {
+    method:"GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": token ? `Bearer ${token}` : "",
+    },
+  });
+    const data = await response.json();
+    return data;
  }catch(err){
-    console.error("Error agregando a favoritos:", err);
+    console.error("Error al obtener info del producto:", err);
     return { status: 500, data: null, error: err.message };
  }
 
 }
 
 
-export async function addToFavorites(id_usuario, id_producto) {
-  // let token = await getToken();
-  // const url = `${BASE_URL}/api/v1/favorites/add`;
-
-  // const bodyData = {
-  //   id_usuario: userId,
-  //   id_producto: productId,
-  // };
+export async function addToFavorites( id_producto) {
+  let token = await getToken();
+  const url = `${BASE_URL}/api/v1/favorites/postFavorite/${id_producto}`;
 
   try {
-  //   const response = await fetch(url, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: token ? `Bearer ${token}` : "",
-  //     },
-  //     body: JSON.stringify(bodyData),
-  //   });
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+    });
 
-  //   const data = await response.json();
-    let datadePrueba = {
-      "is_Favorite": true
-    }
+    const data = await response.json();
 
-    return datadePrueba;
+    console.log('data de addToFavorites: ', data)
+    return { status: response.status, data };
+  } catch (err) {
+    console.error("Error agregando a favoritos:", err);
+    return { status: 500, data: null, error: err.message };
+  }
+} 
+
+export async function deleteFromFavorites( id_producto) {
+  let token = await getToken();
+  const url = `${BASE_URL}/api/v1/favorites/deleteFavorite/${id_producto}`;
+
+  try {
+    const response = await fetch(url, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+    });
+
+    const data = await response.json();
+
+    console.log('data de addToFavorites: ', data)
     return { status: response.status, data };
   } catch (err) {
     console.error("Error agregando a favoritos:", err);

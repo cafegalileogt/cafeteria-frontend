@@ -39,4 +39,11 @@ export default StyleSheet.create({
     paddingLeft: 16,
     color: "#B89A59",
   },
+  topIconsContainer: {
+  flexDirection: "row",
+  justifyContent: "space-between",
+  zIndex: 10,
+  marginRight: 20,
+},
+
 });
