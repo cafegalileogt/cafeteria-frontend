@@ -15,7 +15,6 @@ import { getAllFavoritesById } from "../../../services/api";
 import { useUser } from "../../../services/userContext";
 import { useCart } from "../../../services/cartContext";
 
-// Tarjeta memoizada para evitar re-render innecesario
 const ProductCard = React.memo(
   ({ item, qty, onIncrease, onDecrease, onAdd }) => {
     return (
@@ -70,7 +69,6 @@ export default function FavoritosGrid() {
         console.log("Favoritos obtenidos:", favoritos.result);
         setFavoriteItems(favoritos.result || []);
 
-        // Inicializar cantidades en 1
         const initCounts = {};
         (favoritos.result || []).forEach((p) => {
           initCounts[p.id_producto] = 0; 
@@ -107,12 +105,11 @@ export default function FavoritosGrid() {
         price: item.precio,
         cantidad: cantidad,
         count: cantidad,
-        precio_unitario: parseFloat(item.precio), // o parseFloat(item.precio.replace("Q", "")) si viene con "Q"
+        precio_unitario: parseFloat(item.precio), 
       });
 
       Alert.alert("Info", "Producto agregado al carrito");
 
-      // Reiniciar cantidad en la UI
       setCounts((prev) => ({ ...prev, [item.id_producto]: 0 }));
     } else {
       Alert.alert("Aviso", "Debes agregar al menos 1 producto.");
@@ -147,7 +144,7 @@ export default function FavoritosGrid() {
 
       {favoriteItems.length === 0 ? (
         <Text style={{ textAlign: "center", marginTop: 20 }}>
-          Aún no tienes productos en favoritos ❤️
+          Aún no tienes productos en favoritos 
         </Text>
       ) : (
         <FlatList
