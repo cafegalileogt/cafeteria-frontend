@@ -498,7 +498,6 @@ export async function uploadImageToCloudinary(fileUri) {
 }
 
 export async function getProductInfo( id_producto) {
-  console.log('ID de producto en getProductInfo: ', id_producto)
   let token = await getToken();
  const url = `${BASE_URL}/api/v1/favorites/getFavoriteByUserIdAndProductId/${id_producto}`;
 
@@ -566,62 +565,23 @@ export async function deleteFromFavorites( id_producto) {
   }
 } 
 
-export async function getAllFavoritesById(id_usuario) {
-// let token = await getToken();
-  // const url = `${BASE_URL}/api/v1/favorites/allFavoritesByUserId`;
+export async function getAllFavoritesById() {
+let token = await getToken();
+  const url = `${BASE_URL}/api/v1/favorites/getFavoritesByUserId`;
 
-  // const bodyData = {
-  //   id_usuario: userId,
-  //   id_producto: productId,
-  // };
 
   try {
-  //   const response = await fetch(url, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: token ? `Bearer ${token}` : "",
-  //     },
-  //     body: JSON.stringify(bodyData),
-  //   });
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+    });
 
-  //   const data = await response.json();
-
-  //deben filtrar por estado, traer estado 1
-    let datadePrueba = ([
-    { 
-      "id_producto": "1",
-      "nombre": "panqueques",
-      "precio": '45',
-      "imagen_producto": "https://res.cloudinary.com/dlxw0jdft/image/upload/v1761615228/cafeteria-galileo/js3nymzx4xtjejanfzx2.webp"
-    },
-        { 
-      "id_producto": "2",
-      "nombre": "Omelettes",
-      "precio": '45',
-      "imagen_producto": "https://res.cloudinary.com/dlxw0jdft/image/upload/v1760999507/Omelette-1_yz6sqi.webp"
-    },
-        { 
-      "id_producto": "3",
-      "nombre": "Torito",
-      "precio": '50',
-      "imagen_producto": "https://res.cloudinary.com/dlxw0jdft/image/upload/v1760999508/Torito-1_qyrfmd.webp"
-    },
-        { 
-      "id_producto": "4",
-      "nombre": "Big Burger",
-      "precio": '50',
-      "imagen_producto": "https://res.cloudinary.com/dlxw0jdft/image/upload/v1760999563/almuerzo_mizkus.png"
-    },
-      { 
-      "id_producto": "5",
-      "nombre": "panqueques",
-      "precio": '45',
-      "imagen_producto": "https://res.cloudinary.com/dlxw0jdft/image/upload/v1761615228/cafeteria-galileo/js3nymzx4xtjejanfzx2.webp"
-    },
-    ]);
-    return datadePrueba;
-    return { status: response.status, data };
+    const data = await response.json();
+    
+    return  data ;
   } catch (err) {
     console.error("Error agregando a favoritos:", err);
     return { status: 500, data: null, error: err.message };

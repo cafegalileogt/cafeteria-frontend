@@ -21,7 +21,6 @@ export default function VistaProducto() {
     const fetchProductInfo = async () => {
       try {
         const response = await getProductInfo(id_producto);
-        console.log("response de getProductInfo:", response);
         setIsFavorite(response.is_favorite);
       } catch (error) {
         console.log("Error al obtener info del producto:", error);
@@ -45,12 +44,10 @@ export default function VistaProducto() {
       if (isFavorite) {
         // Si ya estaba en favoritos, eliminarlo
         const response = await deleteFromFavorites(id_producto);
-        console.log("Eliminado de favoritos:", response);
         setIsFavorite(response.is_favorite ?? false);
       } else {
         // Si no estaba en favoritos, agregarlo
         const response = await addToFavorites(id_producto);
-        console.log("Agregado a favoritos:", response);
         setIsFavorite(response.is_favorite ?? true);
       }
     } catch (error) {

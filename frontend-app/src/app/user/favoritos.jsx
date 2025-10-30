@@ -66,12 +66,13 @@ export default function FavoritosGrid() {
       if (!user?.userId) return;
       try {
         setLoading(true);
-        const favoritos = await getAllFavoritesById(user.userId);
-        setFavoriteItems(favoritos || []);
+        const favoritos = await getAllFavoritesById();
+        console.log("Favoritos obtenidos:", favoritos.result);
+        setFavoriteItems(favoritos.result || []);
 
         // Inicializar cantidades en 1
         const initCounts = {};
-        (favoritos || []).forEach((p) => {
+        (favoritos.result || []).forEach((p) => {
           initCounts[p.id_producto] = 0; 
         });
         setCounts(initCounts);
