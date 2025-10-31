@@ -69,4 +69,10 @@ export default StyleSheet.create({
 		color: "#fff",
 		textAlign: "center",
 	},
+	text: {
+		fontFamily: "Nunito_400Regular",
+		fontSize: 24,
+		alignSelf: "center",
+		marginVertical: 30,
+	},
 });

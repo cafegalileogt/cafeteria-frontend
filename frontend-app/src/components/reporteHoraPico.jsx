@@ -8,7 +8,7 @@ import { Dimensions } from "react-native";
 export default function ReporteHoraPico() {
 	const [data, setData] = useState([]);
 	const [barData, setBarData] = useState(
-		"Selecciona una barra para ver detalle.",
+		"Seleccione una barra para ver detalle.",
 	);
 
 	//  Reporte de horas pico

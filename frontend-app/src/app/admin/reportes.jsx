@@ -12,6 +12,7 @@ import ReporteOrdenes from "../../components/reporteOrdenes";
 import ReporteVentas from "../../components/reporteVentas";
 import ReporteProductos from "../../components/reporteProductos";
 import ReporteHoraPico from "../../components/reporteHoraPico";
+import ReportFooter from "../../components/reportFooter";
 
 export default function Home() {
 	const [loaded, error] = useFonts({ Nunito_900Black, Nunito_400Regular });
@@ -36,7 +37,7 @@ export default function Home() {
 		} else if (reportType === "Hora Pico") {
 			return <ReporteHoraPico />;
 		} else {
-			return <Text>Seleccione un tipo de reporte</Text>;
+			return <Text style={Styles.text}>Seleccione un tipo de reporte</Text>;
 		}
 	};
 
@@ -122,6 +123,7 @@ export default function Home() {
 						</View>
 					</View>
 					{reportTable()}
+					{reportType === "" ? <></> : <ReportFooter />}
 				</View>
 			</View>
 		</View>
