@@ -56,6 +56,12 @@ export default StyleSheet.create({
     paddingHorizontal: 20,
     fontSize: 16,
   },
+  botonDeshabilitado: {
+  backgroundColor: "#8B8B8B",
+  opacity: 0.6,            
+  borderWidth: 1,
+  borderColor: "#999",    
+},
   botonFiltrar: {
     backgroundColor: "#B89A59",
     borderRadius: 25,
@@ -131,7 +137,7 @@ export default StyleSheet.create({
   totalText: { fontSize: 18, fontWeight: "700" },
 
   botonImprimir: {
-    backgroundColor: "#8B8B8B",
+    backgroundColor: "#B89A59",
     borderRadius: 20,
     paddingVertical: 10,
     paddingHorizontal: 25,
@@ -149,7 +155,10 @@ export default StyleSheet.create({
     alignItems: "center",
   },
   estadoPendiente: { backgroundColor: "#E68037" },
-  estadoPreparacion: { backgroundColor: "#2ECC71" },
+  estadoPreparacion: { backgroundColor: "#ccc72eff" },
+  estadoCompletada: { backgroundColor: "#2ECC71" },
+  estadoCancelada: { backgroundColor: "#dd2b2bff" },
+
   estadoTexto: {
     color: "#fff",
     fontWeight: "700",
@@ -189,6 +198,14 @@ export default StyleSheet.create({
     paddingHorizontal: 25,
     borderRadius: 25,
   },
+  botonCambiar: {
+  backgroundColor: "#B89A59",
+  paddingHorizontal: 15,
+  paddingVertical: 8,
+  borderRadius: 10,
+},
+
+
 });
 
 

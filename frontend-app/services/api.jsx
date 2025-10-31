@@ -283,14 +283,15 @@ export async function detalleOrden2(numero_orden) {
 }
 
 
-export async function updateOrden(numero_orden) {
+export async function updateOrden(numero_orden, estado) {
   console.log("Actualizando estado de la orden:", numero_orden);
   let token = await getToken();
   const url = `${BASE_URL}/api/v1/orders/actualizar_estado/${numero_orden}`;
-
+  console.log('estado para actualizar: ', estado)
   const body = {
-    estado: "En preparacion"
+    estado: estado.estado
   };
+  console.log('estado en el Api: ', estado.estado)
 
   const response = await fetch(url, {
     method: "PATCH",
@@ -591,13 +592,13 @@ let token = await getToken();
 
 
 export async function getSchedule() {
-// let token = await getToken();
-  // const url = `${BASE_URL}/api/v1/favorites/allFavoritesByUserId`;
+let token = await getToken();
+  const url = `${BASE_URL}/api/v1/favorites/allFavoritesByUserId`;
 
-  // const bodyData = {
-  //   id_usuario: userId,
-  //   id_producto: productId,
-  // };
+  const bodyData = {
+    id_usuario: userId,
+    id_producto: productId,
+  };
 
   try {
   //   const response = await fetch(url, {
