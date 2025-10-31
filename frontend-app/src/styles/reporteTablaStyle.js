@@ -34,4 +34,15 @@ export default StyleSheet.create({
 		flexDirection: "row",
 		justifyContent: "flex-end",
 	},
+	title: {
+		fontFamily: "Nunito_400Regular",
+		fontSize: 24,
+		width: "100%",
+		textAlign: "center",
+		alignSelf: "center",
+		borderWidth: 1,
+		borderColor: "#AAAAAA",
+		paddingHorizontal: 10,
+		paddingVertical: 5,
+	},
 });
