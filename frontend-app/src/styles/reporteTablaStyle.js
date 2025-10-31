@@ -11,7 +11,7 @@ export default StyleSheet.create({
 	},
 	headerText: {
 		fontFamily: "Nunito_400Regular",
-		fontSize: 24,
+		fontSize: 22,
 		textAlign: "center",
 		alignSelf: "center",
 		borderTopWidth: 1,
@@ -25,7 +25,7 @@ export default StyleSheet.create({
 	},
 	cell: {
 		fontFamily: "Nunito_400Regular",
-		fontSize: 24,
+		fontSize: 20,
 		textAlign: "center",
 		alignSelf: "center",
 		borderTopWidth: 1,
@@ -59,5 +59,20 @@ export default StyleSheet.create({
 		fontSize: 24,
 		alignSelf: "center",
 		marginVertical: 30,
+	},
+	noDataText: {
+		marginTop: 100,
+		marginHorizontal: 10,
+		backgroundColor: "#F8F8F8",
+		padding: 20,
+		shadowColor: "#000",
+		shadowOffset: { width: 4, height: 4 },
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
+		elevation: 5,
+		borderRadius: 8,
+		textAlign: "center",
+		color: "#f23030ff",
+		fontWeight: "bold",
 	},
 });

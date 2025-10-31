@@ -22,6 +22,9 @@ export default function ReporteOrdenes() {
 						email: o.email,
 						updateDate: o.fecha_actualizacion,
 						estado: o.estado,
+						total: o.total,
+						idPersonal: o.personal_id,
+						idPago: o.payment_id,
 					}));
 					setData(mapped);
 				} else {
@@ -38,9 +41,12 @@ export default function ReporteOrdenes() {
 		<View style={Styles.row}>
 			<Text style={[Styles.cell, { width: "10%" }]}>{item.idOrden}</Text>
 			<Text style={[Styles.cell, { width: "10%" }]}>{item.idUser}</Text>
-			<Text style={[Styles.cell, { width: "30%" }]}>{item.email}</Text>
-			<Text style={[Styles.cell, { width: "30%" }]}>{item.updateDate}</Text>
-			<Text style={[Styles.cell, { width: "20%" }]}>{item.estado}</Text>
+			<Text style={[Styles.cell, { width: "20%" }]}>{item.email}</Text>
+			<Text style={[Styles.cell, { width: "20%" }]}>{item.updateDate}</Text>
+			<Text style={[Styles.cell, { width: "15%" }]}>{item.estado}</Text>
+			<Text style={[Styles.cell, { width: "10%" }]}>{item.total}</Text>
+			<Text style={[Styles.cell, { width: "10%" }]}>{item.idPersonal}</Text>
+			<Text style={[Styles.cell, { width: "10%" }]}>{item.idPago}</Text>
 		</View>
 	);
 
@@ -50,11 +56,14 @@ export default function ReporteOrdenes() {
 			<View style={Styles.header}>
 				<Text style={[Styles.headerText, { width: "10%" }]}># Órden</Text>
 				<Text style={[Styles.headerText, { width: "10%" }]}>ID Cliente</Text>
-				<Text style={[Styles.headerText, { width: "30%" }]}>Email</Text>
-				<Text style={[Styles.headerText, { width: "30%" }]}>
+				<Text style={[Styles.headerText, { width: "20%" }]}>Email</Text>
+				<Text style={[Styles.headerText, { width: "20%" }]}>
 					Fecha Actualización
 				</Text>
-				<Text style={[Styles.headerText, { width: "20%" }]}>Estado</Text>
+				<Text style={[Styles.headerText, { width: "15%" }]}>Estado</Text>
+				<Text style={[Styles.headerText, { width: "10%" }]}>Total</Text>
+				<Text style={[Styles.headerText, { width: "10%" }]}>ID Cliente</Text>
+				<Text style={[Styles.headerText, { width: "10%" }]}>ID Pago</Text>
 			</View>
 			{data.length === 0 ? (
 				<Text style={Styles.noDataText}>
