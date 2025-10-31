@@ -1,6 +1,9 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
+	table: {
+		width: "100%",
+	},
 	header: {
 		flex: 1,
 		flexDirection: "row",
@@ -44,5 +47,17 @@ export default StyleSheet.create({
 		borderColor: "#AAAAAA",
 		paddingHorizontal: 10,
 		paddingVertical: 5,
+	},
+	text: {
+		fontFamily: "Nunito_400Regular",
+		fontSize: 24,
+		alignSelf: "center",
+		marginVertical: 30,
+	},
+	dataText: {
+		fontFamily: "Nunito_400Regular",
+		fontSize: 24,
+		alignSelf: "center",
+		marginVertical: 30,
 	},
 });
