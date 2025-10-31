@@ -46,6 +46,7 @@ export default function ReporteOrdenes() {
 
 	return (
 		<View style={Styles.table}>
+			<Text style={Styles.title}>Tabla de Órdenes</Text>
 			<View style={Styles.header}>
 				<Text style={[Styles.headerText, { width: "10%" }]}># Órden</Text>
 				<Text style={[Styles.headerText, { width: "10%" }]}>ID Cliente</Text>

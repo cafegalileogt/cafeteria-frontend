@@ -45,6 +45,7 @@ export default function ReporteVentas() {
 
 	return (
 		<View style={Styles.table}>
+			<Text style={Styles.title}>Tabla de Ventas</Text>
 			<View style={Styles.header}>
 				<Text style={[Styles.headerText, { width: "40%" }]}>Fecha</Text>
 				<Text style={[Styles.headerText, { width: "30%" }]}>Órdenes</Text>

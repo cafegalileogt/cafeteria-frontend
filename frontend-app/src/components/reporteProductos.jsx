@@ -44,6 +44,7 @@ export default function ReporteProductos() {
 
 	return (
 		<View style={Styles.table}>
+			<Text style={Styles.title}>Tabla de Productos más vendidos</Text>
 			<View style={Styles.header}>
 				<Text style={[Styles.headerText, { width: "20%" }]}>ID Producto</Text>
 				<Text style={[Styles.headerText, { width: "30%" }]}>Producto</Text>
