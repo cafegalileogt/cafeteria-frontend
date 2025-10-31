@@ -1,5 +1,5 @@
 import { View, Text, FlatList } from "react-native";
-import Styles from "../styles/reporteOrdenesStyle";
+import Styles from "../styles/reporteTablaStyle";
 import { useState, useEffect } from "react";
 import { getReportOrder } from "../../services/api";
 

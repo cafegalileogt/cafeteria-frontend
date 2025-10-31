@@ -28,5 +28,10 @@ export default StyleSheet.create({
 		borderTopWidth: 1,
 		borderBottomWidth: 1,
 		borderColor: "#AAAAAA",
+		paddingHorizontal: 20,
+	},
+	totalRow: {
+		flexDirection: "row",
+		justifyContent: "flex-end",
 	},
 });

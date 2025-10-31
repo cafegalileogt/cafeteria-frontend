@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
-import {
-	horasPicoReport,
-	ventasReport,
-	masVendidosReport,
-} from "../../../services/api";
+import { horasPicoReport, masVendidosReport } from "../../../services/api";
 import Styles from "../../styles/reportesStyles";
 import { Dropdown } from "react-native-element-dropdown";
 import {
@@ -38,21 +34,6 @@ export default function Home() {
 			}
 		};
 		fetchHorasPico();
-	}, []);
-
-	//  Reporte de ventas
-	useEffect(() => {
-		const fetchVentas = async () => {
-			try {
-				const from = "2025-10-01";
-				const to = "2025-10-31";
-				const data = await ventasReport(from, to);
-				console.log(" Reporte de ventas:", data);
-			} catch (error) {
-				console.error(" Error al obtener reporte de ventas:", error);
-			}
-		};
-		fetchVentas();
 	}, []);
 
 	//  Reporte de más vendidos
