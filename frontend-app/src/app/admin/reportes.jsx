@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import {
-	getReportOrder,
 	horasPicoReport,
 	ventasReport,
 	masVendidosReport,
@@ -23,21 +22,8 @@ export default function Home() {
 	const [loaded, error] = useFonts({ Nunito_900Black, Nunito_400Regular });
 	const reportTypes = ["Órdenes", "Ventas", "Productos", "Hora Pico"];
 	const [reportType, setReportType] = useState("");
-
-	//  Reporte de órdenes
-	useEffect(() => {
-		const fetchOrdenes = async () => {
-			try {
-				const from = "2025-10-01";
-				const to = "2025-10-31";
-				const data = await getReportOrder(from, to);
-				console.log(" Reporte de órdenes:", data);
-			} catch (error) {
-				console.error(" Error al obtener reporte de órdenes:", error);
-			}
-		};
-		fetchOrdenes();
-	}, []);
+	const stateTypes = ["Completada", "En preparación", "Cancelada", "Entregada"];
+	const [stateType, setStateType] = useState("");
 
 	//  Reporte de horas pico
 	useEffect(() => {
@@ -131,30 +117,20 @@ export default function Home() {
 						<View style={Styles.containerCols}>
 							<View style={Styles.menuRows}>
 								<Text style={Styles.label}>Desde:</Text>
-								<Dropdown
+								<TextInput
 									style={Styles.dropdown}
-									data={reportTypes.map((type) => ({
-										label: type,
-										value: type,
-									}))}
-									placeholder="Tipo de reporte"
+									placeholder="yyyy-mm-dd"
 									labelField={"label"}
 									valueField={"value"}
-									onChange={(item) => setReportType(item.value)}
 								/>
 							</View>
 							<View style={Styles.menuRows}>
 								<Text style={Styles.label}>Hasta:</Text>
-								<Dropdown
+								<TextInput
 									style={Styles.dropdown}
-									data={reportTypes.map((type) => ({
-										label: type,
-										value: type,
-									}))}
-									placeholder="Tipo de reporte"
+									placeholder="yyyy-mm-dd"
 									labelField={"label"}
 									valueField={"value"}
-									onChange={(item) => setReportType(item.value)}
 								/>
 							</View>
 						</View>
@@ -163,14 +139,15 @@ export default function Home() {
 								<Text style={Styles.label}>Estado:</Text>
 								<Dropdown
 									style={Styles.dropdown}
-									data={reportTypes.map((type) => ({
+									data={stateTypes.map((type) => ({
 										label: type,
 										value: type,
 									}))}
-									placeholder="Tipo de reporte"
+									placeholder="Tipo de estado"
 									labelField={"label"}
 									valueField={"value"}
-									onChange={(item) => setReportType(item.value)}
+									value={stateType}
+									onChange={(item) => setStateType(item.value)}
 								/>
 							</View>
 							<View style={Styles.menuRows}>

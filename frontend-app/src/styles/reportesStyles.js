@@ -51,6 +51,7 @@ export default StyleSheet.create({
 		borderWidth: 1,
 		padding: 4,
 		backgroundColor: "#EEEEEE",
+		fontSize: 16,
 	},
 	label: {
 		fontFamily: "Nunito_400Regular",
