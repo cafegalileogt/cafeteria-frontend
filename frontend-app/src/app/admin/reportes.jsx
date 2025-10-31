@@ -20,6 +20,10 @@ export default function Home() {
 	const [reportType, setReportType] = useState("");
 	const stateTypes = ["Completada", "En preparación", "Cancelada", "Entregada"];
 	const [stateType, setStateType] = useState("");
+	const [minOrdenes, setMinOrdenes] = useState("");
+	const [maxOrdenes, setMaxOrdenes] = useState("");
+	const [minVentas, setMinVentas] = useState("");
+	const [maxVentas, setMaxVentas] = useState("");
 
 	useEffect(() => {
 		if (loaded || error) SplashScreen.hideAsync();
@@ -39,6 +43,86 @@ export default function Home() {
 		} else {
 			return <Text style={Styles.text}>Seleccione un tipo de reporte</Text>;
 		}
+	};
+
+	const filterOpts = () => {
+		if (reportType === "Órdenes") {
+			return (
+				<View style={Styles.menuRows}>
+					<Text style={Styles.label}>Estado:</Text>
+					<Dropdown
+						style={Styles.dropdown}
+						data={stateTypes.map((type) => ({
+							label: type,
+							value: type,
+						}))}
+						placeholder="Tipo de estado"
+						labelField={"label"}
+						valueField={"value"}
+						value={stateType}
+						onChange={(item) => setStateType(item.value)}
+					/>
+				</View>
+			);
+		} else if (reportType === "Ventas") {
+			return (
+				<>
+					<View style={Styles.menuRows}>
+						<Text style={Styles.label}>Min:</Text>
+						<TextInput
+							style={Styles.dropdown}
+							placeholder="Cant."
+							labelField={"label"}
+							valueField={"value"}
+							value={minOrdenes}
+						/>
+					</View>
+					<View style={Styles.menuRows}>
+						<Text style={Styles.label}>Max:</Text>
+						<TextInput
+							style={Styles.dropdown}
+							placeholder="Cant."
+							labelField={"label"}
+							valueField={"value"}
+							value={maxOrdenes}
+						/>
+					</View>
+				</>
+			);
+		} else if (reportType === "Productos") {
+			return (
+				<>
+					<View style={Styles.menuRows}>
+						<Text style={Styles.label}>Min:</Text>
+						<TextInput
+							style={Styles.dropdown}
+							placeholder="Cant."
+							labelField={"label"}
+							valueField={"value"}
+							value={minVentas}
+						/>
+					</View>
+					<View style={Styles.menuRows}>
+						<Text style={Styles.label}>Max:</Text>
+						<TextInput
+							style={Styles.dropdown}
+							placeholder="Cant."
+							labelField={"label"}
+							valueField={"value"}
+							value={maxVentas}
+						/>
+					</View>
+				</>
+			);
+		} else if (reportType === "Hora Pico") {
+			return <View style={Styles.menuRows} />;
+		} else {
+			return <View style={Styles.menuRows} />;
+		}
+	};
+
+	const filterData = () => {
+		console.log("Filtrar datos!");
 	};
 
 	return (
@@ -85,39 +169,9 @@ export default function Home() {
 								/>
 							</View>
 						</View>
+						<View style={Styles.containerCols}>{filterOpts()}</View>
 						<View style={Styles.containerCols}>
-							<View style={Styles.menuRows}>
-								<Text style={Styles.label}>Estado:</Text>
-								<Dropdown
-									style={Styles.dropdown}
-									data={stateTypes.map((type) => ({
-										label: type,
-										value: type,
-									}))}
-									placeholder="Tipo de estado"
-									labelField={"label"}
-									valueField={"value"}
-									value={stateType}
-									onChange={(item) => setStateType(item.value)}
-								/>
-							</View>
-							<View style={Styles.menuRows}>
-								<Text style={Styles.label}>Categoria:</Text>
-								<Dropdown
-									style={Styles.dropdown}
-									data={reportTypes.map((type) => ({
-										label: type,
-										value: type,
-									}))}
-									placeholder="Tipo de reporte"
-									labelField={"label"}
-									valueField={"value"}
-									onChange={(item) => setReportType(item.value)}
-								/>
-							</View>
-						</View>
-						<View style={Styles.containerCols}>
-							<TouchableOpacity>
+							<TouchableOpacity onPress={filterData}>
 								<Text style={Styles.filter}>Filtrar</Text>
 							</TouchableOpacity>
 						</View>
