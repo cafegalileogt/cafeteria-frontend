@@ -965,6 +965,9 @@ export async function horasPicoReport(from, to) {
 				{ hour: "11:00", orders: 38 },
 				{ hour: "12:00", orders: 60 },
 				{ hour: "13:00", orders: 70 },
+				{ hour: "14:00", orders: 21 },
+				{ hour: "15:00", orders: 29 },
+				{ hour: "16:00", orders: 43 },
 			],
 			most_active_hour: "13:00",
 		};
