@@ -874,191 +874,112 @@ export async function isOpenStore() {
 	}
 }
 
+//Reportes Panel Administrativo 
+
 export async function getReportOrder(from, to) {
-	// let token = await getToken();
-	// const url = `${BASE_URL}/api/v1/report/orders?${from}&to${to}`;
-
-	// const bodyData = {
-	//   id_usuario: userId,
-	//   id_producto: productId,
-	// };
-
 	try {
-		//   const response = await fetch(url, {
-		//     method: "POST",
-		//     headers: {
-		//       "Content-Type": "application/json",
-		//       Authorization: token ? `Bearer ${token}` : "",
-		//     },
-		//     body: JSON.stringify(bodyData),
-		//   });
+	  const token = await getToken();
+	  const url = `${BASE_URL}/api/v1/reports/getAllOrdersByDates?from=${from}&to=${to}`;
+  
+	  const response = await fetch(url, {
+		method: "GET",
+		headers: {
+		  "Content-Type": "application/json",
+		  ...(token && { Authorization: `Bearer ${token}` }), 
+		},
+	  });
+  
+	  if (!response.ok) {
+		throw new Error(`Error al obtener órdenes: ${response.status}`);
+	  }
+  
+	  const data = await response.json();
 
-		//   const data = await response.json();
-
-		//deben filtrar por estado, traer estado 1
-
-		let datadePrueba = {
-			from: "2025-10-01",
-			to: "2025-10-25",
-			total_orders: 2,
-			orders: [
-				{
-					order_id: 89459,
-					user_id: 2,
-					email: "byron@galileo.com",
-					fecha_actualizacion: "2025-10-25T10:15:00",
-					estado: "Completada",
-					total: 85.5,
-					personal_id: 4,
-					payment_id: 1,
-				},
-				{
-					order_id: 89460,
-					user_id: 41,
-					email: "karla@gmail.com",
-					fecha_actualizacion: "2025-10-25T10:40:00",
-					estado: "En preparación",
-					total: 72.0,
-					personal_id: 2,
-					payment_id: null,
-				},
-			],
-		};
-
-		return datadePrueba;
-		return { status: response.status, data };
-	} catch (err) {
-		console.error("Error agregando a favoritos:", err);
-		return { status: 500, data: null, error: err.message };
+	  return data;
+	} catch (error) {
+	  console.error("Error en getReportOrder:", error);
+	  throw error;
 	}
-}
+  }
 
-export async function horasPicoReport(from, to) {
-	// let token = await getToken();
-	// const url = `${BASE_URL}/api/v1/report/horasPico?${from}&to${to}`;
-
-	// const bodyData = {
-	//   id_usuario: userId,
-	//   id_producto: productId,
-	// };
-
+  export async function horasPicoReport(from, to) {
 	try {
-		//   const response = await fetch(url, {
-		//     method: "POST",
-		//     headers: {
-		//       "Content-Type": "application/json",
-		//       Authorization: token ? `Bearer ${token}` : "",
-		//     },
-		//     body: JSON.stringify(bodyData),
-		//   });
+	  const token = await getToken();
+  
+	  const url = `${BASE_URL}/api/v1/reports/getPeakHours?from=${from}&to=${to}`;
+  
+	  const response = await fetch(url, {
+		method: "GET",
+		headers: {
+		  "Content-Type": "application/json",
+		  ...(token && { Authorization: `Bearer ${token}` }),
+		},
+	  });
+  
+	  if (!response.ok) {
+		throw new Error(`Error al obtener horas pico: ${response.status}`);
+	  }
+  
+	  const data = await response.json();
 
-		//   const data = await response.json();
-
-		//deben filtrar por estado, traer estado 1
-
-		let datadePrueba = {
-			from: "2025-10-01",
-			to: "2025-10-31",
-			horas_pico: [
-				{ hour: "09:00", orders: 40 },
-				{ hour: "10:00", orders: 52 },
-				{ hour: "11:00", orders: 38 },
-				{ hour: "12:00", orders: 60 },
-				{ hour: "13:00", orders: 70 },
-				{ hour: "14:00", orders: 21 },
-				{ hour: "15:00", orders: 29 },
-				{ hour: "16:00", orders: 43 },
-			],
-			most_active_hour: "13:00",
-		};
-
-		return datadePrueba;
-		return { status: response.status, data };
-	} catch (err) {
-		console.error("Error agregando a favoritos:", err);
-		return { status: 500, data: null, error: err.message };
+	  return data;
+	} catch (error) {
+	  console.error("Error en horasPicoReport:", error);
+	  throw error;
 	}
-}
-
-export async function ventasReport(from, to) {
-	// let token = await getToken();
-	// const url = `${BASE_URL}/api/v1/report/sales?${from}&to${to}`;
-
-	// const bodyData = {
-	//   id_usuario: userId,
-	//   id_producto: productId,
-	// };
-
+  }
+  
+  export async function ventasReport(from, to) {
 	try {
-		//   const response = await fetch(url, {
-		//     method: "POST",
-		//     headers: {
-		//       "Content-Type": "application/json",
-		//       Authorization: token ? `Bearer ${token}` : "",
-		//     },
-		//     body: JSON.stringify(bodyData),
-		//   });
-
-		//   const data = await response.json();
-
-		//deben filtrar por estado, traer estado 1
-
-		let datadePrueba = {
-			from: "2025-10-01",
-			to: "2025-10-31",
-			total_sales: 15625.75,
-			daily_sales: [
-				{ date: "2025-10-01", orders: 35, total: 980.5 },
-				{ date: "2025-10-02", orders: 28, total: 820.75 },
-				{ date: "2025-10-03", orders: 42, total: 1150.0 },
-			],
-		};
-
-		return datadePrueba;
-		return { status: response.status, data };
-	} catch (err) {
-		console.error("Error agregando a favoritos:", err);
-		return { status: 500, data: null, error: err.message };
+	  const token = await getToken();
+  
+	  const url = `${BASE_URL}/api/v1/reports/getAllSalesByDates?from=${from}&to=${to}`;
+  
+	  const response = await fetch(url, {
+		method: "GET",
+		headers: {
+		  "Content-Type": "application/json",
+		  ...(token && { Authorization: `Bearer ${token}` }),
+		},
+	  });
+  
+	  if (!response.ok) {
+		throw new Error(`Error al obtener ventas: ${response.status}`);
+	  }
+  
+	  const data = await response.json();
+  
+	  return data;
+	} catch (error) {
+	  console.error("Error en ventasReport:", error);
+	  throw error;
 	}
-}
+  }
 
-export async function masVendidosReport(from, to) {
-	// let token = await getToken();
-	// const url = `${BASE_URL}/api/v1/report/masVendidos?limit=10&${from}&to${to}`;
-
-	// const bodyData = {
-	//   id_usuario: userId,
-	//   id_producto: productId,
-	// };
-
+  export async function masVendidosReport(from, to) {
 	try {
-		//   const response = await fetch(url, {
-		//     method: "POST",
-		//     headers: {
-		//       "Content-Type": "application/json",
-		//       Authorization: token ? `Bearer ${token}` : "",
-		//     },
-		//     body: JSON.stringify(bodyData),
-		//   });
-
-		//   const data = await response.json();
-
-		//deben filtrar por estado, traer estado 1
-
-		let datadePrueba = {
-			from: "2025-10-01",
-			to: "2025-10-31",
-			top_products: [
-				{ id_producto: 1, name: "torito", sold_times: 130, total: 1950.0 },
-				{ id_producto: 2, name: "Panqueques", sold_times: 98, total: 1470.0 },
-				{ id_producto: 7, name: "Hamburguesa", sold_times: 85, total: 1020.0 },
-			],
-		};
-
-		return datadePrueba;
-		return { status: response.status, data };
-	} catch (err) {
-		console.error("Error agregando a favoritos:", err);
-		return { status: 500, data: null, error: err.message };
+	  const token = await getToken();
+  
+	  const url = `${BASE_URL}/api/v1/reports/getTopTenProductsByDates?from=${from}&to=${to}`;
+  
+	  const response = await fetch(url, {
+		method: "GET",
+		headers: {
+		  "Content-Type": "application/json",
+		  ...(token && { Authorization: `Bearer ${token}` }),
+		},
+	  });
+  
+	  if (!response.ok) {
+		throw new Error(`Error al obtener los productos más vendidos: ${response.status}`);
+	  }
+  
+	  const data = await response.json();
+  
+	  return data;
+	} catch (error) {
+	  console.error("Error en masVendidosReport:", error);
+	  throw error;
 	}
-}
+  }
+  
