@@ -1,77 +1,189 @@
-import React, { useEffect } from "react";
-import { Text, View } from "react-native";
-import { 
-  getReportOrder, 
-  horasPicoReport, 
-  ventasReport, 
-  masVendidosReport 
-} from "../../../services/api";
+import { useEffect, useState } from "react";
+import { Text, TextInput, TouchableOpacity, View, ActivityIndicator } from "react-native";
+import Styles from "../../styles/reportesStyles";
+import { Dropdown } from "react-native-element-dropdown";
+import {
+  Nunito_900Black,
+  Nunito_400Regular,
+  useFonts,
+} from "@expo-google-fonts/nunito";
+import { SplashScreen } from "expo-router";
+import ReporteOrdenes from "../../components/reporteOrdenes";
+import ReporteVentas from "../../components/reporteVentas";
+import ReporteProductos from "../../components/reporteProductos";
+import ReporteHoraPico from "../../components/reporteHoraPico";
+import ReportFooter from "../../components/reportFooter";
+import { getReportOrder, ventasReport, masVendidosReport, horasPicoReport } from "../../../services/api";
 
 export default function Home() {
+  const [loaded, error] = useFonts({ Nunito_900Black, Nunito_400Regular });
+  const reportTypes = ["Órdenes", "Ventas", "Productos", "Hora Pico"];
+  const [reportType, setReportType] = useState("");
+  const stateTypes = ["Completada", "En preparación", "Cancelada", "Entregada"];
+  const [stateType, setStateType] = useState("");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [reportData, setReportData] = useState(null);
+  const [errorMsg, setErrorMsg] = useState("");
 
-  //  Reporte de órdenes
   useEffect(() => {
-    const fetchOrdenes = async () => {
-      try {
-        const from = "2025-10-01";
-        const to = "2025-10-31";
-        const data = await getReportOrder(from, to);
-        console.log(" Reporte de órdenes:", data);
-      } catch (error) {
-        console.error(" Error al obtener reporte de órdenes:", error);
-      }
-    };
-    fetchOrdenes();
-  }, []);
+    if (loaded || error) SplashScreen.hideAsync();
+  }, [loaded, error]);
 
-  //  Reporte de horas pico
   useEffect(() => {
-    const fetchHorasPico = async () => {
-      try {
-        const from = "2025-10-01";
-        const to = "2025-10-31";
-        const data = await horasPicoReport(from, to);
-        console.log(" Reporte de horas pico:", data);
-      } catch (error) {
-        console.error(" Error al obtener reporte de horas pico:", error);
-      }
-    };
-    fetchHorasPico();
-  }, []);
+    setReportData(null);
+    setErrorMsg("");
+  }, [reportType]);
 
-  //  Reporte de ventas
-  useEffect(() => {
-    const fetchVentas = async () => {
-      try {
-        const from = "2025-10-01";
-        const to = "2025-10-31";
-        const data = await ventasReport(from, to);
-        console.log(" Reporte de ventas:", data);
-      } catch (error) {
-        console.error(" Error al obtener reporte de ventas:", error);
-      }
-    };
-    fetchVentas();
-  }, []);
+  if (!loaded && !error) return null;
 
-  //  Reporte de más vendidos
-  useEffect(() => {
-    const fetchMasVendidos = async () => {
-      try {
-        const from = "2025-10-01";
-        const to = "2025-10-31";
-        const data = await masVendidosReport(from, to);
-        console.log(" Reporte de más vendidos:", data);
-      } catch (error) {
-        console.error(" Error al obtener reporte de más vendidos:", error);
+  const handleFilter = async () => {
+    if (!fromDate || !toDate || !reportType) {
+      setErrorMsg("Seleccione tipo de reporte y rango de fechas");
+      return;
+    }
+
+    setLoading(true);
+    setErrorMsg("");
+    try {
+      let data;
+      switch (reportType) {
+        case "Órdenes":
+          data = await getReportOrder(fromDate, toDate);
+          
+          if (data.orders && Array.isArray(data.orders)) {
+            const mappedOrders = data.orders.map((o) => ({
+              idOrden: o.order_id || o.numero_orden,
+              idUser: o.user_id || o.id_usuario,
+              email: o.email || o.correo_institucional,
+              updateDate: o.fecha_actualizacion || o.fecha,
+              estado: o.estado,
+              total: o.total,
+              idPersonal: o.personal_id || o.id_personal,
+              idPago: o.payment_id || o.id_pago
+            }));
+            data.orders = mappedOrders;
+          }
+          
+          if (stateType && data.orders) {
+            data.orders = data.orders.filter(order => 
+              order.estado === stateType
+            );
+          }
+          break;
+        case "Ventas":
+          data = await ventasReport(fromDate, toDate);
+          break;
+        case "Productos":
+          data = await masVendidosReport(fromDate, toDate);
+          break;
+        case "Hora Pico":
+          data = await horasPicoReport(fromDate, toDate);
+          break;
+        default:
+          data = null;
       }
-    };
-    fetchMasVendidos();
-  }, []);
+      setReportData(data);
+    } catch (err) {
+      console.error(err);
+      setErrorMsg("Error al obtener datos del reporte");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const reportTable = () => {
+    if (loading) return <ActivityIndicator size="large" color="#000" />;
+    if (errorMsg) return <Text style={Styles.error}>{errorMsg}</Text>;
+    if (!reportType || !reportData)
+      return <Text style={Styles.text}>Seleccione un tipo de reporte</Text>;
+
+    switch (reportType) {
+      case "Órdenes":
+        return <ReporteOrdenes data={reportData.orders} />;
+      case "Ventas":
+        return <ReporteVentas data={reportData.daily_sales} total={reportData.total_sales} />;
+      case "Productos":
+        return <ReporteProductos data={reportData.top_products} />;
+      case "Hora Pico":
+        return <ReporteHoraPico data={reportData.horas_pico} mostActive={reportData.most_active_hour} />;
+      default:
+        return <Text style={Styles.text}>Seleccione un tipo de reporte</Text>;
+    }
+  };
+
+  const filterOpts = () => {
+    if (reportType === "Órdenes") {
+      return (
+        <View style={Styles.menuRows}>
+          <Text style={Styles.label}>Estado:</Text>
+          <Dropdown
+            style={Styles.dropdown}
+            data={stateTypes.map((type) => ({ label: type, value: type }))}
+            placeholder="Tipo de estado"
+            labelField={"label"}
+            valueField={"value"}
+            value={stateType}
+            onChange={(item) => setStateType(item.value)}
+          />
+        </View>
+      );
+    } else return <View style={Styles.menuRows} />;
+  };
 
   return (
-    <View>
-      <Text>Bienvenido a reportes</Text>
+    <View style={Styles.background}>
+      <View style={Styles.page}>
+        <Text style={Styles.title}>Reportes</Text>
+        <View style={Styles.separator} />
+        <View style={Styles.container}>
+          <View style={Styles.containerRows}>
+            <View style={Styles.containerCols}>
+              <View style={Styles.menuRows}>
+                <Text style={Styles.label}>Tipo:</Text>
+                <Dropdown
+                  style={Styles.dropdown}
+                  data={reportTypes.map((type) => ({ label: type, value: type }))}
+                  placeholder="Tipo de reporte"
+                  labelField={"label"}
+                  valueField={"value"}
+                  value={reportType}
+                  onChange={(item) => setReportType(item.value)}
+                />
+              </View>
+            </View>
+            <View style={Styles.containerCols}>
+              <View style={Styles.menuRows}>
+                <Text style={Styles.label}>Desde:</Text>
+                <TextInput
+                  style={Styles.dropdown}
+                  placeholder="yyyy-mm-dd"
+                  value={fromDate}
+                  onChangeText={setFromDate}
+                />
+              </View>
+              <View style={Styles.menuRows}>
+                <Text style={Styles.label}>Hasta:</Text>
+                <TextInput
+                  style={Styles.dropdown}
+                  placeholder="yyyy-mm-dd"
+                  value={toDate}
+                  onChangeText={setToDate}
+                />
+              </View>
+            </View>
+            <View style={Styles.containerCols}>{filterOpts()}</View>
+            <View style={Styles.containerCols}>
+              <TouchableOpacity onPress={handleFilter}>
+                <Text style={Styles.filter}>Filtrar</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          {reportTable()}
+          {reportType === "" ? <></> : <ReportFooter />}
+        </View>
+      </View>
     </View>
   );
 }
