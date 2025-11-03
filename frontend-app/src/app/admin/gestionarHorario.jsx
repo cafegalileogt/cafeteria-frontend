@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, TextInput, ScrollView, Alert } from "react-native";
-import { getSchedule, updateSchedule, createException } from "../../../services/api";
+import { getSchedule, updateSchedule, createException,deleteException } from "../../../services/api";
 import { styles } from "../../styles/gestionHorarioStyle";
 
 export default function GestionarHorario() {
@@ -15,24 +15,14 @@ export default function GestionarHorario() {
     const fetchSchedule = async () => {
       try {
         const data = await getSchedule();
-        if (!data || !data.horarios) {
-          setHorarios([
-            { dia: "Lunes", apertura: "7:00", cierre: "21:00", cerrado: false },
-            { dia: "Martes", apertura: "7:00", cierre: "21:00", cerrado: false },
-            { dia: "Miércoles", apertura: "7:00", cierre: "21:00", cerrado: false },
-            { dia: "Jueves", apertura: "7:00", cierre: "21:00", cerrado: false },
-            { dia: "Viernes", apertura: "7:00", cierre: "21:00", cerrado: false },
-            { dia: "Sábado", apertura: "8:00", cierre: "18:00", cerrado: false },
-            { dia: "Domingo", apertura: "--:--", cierre: "--:--", cerrado: true },
-          ]);
-          setExcepciones([
-            { id: 1, fecha: "15/09/2025", descripcion: "Feriado Nacional", apertura: "--:--", cierre: "--:--", cerrado: true },
-            { id: 2, fecha: "20/10/2025", descripcion: "Evento Especial", apertura: "10:00", cierre: "13:00", cerrado: false },
-          ]);
-        } else {
-          setHorarios(data.horarios);
-          setExcepciones(data.excepciones || []);
-        }
+
+          console.log('data debug: ', data)
+          setHorarios(data.dias_semana); 
+          const excepcionesFormateadas = (data.excepciones || []).map(ex => ({
+            ...ex,
+            fecha_excepcion: new Date(ex.fecha_excepcion).toISOString().split("T")[0]
+          }));
+          setExcepciones(excepcionesFormateadas);       
       } catch (error) {
         console.error("Error al obtener el horario:", error);
       }
@@ -47,8 +37,15 @@ export default function GestionarHorario() {
 
   const handleGuardarHorario = async () => {
     try {
-      await updateSchedule(formHorario);
-      setHorarios(horarios.map((h) => (h.dia === formHorario.dia ? formHorario : h)));
+      let {apertura, cierre, dia_semana, is_closed } = formHorario;
+      let datos = {
+        hora_apertura: formHorario.apertura,
+        hora_cierre: formHorario.cierre,
+        is_closed: formHorario.is_closed,
+      };
+      await updateSchedule(formHorario.dia_semana, datos);
+      console.log('que viene en form', formHorario)
+      setHorarios(horarios.map((h) => (h.dia_semana === formHorario.dia_semana ? formHorario : h)));
       alert("✅ Cambios guardados correctamente");
       setMostrarModalHorario(false);
     } catch (error) {
@@ -56,19 +53,21 @@ export default function GestionarHorario() {
     }
   };
 
-  const handleEliminarExcepcion = (id) => {
-    Alert.alert("Confirmar eliminación", "¿Seguro que deseas eliminar esta excepción?", [
-      { text: "Cancelar", style: "cancel" },
-      {
-        text: "Eliminar",
-        style: "destructive",
-        onPress: () => {
-          setExcepciones(excepciones.filter((ex) => ex.id !== id));
-          alert("🗑️ Excepción eliminada correctamente");
-        },
-      },
-    ]);
-  };
+const handleEliminarExcepcion = async (id_excepcion) => {
+  const confirmar = window.confirm("¿Seguro que deseas eliminar esta excepción?");
+  if (!confirmar) return;
+
+  try {
+    const deleted = await deleteException(id_excepcion);
+    console.log("delete data: ", deleted);
+    setExcepciones(excepciones.filter((ex) => ex.id_excepcion !== id_excepcion));
+    window.alert("Excepción eliminada correctamente");
+  } catch (error) {
+    console.error("Error al eliminar excepción:", error);
+    window.alert(" No se pudo eliminar la excepción.");
+  }
+};
+
 
   const handleAgregarExcepcion = () => {
     setFormExcepcion({ fecha: "", descripcion: "", apertura: "", cierre: "", cerrado: false });
@@ -77,15 +76,17 @@ export default function GestionarHorario() {
 
   const handleGuardarExcepcion = async () => {
     const nueva = {
-      id: excepciones.length + 1,
-      fecha: formExcepcion.fecha,
+      // id: excepciones.length + 1,
+      fecha_excepcion: formExcepcion.fecha,
       descripcion: formExcepcion.descripcion,
-      apertura: formExcepcion.apertura,
-      cierre: formExcepcion.cierre,
-      cerrado: formExcepcion.cerrado,
+      hora_apertura: formExcepcion.apertura,
+      hora_cierre: formExcepcion.cierre,
+      is_closed: formExcepcion.cerrado,
     };
     try {
+      console.log('Lo que viene en nueva excepcion: ', nueva)
       await createException(nueva);
+      createException(fecha_excepcion, hora_apertura, hora_cierre, is_closed, descripcion)
       setExcepciones([...excepciones, nueva]);
       alert("✅ Excepción agregada correctamente");
       setMostrarModalExcepcion(false);
@@ -111,10 +112,10 @@ export default function GestionarHorario() {
 
         {horarios.map((item, index) => (
           <View style={styles.row} key={index}>
-            <Text style={styles.col}>{item.dia}</Text>
-            <Text style={styles.col}>{item.apertura}</Text>
-            <Text style={styles.col}>{item.cierre}</Text>
-            <Text style={styles.col}>{item.cerrado ? "❌" : "☑️"}</Text>
+            <Text style={styles.col}>{item.dia_semana}</Text>
+            <Text style={styles.col}>{item.hora_apertura}</Text>
+            <Text style={styles.col}>{item.hora_cierre}</Text>
+            <Text style={styles.col}>{item.is_closed ? "❌" : "☑️"}</Text>
             <TouchableOpacity style={styles.btnPrimary} onPress={() => handleEditarHorario(item)}>
               <Text style={styles.btnText}>Modificar</Text>
             </TouchableOpacity>
@@ -140,16 +141,16 @@ export default function GestionarHorario() {
         </View>
 
         {excepciones.map((ex) => (
-          <View style={styles.row} key={ex.id}>
-            <Text style={styles.col}>{ex.fecha}</Text>
+          <View style={styles.row} key={ex.id_exception}>
+            <Text style={styles.col}>{ex.fecha_excepcion}</Text>
             <Text style={styles.col}>{ex.descripcion}</Text>
-            <Text style={styles.col}>{ex.apertura}</Text>
-            <Text style={styles.col}>{ex.cierre}</Text>
+            <Text style={styles.col}>{ex.hora_apertura}</Text>
+            <Text style={styles.col}>{ex.hora_cierre}</Text>
             <View style={{ flexDirection: "row", gap: 5 }}>
               <TouchableOpacity style={styles.btnPrimary}>
                 <Text style={styles.btnText}>Modificar</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.btnDanger} onPress={() => handleEliminarExcepcion(ex.id)}>
+              <TouchableOpacity style={styles.btnDanger} onPress={() => handleEliminarExcepcion(ex.id_exception)}>                
                 <Text style={styles.btnText}>Eliminar</Text>
               </TouchableOpacity>
             </View>
@@ -161,7 +162,7 @@ export default function GestionarHorario() {
       {mostrarModalHorario && (
         <View style={styles.modal}>
           <View style={styles.modalBox}>
-            <Text style={styles.modalTitle}>Modificar horario - {formHorario.dia}</Text>
+            <Text style={styles.modalTitle}>Modificar horario - {formHorario.dia_semana}</Text>
             <Text style={styles.label}>Hora de apertura</Text>
             <TextInput
               style={styles.input}

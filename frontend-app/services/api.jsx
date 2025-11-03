@@ -593,173 +593,94 @@ let token = await getToken();
 
 export async function getSchedule() {
 let token = await getToken();
-  const url = `${BASE_URL}/api/v1/favorites/allFavoritesByUserId`;
+  const url = `${BASE_URL}/api/v1/schedule/getSchedule`;
+  const urlException = `${BASE_URL}/api/v1/schedule/getException`;
+
+
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+    });
+
+    const responseException =await fetch(urlException, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+    });
+
+  const dias_semana = await response.json();
+  const excepciones = await responseException.json();
+    
+
+  return  {dias_semana, excepciones};
+  } catch (err) {
+    console.error("Error agregando a favoritos:", err);
+    return { status: 500, data: null, error: err.message };
+  }
+}
+
+export async function updateSchedule(dia, datos) {
+
+let token = await getToken();
+  const url = `${BASE_URL}/api/v1/schedule/updateSchedule/${dia}`;
+
+
+
+  try {
+    const response = await fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+      body: JSON.stringify(datos),
+    });
+
+    const data = await response.json();
+
+    
+  
+    return data;
+  } catch (err) {
+    console.error("Error agregando a favoritos:", err);
+    return { status: 500, data: null, error: err.message };
+  }
+}
+
+export async function createException(data) {
+let token = await getToken();
+let {fecha_excepcion, hora_apertura, hora_cierre, is_closed, descripcion} = data;
+  const url = `${BASE_URL}/api/v1/schedule/createException`;
 
   const bodyData = {
-    id_usuario: userId,
-    id_producto: productId,
+    "fecha_excepcion": fecha_excepcion,
+     "hora_apertura": hora_apertura,
+      "hora_cierre": hora_cierre,
+      "is_closed": is_closed,
+      "descripcion": descripcion
   };
 
   try {
-  //   const response = await fetch(url, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: token ? `Bearer ${token}` : "",
-  //     },
-  //     body: JSON.stringify(bodyData),
-  //   });
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+      body: JSON.stringify(bodyData),
+    });
 
-  //   const data = await response.json();
+    const data = await response.json();
+    console.log('que responde esa putada: ', data)
 
-  //deben filtrar por estado, traer estado 1
-    
-  let datadePrueba = {
-  "dias_semana": [
-    {
-      "schedule_id": 1,
-      "dia": "Lunes",
-      "open_time": "07:00:00",
-      "close_time": "21:00:00",
-      "is_closed": 0
-    },
-    {
-      "schedule_id": 2,
-      "dia": "Martes",
-      "open_time": "07:00:00",
-      "close_time": "21:00:00",
-      "is_closed": 0
-    },
-    {
-      "schedule_id": 3,
-      "dia": "Miércoles",
-      "open_time": "07:00:00",
-      "close_time": "21:00:00",
-      "is_closed": 0
-    },
-    {
-      "schedule_id": 4,
-      "dia": "Jueves",
-      "open_time": "07:00:00",
-      "close_time": "21:00:00",
-      "is_closed": 0
-    },
-    {
-      "schedule_id": 5,
-      "dia": "Viernes",
-      "open_time": "07:00:00",
-      "close_time": "21:00:00",
-      "is_closed": 0
-    },
-    {
-      "schedule_id": 6,
-      "dia": "Sábado",
-      "open_time": "07:00:00",
-      "close_time": "21:00:00",
-      "is_closed": 0
-    },
-    {
-      "schedule_id": 7,
-      "dia": "Domingo",
-      "open_time": null,
-      "close_time": null,
-      "is_closed": 1
-    }
-  ],
-  "excepciones": [
-    {
-      "exception_id": 1,
-      "fecha": "2025-10-20",
-      "open_time": "07:00:00",
-      "close_time": "21:00:00",
-      "is_closed": 0,
-      "descripcion": "Día de la Revolución"
-    },
-    {
-      "exception_id": 2,
-      "fecha": "2025-12-25",
-      "open_time": null,
-      "close_time": null,
-      "is_closed": 1,
-      "descripcion": "Navidad"
-    }
-  ]
-}
-  
-    return datadePrueba;
-    return { status: response.status, data };
-  } catch (err) {
-    console.error("Error agregando a favoritos:", err);
-    return { status: 500, data: null, error: err.message };
-  }
-}
 
-export async function updateSchedule(dia, open_time, close_time, is_closed) {
-// let token = await getToken();
-  // const url = `${BASE_URL}/api/v1/schedule/updateSchedule/$[dia]`;
-
-  // const bodyData = {
-  //   id_usuario: userId,
-  //   id_producto: productId,
-  // };
-
-  try {
-  //   const response = await fetch(url, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: token ? `Bearer ${token}` : "",
-  //     },
-  //     body: JSON.stringify(bodyData),
-  //   });
-
-  //   const data = await response.json();
-
-  //deben filtrar por estado, traer estado 1
-    
-  let datadePrueba = {
-"Mensaje": "fecha actualizada correctamente"
-}
-
-  
-    return datadePrueba;
-    return { status: response.status, data };
-  } catch (err) {
-    console.error("Error agregando a favoritos:", err);
-    return { status: 500, data: null, error: err.message };
-  }
-}
-
-export async function createException(fecha, open_time, close_time, is_closed, description) {
-// let token = await getToken();
-  // const url = `${BASE_URL}/api/v1/schedule/updateSchedule/$[dia]`;
-
-  // const bodyData = {
-  //   id_usuario: userId,
-  //   id_producto: productId,
-  // };
-
-  try {
-  //   const response = await fetch(url, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: token ? `Bearer ${token}` : "",
-  //     },
-  //     body: JSON.stringify(bodyData),
-  //   });
-
-  //   const data = await response.json();
-
-  //deben filtrar por estado, traer estado 1
-    
-  let datadePrueba = {
-"Mensaje": "fecha actualizada correctamente"
-}
-
-  
-    return datadePrueba;
-    return { status: response.status, data };
+    return data;
   } catch (err) {
     console.error("Error agregando a favoritos:", err);
     return { status: 500, data: null, error: err.message };
@@ -767,35 +688,24 @@ export async function createException(fecha, open_time, close_time, is_closed, d
 }
 
 export async function deleteException(id_exception) {
-// let token = await getToken();
-  // const url = `${BASE_URL}/api/v1/schedule/updateSchedule/${id_exception}`;
+  console.log('llegando a la funcion',id_exception )
+let token = await getToken();
+  const url = `${BASE_URL}/api/v1/schedule/deleteException/${id_exception}`;
 
-  // const bodyData = {
-  //   id_usuario: userId,
-  //   id_producto: productId,
-  // };
 
   try {
-  //   const response = await fetch(url, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: token ? `Bearer ${token}` : "",
-  //     },
-  //     body: JSON.stringify(bodyData),
-  //   });
+    const response = await fetch(url, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+    });
 
-  //   const data = await response.json();
+    const data = await response.json();
+    console.log('data de respuestas: ', data)
 
-  //deben filtrar por estado, traer estado 1
-    
-  let datadePrueba = {
-"Mensaje": "Excepción elminada correctamente"
-}
-
-  
-    return datadePrueba;
-    return { status: response.status, data };
+    return  data;
   } catch (err) {
     console.error("Error agregando a favoritos:", err);
     return { status: 500, data: null, error: err.message };
