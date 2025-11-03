@@ -878,108 +878,107 @@ export async function isOpenStore() {
 
 export async function getReportOrder(from, to) {
 	try {
-	  const token = await getToken();
-	  const url = `${BASE_URL}/api/v1/reports/getAllOrdersByDates?from=${from}&to=${to}`;
-  
-	  const response = await fetch(url, {
+	const token = await getToken();
+	const url = `${BASE_URL}/api/v1/reports/getAllOrdersByDates?from=${from}&to=${to}`;
+
+	const response = await fetch(url, {
 		method: "GET",
 		headers: {
-		  "Content-Type": "application/json",
-		  ...(token && { Authorization: `Bearer ${token}` }), 
+		"Content-Type": "application/json",
+		...(token && { Authorization: `Bearer ${token}` }), 
 		},
-	  });
-  
-	  if (!response.ok) {
+	});
+
+	if (!response.ok) {
 		throw new Error(`Error al obtener órdenes: ${response.status}`);
-	  }
-  
-	  const data = await response.json();
-
-	  return data;
-	} catch (error) {
-	  console.error("Error en getReportOrder:", error);
-	  throw error;
 	}
-  }
 
-  export async function horasPicoReport(from, to) {
+	const data = await response.json();
+
+	return data;
+	} catch (error) {
+	console.error("Error en getReportOrder:", error);
+	throw error;
+	}
+}
+
+export async function horasPicoReport(from, to) {
 	try {
-	  const token = await getToken();
-  
-	  const url = `${BASE_URL}/api/v1/reports/getPeakHours?from=${from}&to=${to}`;
-  
-	  const response = await fetch(url, {
+	const token = await getToken();
+
+	const url = `${BASE_URL}/api/v1/reports/getPeakHours?from=${from}&to=${to}`;
+
+	const response = await fetch(url, {
 		method: "GET",
 		headers: {
-		  "Content-Type": "application/json",
-		  ...(token && { Authorization: `Bearer ${token}` }),
+		"Content-Type": "application/json",
+		...(token && { Authorization: `Bearer ${token}` }),
 		},
-	  });
-  
-	  if (!response.ok) {
+	});
+
+	if (!response.ok) {
 		throw new Error(`Error al obtener horas pico: ${response.status}`);
-	  }
-  
-	  const data = await response.json();
-
-	  return data;
-	} catch (error) {
-	  console.error("Error en horasPicoReport:", error);
-	  throw error;
 	}
-  }
-  
-  export async function ventasReport(from, to) {
+
+	const data = await response.json();
+
+	return data;
+	} catch (error) {
+	console.error("Error en horasPicoReport:", error);
+	throw error;
+	}
+}
+
+export async function ventasReport(from, to) {
 	try {
-	  const token = await getToken();
-  
-	  const url = `${BASE_URL}/api/v1/reports/getAllSalesByDates?from=${from}&to=${to}`;
-  
-	  const response = await fetch(url, {
+	const token = await getToken();
+
+	const url = `${BASE_URL}/api/v1/reports/getAllSalesByDates?from=${from}&to=${to}`;
+
+	const response = await fetch(url, {
 		method: "GET",
 		headers: {
-		  "Content-Type": "application/json",
-		  ...(token && { Authorization: `Bearer ${token}` }),
+		"Content-Type": "application/json",
+		...(token && { Authorization: `Bearer ${token}` }),
 		},
-	  });
-  
-	  if (!response.ok) {
+	});
+
+	if (!response.ok) {
 		throw new Error(`Error al obtener ventas: ${response.status}`);
-	  }
-  
-	  const data = await response.json();
-  
-	  return data;
-	} catch (error) {
-	  console.error("Error en ventasReport:", error);
-	  throw error;
 	}
-  }
 
-  export async function masVendidosReport(from, to) {
+	const data = await response.json();
+
+	return data;
+	} catch (error) {
+	console.error("Error en ventasReport:", error);
+	throw error;
+	}
+}
+
+export async function masVendidosReport(from, to) {
 	try {
-	  const token = await getToken();
-  
-	  const url = `${BASE_URL}/api/v1/reports/getTopTenProductsByDates?from=${from}&to=${to}`;
-  
-	  const response = await fetch(url, {
+	const token = await getToken();
+
+	const url = `${BASE_URL}/api/v1/reports/getTopTenProductsByDates?from=${from}&to=${to}`;
+
+	const response = await fetch(url, {
 		method: "GET",
 		headers: {
-		  "Content-Type": "application/json",
-		  ...(token && { Authorization: `Bearer ${token}` }),
+		"Content-Type": "application/json",
+		...(token && { Authorization: `Bearer ${token}` }),
 		},
-	  });
-  
-	  if (!response.ok) {
+	});
+
+	if (!response.ok) {
 		throw new Error(`Error al obtener los productos más vendidos: ${response.status}`);
-	  }
-  
-	  const data = await response.json();
-  
-	  return data;
-	} catch (error) {
-	  console.error("Error en masVendidosReport:", error);
-	  throw error;
 	}
-  }
-  
+
+	const data = await response.json();
+
+	return data;
+	} catch (error) {
+	console.error("Error en masVendidosReport:", error);
+	throw error;
+	}
+}
