@@ -33,18 +33,65 @@ export const styles = StyleSheet.create({
     borderColor: "#cfc2a4",
     paddingVertical: 6,
   },
-  row: {
-    flexDirection: "row",
-    paddingVertical: 8,
-    borderBottomWidth: 0.5,
-    borderColor: "#ccc",
-    alignItems: "center",
-  },
-  col: {
-    flex: 1,
-    textAlign: "center",
-    color: "#000",
-  },
+tableHeader: {
+  flexDirection: "row",
+  borderBottomWidth: 1,
+  borderColor: "#cfc2a4",
+  paddingVertical: 6,
+},
+row: {
+  flexDirection: "row",
+  paddingVertical: 8,
+  borderBottomWidth: 0.5,
+  borderColor: "#ccc",
+  alignItems: "center",
+},
+colDia: {
+  flex: 1.5,
+  textAlign: "center",
+  color: "#000",
+},
+colHora: {
+  flex: 1.2,
+  textAlign: "center",
+  color: "#000",
+},
+colActivo: {
+  flex: 0.8,
+  textAlign: "center",
+  color: "#000",
+},
+colAccion: {
+  flex: 1,
+  textAlign: "center",
+  color: "#000",
+},
+colFecha: {
+  flex: 1.1,
+  textAlign: "center",
+  color: "#000",
+},
+colDescripcion: {
+  flex: 1.8,
+  textAlign: "center",
+  color: "#000",
+},
+colHora: {
+  flex: 1,
+  textAlign: "center",
+  color: "#000",
+},
+colAccion: {
+  flex: 1.2,
+  textAlign: "center",
+  color: "#000",
+},
+accionBtns: {
+  flexDirection: "row",
+  justifyContent: "center",
+  gap: 5,
+},
+
   btnPrimary: {
     backgroundColor: "#bfa36f",
     paddingVertical: 6,

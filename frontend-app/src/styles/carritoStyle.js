@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from "react-native";
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 export default StyleSheet.create({
   container: {
@@ -7,7 +7,6 @@ export default StyleSheet.create({
     backgroundColor: "#fff",
   },
 
- 
   title: {
     fontSize: 34,
     fontFamily: "Nunito_900Black",
@@ -16,34 +15,47 @@ export default StyleSheet.create({
     textAlign: "center",
     marginVertical: 10,
   },
+
+  // Contenedor de cada producto del carrito
   productContainer: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "flex-start",
+    justifyContent: "space-between", // 👈 mantiene todo alineado horizontalmente
     paddingHorizontal: 20,
-    marginVertical: 10,
+    marginVertical: 8,
   },
+
   productName: {
-    flex: 1,
+    flex: 1, // 👈 ocupa el espacio disponible
     fontSize: 18,
     fontFamily: "Inter_400Regular",
     color: "#000",
   },
-  productPrice: {
-    fontSize: 16,
-    color: "#B89A59",
-    fontFamily: "Inter_400Regular",
-  },
+
+  // Contenedor de botones y cantidad
   quantityContainer: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
-    marginHorizontal: 10,
+    justifyContent: "center",
+    width: 90, // 👈 ancho fijo para mantener alineación
   },
+
   quantityText: {
     fontSize: 18,
-    paddingHorizontal: 6,
+    textAlign: "center",
+    width: 30, // 👈 evita que el número mueva los iconos
   },
+
+  // Precio a la derecha
+  productPrice: {
+    width: 75, // 👈 ancho fijo para alinear todos los precios
+    textAlign: "right",
+    fontSize: 16,
+    color: "#B89A59",
+    fontFamily: "Inter_400Regular",
+    fontWeight: "600",
+  },
+
   totalContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -53,15 +65,18 @@ export default StyleSheet.create({
     borderColor: "#B89A59",
     paddingTop: 10,
   },
+
   totalText: {
     fontSize: 20,
     color: "#000",
   },
+
   totalAmount: {
     fontSize: 20,
     color: "#000",
     fontWeight: "700",
   },
+
   confirmButton: {
     backgroundColor: "#B89A59",
     alignSelf: "center",
@@ -75,6 +90,7 @@ export default StyleSheet.create({
     elevation: 5,
     marginBottom: 20,
   },
+
   confirmText: {
     color: "#fff",
     fontSize: 20,
@@ -88,6 +104,7 @@ export default StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+
   confirmTitle: {
     fontSize: 34,
     fontFamily: "Nunito_900Black",
@@ -96,6 +113,7 @@ export default StyleSheet.create({
     textAlign: "center",
     marginVertical: 20,
   },
+
   confirmBox: {
     alignSelf: "center",
     backgroundColor: "#f9f9f9",
@@ -108,18 +126,21 @@ export default StyleSheet.create({
     shadowRadius: 5,
     elevation: 4,
   },
+
   orderText: {
     fontSize: 20,
     textAlign: "center",
     marginBottom: 10,
     fontFamily: "Inter_400Regular",
   },
+
   orderNumber: {
     fontSize: 32,
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 20,
   },
+
   note: {
     textAlign: "center",
     fontSize: 15,

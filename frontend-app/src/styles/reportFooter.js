@@ -11,7 +11,7 @@ export default StyleSheet.create({
 		height: 30,
 		borderRadius: 20,
 		paddingVertical: 4,
-		backgroundColor: "#B89A59",
+		backgroundColor: "#ffffffff",
 		fontFamily: "Nunito_400Regular",
 		fontSize: 16,
 		color: "#fff",

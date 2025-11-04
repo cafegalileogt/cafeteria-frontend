@@ -2,17 +2,16 @@ import React, { useState, useEffect } from "react";
 import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
 import styles from "../../styles/homeStyle";
 import { useRouter } from "expo-router";
-import { getMenu,getCategoryNames } from "../../../services/api";
+import { getMenu, getCategoryNames } from "../../../services/api";
 
 import Header from "../../components/header";
 
 export default function HomeScreen() {
-
   const [activeCategory, setActiveCategory] = useState("Desayunos");
   const [menu, setMenu] = useState({});
   const [categories, setCategories] = useState([]);
 
-
+  
 
   useEffect(() => {
     async function fetchCategories() {

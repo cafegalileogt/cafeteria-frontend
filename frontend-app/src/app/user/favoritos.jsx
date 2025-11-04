@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import {
   View,
   Text,
@@ -14,6 +14,7 @@ import styles from "../../styles/favoritosStyle";
 import { getAllFavoritesById } from "../../../services/api";
 import { useUser } from "../../../services/userContext";
 import { useCart } from "../../../services/cartContext";
+import { useFocusEffect } from "expo-router"; // 👈 importa esto
 
 const ProductCard = React.memo(
   ({ item, qty, onIncrease, onDecrease, onAdd }) => {
@@ -57,31 +58,34 @@ export default function FavoritosGrid() {
   const [loading, setLoading] = useState(false);
   const { user } = useUser();
   const [counts, setCounts] = useState({});
-    const { addToCart } = useCart();
-  
+  const { addToCart } = useCart();
 
-  useEffect(() => {
-    const fetchFavorite = async () => {
-      if (!user?.userId) return;
-      try {
-        setLoading(true);
-        const favoritos = await getAllFavoritesById();
-        console.log("Favoritos obtenidos:", favoritos.result);
-        setFavoriteItems(favoritos.result || []);
+  // ✅ Cada vez que se entra a la pantalla, se actualizan los favoritos
+  useFocusEffect(
+    useCallback(() => {
+      const fetchFavorite = async () => {
+        if (!user?.userId) return;
+        try {
+          setLoading(true);
+          const favoritos = await getAllFavoritesById();
+          console.log("Favoritos obtenidos:", favoritos.result);
+          setFavoriteItems(favoritos.result || []);
 
-        const initCounts = {};
-        (favoritos.result || []).forEach((p) => {
-          initCounts[p.id_producto] = 0; 
-        });
-        setCounts(initCounts);
-      } catch (err) {
-        console.error("Error al obtener favoritos:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchFavorite();
-  }, [user]);
+          const initCounts = {};
+          (favoritos.result || []).forEach((p) => {
+            initCounts[p.id_producto] = 0;
+          });
+          setCounts(initCounts);
+        } catch (err) {
+          console.error("Error al obtener favoritos:", err);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchFavorite();
+    }, [user])
+  );
 
   const aumentar = useCallback((id) => {
     setCounts((prev) => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
@@ -94,29 +98,28 @@ export default function FavoritosGrid() {
     });
   }, []);
 
- const handleAddToCart = useCallback(
-  (item) => {
-    const cantidad = counts[item.id_producto] || 0;
+  const handleAddToCart = useCallback(
+    (item) => {
+      const cantidad = counts[item.id_producto] || 0;
 
-    if (cantidad > 0) {
-      addToCart({
-        id_producto: item.id_producto,
-        name: item.nombre,
-        price: item.precio,
-        cantidad: cantidad,
-        count: cantidad,
-        precio_unitario: parseFloat(item.precio), 
-      });
+      if (cantidad > 0) {
+        addToCart({
+          id_producto: item.id_producto,
+          name: item.nombre,
+          price: item.precio,
+          cantidad: cantidad,
+          count: cantidad,
+          precio_unitario: parseFloat(item.precio),
+        });
 
-      Alert.alert("Info", "Producto agregado al carrito");
-
-      setCounts((prev) => ({ ...prev, [item.id_producto]: 0 }));
-    } else {
-      Alert.alert("Aviso", "Debes agregar al menos 1 producto.");
-    }
-  },
-  [counts, addToCart]
-);
+        Alert.alert("Info", "Producto agregado al carrito");
+        setCounts((prev) => ({ ...prev, [item.id_producto]: 0 }));
+      } else {
+        Alert.alert("Aviso", "Debes agregar al menos 1 producto.");
+      }
+    },
+    [counts, addToCart]
+  );
 
   const renderCard = ({ item }) => (
     <ProductCard
@@ -130,9 +133,7 @@ export default function FavoritosGrid() {
 
   if (loading)
     return (
-      <View
-        style={[styles.container, { justifyContent: "center", alignItems: "center" }]}
-      >
+      <View style={[styles.container, { justifyContent: "center", alignItems: "center" }]}>
         <ActivityIndicator size="large" />
       </View>
     );
@@ -144,14 +145,14 @@ export default function FavoritosGrid() {
 
       {favoriteItems.length === 0 ? (
         <Text style={{ textAlign: "center", marginTop: 20 }}>
-          Aún no tienes productos en favoritos 
+          Aún no tienes productos en favoritos
         </Text>
       ) : (
         <FlatList
           data={favoriteItems}
-          keyExtractor={(item, index) => `${item.id_producto}-${index}`} 
+          keyExtractor={(item, index) => `${item.id_producto}-${index}`}
           renderItem={renderCard}
-          numColumns={2} 
+          numColumns={2}
           columnWrapperStyle={{
             justifyContent: "space-between",
             paddingHorizontal: 10,

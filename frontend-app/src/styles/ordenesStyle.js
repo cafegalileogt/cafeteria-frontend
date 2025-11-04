@@ -48,12 +48,13 @@ export default StyleSheet.create({
   },
   cell: {
     fontFamily: "Nunito_400Regular",
-    fontSize: 24,
+    fontSize: 16,
     textAlign: "center",
     alignSelf: "center",
     borderTopWidth: 1,
     borderBottomWidth: 1,
     borderColor: "#AAAAAA",
+    height:40
   },
   toggle: {
     alignItems: "flex-end",

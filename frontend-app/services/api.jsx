@@ -710,37 +710,25 @@ let token = await getToken();
 }
 
 export async function isOpenStore() {
-	// let token = await getToken();
-	// const url = `${BASE_URL}/api/v1/schedule/isOpen`;
+	let token = await getToken();
+	const url = `${BASE_URL}/api/v1/schedule/isOpen`;
 
-	// const bodyData = {
-	//   id_usuario: userId,
-	//   id_producto: productId,
-	// };
 
 	try {
-		//   const response = await fetch(url, {
-		//     method: "POST",
-		//     headers: {
-		//       "Content-Type": "application/json",
-		//       Authorization: token ? `Bearer ${token}` : "",
-		//     },
-		//     body: JSON.stringify(bodyData),
-		//   });
+		  const response = await fetch(url, {
+		    method: "GET",
+		    headers: {
+		      "Content-Type": "application/json",
+		      Authorization: token ? `Bearer ${token}` : "",
+		    },
+		  });
 
-		//   const data = await response.json();
+		  const data = await response.json();
 
-		//deben filtrar por estado, traer estado 1
-
-		let datadePrueba = {
-			Mensaje: "Cafetería abierta",
-			is_closed: false,
-		};
-
-		return datadePrueba;
-		return { status: response.status, data };
+      console.log('respuesta del horario en api: ', data)
+		return  data;
 	} catch (err) {
-		console.error("Error agregando a favoritos:", err);
+		console.error("Error  Trayendo horarios", err);
 		return { status: 500, data: null, error: err.message };
 	}
 }
@@ -765,6 +753,7 @@ export async function getReportOrder(from, to) {
 	}
 
 	const data = await response.json();
+  console.log('data si es que devuelve: ', data)
 
 	return data;
 	} catch (error) {
@@ -801,6 +790,7 @@ export async function horasPicoReport(from, to) {
 }
 
 export async function ventasReport(from, to) {
+  console.log('horarios enviados: ', from, to)
 	try {
 	const token = await getToken();
 

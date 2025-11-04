@@ -84,9 +84,8 @@ const handleEliminarExcepcion = async (id_excepcion) => {
       is_closed: formExcepcion.cerrado,
     };
     try {
-      console.log('Lo que viene en nueva excepcion: ', nueva)
       await createException(nueva);
-      createException(fecha_excepcion, hora_apertura, hora_cierre, is_closed, descripcion)
+      // createException(fecha_excepcion, hora_apertura, hora_cierre, is_closed, descripcion)
       setExcepciones([...excepciones, nueva]);
       alert("✅ Excepción agregada correctamente");
       setMostrarModalExcepcion(false);
@@ -103,60 +102,67 @@ const handleEliminarExcepcion = async (id_excepcion) => {
       <View style={styles.card}>
         <Text style={styles.sectionTitle}>Horarios de la semana</Text>
         <View style={styles.tableHeader}>
-          <Text style={styles.col}>Día</Text>
-          <Text style={styles.col}>Apertura</Text>
-          <Text style={styles.col}>Cierre</Text>
-          <Text style={styles.col}>Activo</Text>
-          <Text style={styles.col}>Acción</Text>
-        </View>
+  <Text style={styles.colDia}>Día</Text>
+  <Text style={styles.colHora}>Apertura</Text>
+  <Text style={styles.colHora}>Cierre</Text>
+  <Text style={styles.colActivo}>Activo</Text>
+  <Text style={styles.colAccion}>Acción</Text>
+</View>
 
-        {horarios.map((item, index) => (
-          <View style={styles.row} key={index}>
-            <Text style={styles.col}>{item.dia_semana}</Text>
-            <Text style={styles.col}>{item.hora_apertura}</Text>
-            <Text style={styles.col}>{item.hora_cierre}</Text>
-            <Text style={styles.col}>{item.is_closed ? "❌" : "☑️"}</Text>
-            <TouchableOpacity style={styles.btnPrimary} onPress={() => handleEditarHorario(item)}>
-              <Text style={styles.btnText}>Modificar</Text>
-            </TouchableOpacity>
-          </View>
-        ))}
+{horarios.map((item, index) => (
+  <View style={styles.row} key={index}>
+    <Text style={styles.colDia}>{item.dia_semana}</Text>
+    <Text style={styles.colHora}>{item.hora_apertura}</Text>
+    <Text style={styles.colHora}>{item.hora_cierre}</Text>
+    <Text style={styles.colActivo}>{item.is_closed ? "❌" : "☑️"}</Text>
+    <View style={styles.colAccion}>
+      <TouchableOpacity style={styles.btnPrimary} onPress={() => handleEditarHorario(item)}>
+        <Text style={styles.btnText}>Modificar</Text>
+      </TouchableOpacity>
+    </View>
+  </View>
+))}
+
       </View>
 
-      {/* Excepciones */}
-      <View style={styles.card}>
-        <View style={styles.excepcionHeader}>
-          <Text style={styles.sectionTitle}>Excepciones</Text>
-          <TouchableOpacity style={styles.btnAdd} onPress={handleAgregarExcepcion}>
-            <Text style={styles.btnText}>Agregar</Text>
-          </TouchableOpacity>
-        </View>
+    {/* Excepciones */}
+<View style={styles.card}>
+  <View style={styles.excepcionHeader}>
+    <Text style={styles.sectionTitle}>Excepciones</Text>
+    <TouchableOpacity style={styles.btnAdd} onPress={handleAgregarExcepcion}>
+      <Text style={styles.btnText}>Agregar</Text>
+    </TouchableOpacity>
+  </View>
 
-        <View style={styles.tableHeader}>
-          <Text style={styles.col}>Fecha</Text>
-          <Text style={styles.col}>Descripción</Text>
-          <Text style={styles.col}>Apertura</Text>
-          <Text style={styles.col}>Cierre</Text>
-          <Text style={styles.col}>Acción</Text>
-        </View>
+  <View style={styles.tableHeader}>
+    <Text style={styles.colFecha}>Fecha</Text>
+    <Text style={styles.colDescripcion}>Descripción</Text>
+    <Text style={styles.colHora}>Apertura</Text>
+    <Text style={styles.colHora}>Cierre</Text>
+    <Text style={styles.colAccion}>Acción</Text>
+  </View>
 
-        {excepciones.map((ex) => (
-          <View style={styles.row} key={ex.id_exception}>
-            <Text style={styles.col}>{ex.fecha_excepcion}</Text>
-            <Text style={styles.col}>{ex.descripcion}</Text>
-            <Text style={styles.col}>{ex.hora_apertura}</Text>
-            <Text style={styles.col}>{ex.hora_cierre}</Text>
-            <View style={{ flexDirection: "row", gap: 5 }}>
-              <TouchableOpacity style={styles.btnPrimary}>
-                <Text style={styles.btnText}>Modificar</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.btnDanger} onPress={() => handleEliminarExcepcion(ex.id_exception)}>                
-                <Text style={styles.btnText}>Eliminar</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        ))}
+  {excepciones.map((ex) => (
+    <View style={styles.row} key={ex.id_exception}>
+      <Text style={styles.colFecha}>{ex.fecha_excepcion}</Text>
+      <Text style={styles.colDescripcion} numberOfLines={1}>{ex.descripcion}</Text>
+      <Text style={styles.colHora}>{ex.hora_apertura}</Text>
+      <Text style={styles.colHora}>{ex.hora_cierre}</Text>
+      <View style={[styles.colAccion, styles.accionBtns]}>
+        <TouchableOpacity style={styles.btnPrimary}>
+          <Text style={styles.btnText}>Modificar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.btnDanger}
+          onPress={() => handleEliminarExcepcion(ex.id_exception)}
+        >
+          <Text style={styles.btnText}>Eliminar</Text>
+        </TouchableOpacity>
       </View>
+    </View>
+  ))}
+</View>
+
 
       {/* Modal horario */}
       {mostrarModalHorario && (

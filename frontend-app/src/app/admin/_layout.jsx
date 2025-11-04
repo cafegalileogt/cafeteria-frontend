@@ -36,7 +36,7 @@ export default function layout() {
         headerShown: showHeader,
         drawerLabelStyle: {
           color: "white",
-          fontSize: 28,
+          fontSize: 20,
           paddingBlock: 15,
           fontFamily: "Nunito_400Regular",
         },

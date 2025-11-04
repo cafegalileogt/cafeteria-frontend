@@ -1,19 +1,45 @@
-import { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
+import { useState, useEffect, useCallback } from "react";
+import { View, Text, TouchableOpacity, Image, ScrollView, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import styles from "../../styles/carritoStyle";
 import { useCart } from "../../../services/cartContext";
-import { createOrder } from "../../../services/api";
-import { useRouter } from "expo-router";
+import { createOrder, isOpenStore } from "../../../services/api";
+import { useRouter, useFocusEffect } from "expo-router";
 import Header from "../../components/header";
 
 export default function Carrito() {
-
   const router = useRouter();
   const { clearCart, cartItems, addToCart, removeFromCart } = useCart();
 
   const [confirmando, setConfirmando] = useState(false);
   const [orderId, setOrderId] = useState(null);
+  const [horario, setHorario] = useState(false);
+
+  // ✅ Se ejecuta cada vez que se entra o vuelve al carrito
+  useFocusEffect(
+    useCallback(() => {
+      async function fetchSchedule() {
+        try {
+          const response = await isOpenStore();
+          const cerrado = response[0]?.is_closed;
+          if (response) {
+            setHorario(cerrado);
+
+            if (cerrado === 1) {
+              console.log("Cafetería Cerrada");
+              Alert.alert("Cafetería cerrada", "En este momento la cafetería se encuentra cerrada.");
+            }
+          } else {
+            console.error("Error al obtener horario:", response);
+          }
+        } catch (err) {
+          console.error("Error trayendo el horario", err);
+        }
+      }
+
+      fetchSchedule();
+    }, [])
+  );
 
   const aumentar = (id_producto) => {
     const producto = cartItems.find((p) => p.id_producto === id_producto);
@@ -32,12 +58,16 @@ export default function Carrito() {
   };
 
   const total = cartItems.reduce(
-    (acc, item) =>
-      acc + parseFloat(item.price.replace("Q", "").trim()) * item.count,
+    (acc, item) => acc + parseFloat(item.price.replace("Q", "").trim()) * item.count,
     0
   );
 
   const confirmarOrden = async () => {
+    if (horario === true) {
+      Alert.alert("Cafetería cerrada", "No puedes confirmar una orden cuando la cafetería está cerrada.");
+      return;
+    }
+
     if (cartItems.length === 0) {
       console.warn("El carrito está vacío");
       return;
@@ -51,20 +81,16 @@ export default function Carrito() {
         precio_unitario: parseFloat(item.price.replace("Q", "").trim()),
       }));
 
-      const response = await createOrder(
-        productosFormateados,
-        total,
-        numeroOrden
-      );
+      const response = await createOrder(productosFormateados, total, numeroOrden);
 
       if (response.status === 200 || response.status === 201) {
         setOrderId(numeroOrden);
         setConfirmando(true);
       } else {
-        console.warn(" No se pudo crear la orden:", response.data);
+        console.warn("No se pudo crear la orden:", response.data);
       }
     } catch (error) {
-      console.error(" Error al crear la orden:", error);
+      console.error("Error al crear la orden:", error);
     }
   };
 
@@ -77,53 +103,41 @@ export default function Carrito() {
 
   return (
     <View style={styles.container}>
-      {}
-      <Header></Header>
+      <Header />
 
       {!confirmando ? (
         <>
           <Text style={styles.title}>Carrito</Text>
 
           <ScrollView style={{ flex: 1 }}>
-  {cartItems.length === 0 ? (
-    <Text style={{ textAlign: "center", marginTop: 50, fontSize: 16 }}>
-      No hay productos en el carrito 🛒
-    </Text>
-  ) : (
-    cartItems.map((item) => (
-      <View key={item.id_producto} style={styles.productContainer}>
-        <Text style={styles.productName}>{item.name}</Text>
+            {cartItems.length === 0 ? (
+              <Text style={{ textAlign: "center", marginTop: 50, fontSize: 16 }}>
+                No hay productos en el carrito 🛒
+              </Text>
+            ) : (
+              cartItems.map((item) => (
+                <View key={item.id_producto} style={styles.productContainer}>
+                  <Text style={styles.productName}>{item.name}</Text>
 
-        <View style={styles.quantityContainer}>
-          <TouchableOpacity onPress={() => disminuir(item.id_producto)}>
-            <Ionicons
-              name="remove-circle-outline"
-              size={28}
-              color="#B89A59"
-            />
-          </TouchableOpacity>
+                  <View style={styles.quantityContainer}>
+                    <TouchableOpacity onPress={() => disminuir(item.id_producto)}>
+                      <Ionicons name="remove-circle-outline" size={28} color="#B89A59" />
+                    </TouchableOpacity>
 
-          <Text style={styles.quantityText}>{item.count}</Text>
+                    <Text style={styles.quantityText}>{item.count}</Text>
 
-          <TouchableOpacity onPress={() => aumentar(item.id_producto)}>
-            <Ionicons
-              name="add-circle-outline"
-              size={28}
-              color="#B89A59"
-            />
-          </TouchableOpacity>
-        </View>
+                    <TouchableOpacity onPress={() => aumentar(item.id_producto)}>
+                      <Ionicons name="add-circle-outline" size={28} color="#B89A59" />
+                    </TouchableOpacity>
+                  </View>
 
-        <Text style={styles.productPrice}>
-          Q
-          {(
-            parseFloat(item.price.replace("Q", "").trim()) * item.count
-          ).toFixed(2)}
-        </Text>
-      </View>
-    ))
-  )}
-</ScrollView>
+                  <Text style={styles.productPrice}>
+                    Q{(parseFloat(item.price.replace("Q", "").trim()) * item.count).toFixed(2)}
+                  </Text>
+                </View>
+              ))
+            )}
+          </ScrollView>
 
           <View style={styles.totalContainer}>
             <Text style={styles.totalText}>Total</Text>
@@ -131,10 +145,16 @@ export default function Carrito() {
           </View>
 
           <TouchableOpacity
-            style={styles.confirmButton}
+            style={[
+              styles.confirmButton,
+              horario === 1 && { backgroundColor: "gray", opacity: 0.6 },
+            ]}
+            disabled={horario === 1}
             onPress={confirmarOrden}
           >
-            <Text style={styles.confirmText}>Confirmar</Text>
+            <Text style={styles.confirmText}>
+              {horario === true ? "Cafetería cerrada" : "Confirmar"}
+            </Text>
           </TouchableOpacity>
         </>
       ) : (
@@ -145,10 +165,7 @@ export default function Carrito() {
             <Text style={styles.orderText}>No. de Orden</Text>
             <Text style={styles.orderNumber}>{orderId}</Text>
 
-            <TouchableOpacity
-              style={styles.confirmButton}
-              onPress={volverCarrito}
-            >
+            <TouchableOpacity style={styles.confirmButton} onPress={volverCarrito}>
               <Text style={styles.confirmText}>Aceptar</Text>
             </TouchableOpacity>
           </View>

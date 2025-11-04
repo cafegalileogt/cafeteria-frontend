@@ -19,7 +19,7 @@ export default StyleSheet.create({
   },
   container: {
     flex: 0.7,
-    width: "100%",
+    width: "40%",
     backgroundColor: "#FEFEFE",
     alignItems: "center",
     borderRadius: 20,
@@ -42,6 +42,7 @@ export default StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#ccc",
     paddingVertical: 10,
+    paddingHorizontal:20,
     marginBottom: 25,
     fontSize: 14,
   },
