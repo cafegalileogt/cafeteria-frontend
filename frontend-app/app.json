@@ -33,8 +33,8 @@
         "expo-font",
         {
           "fonts": [
-            "node_modules/@expo-google-fonts/nunito/500Regular/Nunito_400Regular.ttf", 
-            "node_modules/@expo-google-fonts/nunito/500Medium/Nunito_500Medium.ttf", 
+            "node_modules/@expo-google-fonts/nunito/400Regular/Nunito_400Regular.ttf",
+            "node_modules/@expo-google-fonts/nunito/500Medium/Nunito_500Medium.ttf",
             "node_modules/@expo-google-fonts/nunito/900Medium/Nunito_900Black.ttf",
             "node_modules/@expo-google-fonts/inter/400Regular/Inter_400Regular.ttf"
           ]
