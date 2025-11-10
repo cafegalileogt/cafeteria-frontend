@@ -26,7 +26,6 @@ export default function BuscarOrdenes() {
 
         if (resultado.status === 200 && resultado.data) {
           setOrdenesDelDia(resultado.data);
-          console.log("Órdenes del día cargadas:", resultado.data.length);
         } else {
           console.error("Error en respuesta de órdenes del día:", resultado);
           setMensajeEstado("Error al cargar las órdenes del día.");
@@ -98,7 +97,6 @@ export default function BuscarOrdenes() {
     setCargando(true);
     try {
       const resultado = await detalleOrden2(numeroOrden);
-      console.log("Resultado de detalleOrden2:", resultado);
 
       if (resultado.data && resultado.data.length > 0) {
         const nombreCliente = buscarNombreCliente(numeroOrden);

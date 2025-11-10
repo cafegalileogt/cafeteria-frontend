@@ -16,7 +16,6 @@ export default function GestionarHorario() {
       try {
         const data = await getSchedule();
 
-          console.log('data debug: ', data)
           setHorarios(data.dias_semana); 
           const excepcionesFormateadas = (data.excepciones || []).map(ex => ({
             ...ex,
@@ -44,7 +43,6 @@ export default function GestionarHorario() {
         is_closed: formHorario.is_closed,
       };
       await updateSchedule(formHorario.dia_semana, datos);
-      console.log('que viene en form', formHorario)
       setHorarios(horarios.map((h) => (h.dia_semana === formHorario.dia_semana ? formHorario : h)));
       alert("✅ Cambios guardados correctamente");
       setMostrarModalHorario(false);
@@ -59,7 +57,6 @@ const handleEliminarExcepcion = async (id_excepcion) => {
 
   try {
     const deleted = await deleteException(id_excepcion);
-    console.log("delete data: ", deleted);
     setExcepciones(excepciones.filter((ex) => ex.id_excepcion !== id_excepcion));
     window.alert("Excepción eliminada correctamente");
   } catch (error) {

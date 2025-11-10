@@ -222,7 +222,6 @@ const handleSelectImage = async (tipo) => {
       const data = await uploadImageToCloudinary(imageUri);
       const url = data?.imageUrl || imageUri;
 
-      console.log("✅ URL subida:", url);
 
       // 🔹Actualizar el producto o categoría según 'tipo'
       if (tipo === "producto" && selectedProduct) {

@@ -26,7 +26,6 @@ export default function Carrito() {
             setHorario(cerrado);
 
             if (cerrado === 1) {
-              console.log("Cafetería Cerrada");
               Alert.alert("Cafetería cerrada", "En este momento la cafetería se encuentra cerrada.");
             }
           } else {

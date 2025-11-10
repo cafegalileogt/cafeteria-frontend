@@ -68,7 +68,6 @@ export default function FavoritosGrid() {
         try {
           setLoading(true);
           const favoritos = await getAllFavoritesById();
-          console.log("Favoritos obtenidos:", favoritos.result);
           setFavoriteItems(favoritos.result || []);
 
           const initCounts = {};

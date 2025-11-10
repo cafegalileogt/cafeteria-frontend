@@ -15,7 +15,6 @@ export default function ForgotPassword() {
     }
 
     const recovery = await recoveryPassword(email);
-    console.log("Respuesta de Recovery Password: ", recovery);
 
     if (recovery.status !== 200) {
       Alert.alert("Error", "Ocurrió un problema, intenta de nuevo");

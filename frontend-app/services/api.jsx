@@ -234,7 +234,6 @@ export async function getOrderbyId(numero_orden) {
 	let data = {};
 	try {
 		data = await response.json();
-		console.log("Data recibida en getOrderbyId $$$$$$$$$$$$$$$$$$$$: ", data);
 		return { orden: numero_orden, data };
 	} catch (err) {
 		console.error("Error con Data de getOrderbyId", err);
@@ -263,7 +262,6 @@ export async function detalleOrden(orden) {
 }
 
 export async function detalleOrden2(numero_orden) {
-	console.log("Número de orden en detalleOrden2: ", numero_orden);
 	let token = await getToken();
 	const url = `${BASE_URL}/api/v1/orders/detalle/${numero_orden}`;
 
@@ -287,14 +285,11 @@ export async function detalleOrden2(numero_orden) {
 }
 
 export async function updateOrden(numero_orden, estado) {
-  console.log("Actualizando estado de la orden:", numero_orden);
   let token = await getToken();
   const url = `${BASE_URL}/api/v1/orders/actualizar_estado/${numero_orden}`;
-  console.log('estado para actualizar: ', estado)
   const body = {
     estado: estado.estado
   };
-  console.log('estado en el Api: ', estado.estado)
 
 	const response = await fetch(url, {
 		method: "PATCH",
@@ -308,7 +303,6 @@ export async function updateOrden(numero_orden, estado) {
 	let data = {};
 	try {
 		data = await response.json();
-		console.log("Respuesta de actualización:", data);
 		return { orden: numero_orden, data };
 	} catch (err) {
 		console.error("Error actualizando orden:", err);
@@ -383,7 +377,6 @@ export async function updateProduct(id_producto, payload) {
 }
 
 export async function createProduct(id_categoria, payload) {
-	console.log("Payload de createProduct: ", payload);
 	const { nombre, precio, descripcion, imagen_producto, estado } = payload;
 	let token = await getToken();
 	let _body = {
@@ -489,7 +482,6 @@ export async function uploadImageToCloudinary(fileUri) {
 		);
 
 		const data = await uploadResponse.json();
-		console.log("data de upload image:", data);
 
 		return data;
 	} catch (error) {
@@ -534,7 +526,6 @@ export async function addToFavorites( id_producto) {
 
     const data = await response.json();
 
-    console.log('data de addToFavorites: ', data)
     return { status: response.status, data };
   } catch (err) {
     console.error("Error agregando a favoritos:", err);
@@ -557,7 +548,6 @@ export async function deleteFromFavorites( id_producto) {
 
     const data = await response.json();
 
-    console.log('data de addToFavorites: ', data)
     return { status: response.status, data };
   } catch (err) {
     console.error("Error agregando a favoritos:", err);
@@ -674,7 +664,6 @@ let {fecha_excepcion, hora_apertura, hora_cierre, is_closed, descripcion} = data
     });
 
     const data = await response.json();
-    console.log('que responde esa putada: ', data)
 
 
     return data;
@@ -685,7 +674,6 @@ let {fecha_excepcion, hora_apertura, hora_cierre, is_closed, descripcion} = data
 }
 
 export async function deleteException(id_exception) {
-  console.log('llegando a la funcion',id_exception )
 let token = await getToken();
   const url = `${BASE_URL}/api/v1/schedule/deleteException/${id_exception}`;
 
@@ -700,7 +688,6 @@ let token = await getToken();
     });
 
     const data = await response.json();
-    console.log('data de respuestas: ', data)
 
     return  data;
   } catch (err) {
@@ -725,7 +712,6 @@ export async function isOpenStore() {
 
 		  const data = await response.json();
 
-      console.log('respuesta del horario en api: ', data)
 		return  data;
 	} catch (err) {
 		console.error("Error  Trayendo horarios", err);
@@ -753,7 +739,6 @@ export async function getReportOrder(from, to) {
 	}
 
 	const data = await response.json();
-  console.log('data si es que devuelve: ', data)
 
 	return data;
 	} catch (error) {
@@ -790,7 +775,6 @@ export async function horasPicoReport(from, to) {
 }
 
 export async function ventasReport(from, to) {
-  console.log('horarios enviados: ', from, to)
 	try {
 	const token = await getToken();
 

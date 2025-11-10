@@ -13,7 +13,6 @@ export default function ReporteVentas({ fromDate, toDate, data, total }) {
         // ✅ Si no hay datos ya pasados desde el padre, los obtiene
         if (!data) {
           const result = await ventasReport(fromDate, toDate);
-          console.log("Reporte de ventas:", result);
 
           if (Array.isArray(result.daily_sales)) {
             const mapped = result.daily_sales.map((o) => ({
