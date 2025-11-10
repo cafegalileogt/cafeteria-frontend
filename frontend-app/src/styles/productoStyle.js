@@ -57,7 +57,7 @@ export default StyleSheet.create({
   },
   input: {
     height: 48,
-    width: "32%",
+    width: "18%",
     borderWidth: 2,
     fontSize: 32,
     textAlign: "center",
