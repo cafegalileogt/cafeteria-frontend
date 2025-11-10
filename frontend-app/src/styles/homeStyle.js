@@ -64,7 +64,7 @@ export default StyleSheet.create({
   categoryText: {
     fontFamily: "Inter",
     fontSize: 12,
-    fontWeight: "700",
+    fontWeight: "400",
     color: "#030202",
   },
   categoryTextActive: {
