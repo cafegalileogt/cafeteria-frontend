@@ -1,4 +1,4 @@
-const BASE_URL = "http://192.168.56.1:3000";
+const BASE_URL = "http://localhost:3000";
 import { getToken, setToken, removeToken } from "./storage";
 
 export const requireAuth = async (navigate) => {
@@ -287,14 +287,14 @@ export async function detalleOrden2(numero_orden) {
 }
 
 export async function updateOrden(numero_orden, estado) {
-  console.log("Actualizando estado de la orden:", numero_orden);
-  let token = await getToken();
-  const url = `${BASE_URL}/api/v1/orders/actualizar_estado/${numero_orden}`;
-  console.log('estado para actualizar: ', estado)
-  const body = {
-    estado: estado.estado
-  };
-  console.log('estado en el Api: ', estado.estado)
+	console.log("Actualizando estado de la orden:", numero_orden);
+	let token = await getToken();
+	const url = `${BASE_URL}/api/v1/orders/actualizar_estado/${numero_orden}`;
+	console.log("estado para actualizar: ", estado);
+	const body = {
+		estado: estado.estado,
+	};
+	console.log("estado en el Api: ", estado.estado);
 
 	const response = await fetch(url, {
 		method: "PATCH",
@@ -498,348 +498,339 @@ export async function uploadImageToCloudinary(fileUri) {
 	}
 }
 
-export async function getProductInfo( id_producto) {
-  let token = await getToken();
- const url = `${BASE_URL}/api/v1/favorites/getFavoriteByUserIdAndProductId/${id_producto}`;
+export async function getProductInfo(id_producto) {
+	let token = await getToken();
+	const url = `${BASE_URL}/api/v1/favorites/getFavoriteByUserIdAndProductId/${id_producto}`;
 
- try{
-  const response = await fetch(url, {
-    method:"GET",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": token ? `Bearer ${token}` : "",
-    },
-  });
-    const data = await response.json();
-    return data;
- }catch(err){
-    console.error("Error al obtener info del producto:", err);
-    return { status: 500, data: null, error: err.message };
- }
-
+	try {
+		const response = await fetch(url, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: token ? `Bearer ${token}` : "",
+			},
+		});
+		const data = await response.json();
+		return data;
+	} catch (err) {
+		console.error("Error al obtener info del producto:", err);
+		return { status: 500, data: null, error: err.message };
+	}
 }
 
-export async function addToFavorites( id_producto) {
-  let token = await getToken();
-  const url = `${BASE_URL}/api/v1/favorites/postFavorite/${id_producto}`;
+export async function addToFavorites(id_producto) {
+	let token = await getToken();
+	const url = `${BASE_URL}/api/v1/favorites/postFavorite/${id_producto}`;
 
-  try {
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token ? `Bearer ${token}` : "",
-      },
-    });
+	try {
+		const response = await fetch(url, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: token ? `Bearer ${token}` : "",
+			},
+		});
 
-    const data = await response.json();
+		const data = await response.json();
 
-    console.log('data de addToFavorites: ', data)
-    return { status: response.status, data };
-  } catch (err) {
-    console.error("Error agregando a favoritos:", err);
-    return { status: 500, data: null, error: err.message };
-  }
-} 
+		console.log("data de addToFavorites: ", data);
+		return { status: response.status, data };
+	} catch (err) {
+		console.error("Error agregando a favoritos:", err);
+		return { status: 500, data: null, error: err.message };
+	}
+}
 
-export async function deleteFromFavorites( id_producto) {
-  let token = await getToken();
-  const url = `${BASE_URL}/api/v1/favorites/deleteFavorite/${id_producto}`;
+export async function deleteFromFavorites(id_producto) {
+	let token = await getToken();
+	const url = `${BASE_URL}/api/v1/favorites/deleteFavorite/${id_producto}`;
 
-  try {
-    const response = await fetch(url, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token ? `Bearer ${token}` : "",
-      },
-    });
+	try {
+		const response = await fetch(url, {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: token ? `Bearer ${token}` : "",
+			},
+		});
 
-    const data = await response.json();
+		const data = await response.json();
 
-    console.log('data de addToFavorites: ', data)
-    return { status: response.status, data };
-  } catch (err) {
-    console.error("Error agregando a favoritos:", err);
-    return { status: 500, data: null, error: err.message };
-  }
-} 
+		console.log("data de addToFavorites: ", data);
+		return { status: response.status, data };
+	} catch (err) {
+		console.error("Error agregando a favoritos:", err);
+		return { status: 500, data: null, error: err.message };
+	}
+}
 
 export async function getAllFavoritesById() {
-let token = await getToken();
-  const url = `${BASE_URL}/api/v1/favorites/getFavoritesByUserId`;
+	let token = await getToken();
+	const url = `${BASE_URL}/api/v1/favorites/getFavoritesByUserId`;
 
+	try {
+		const response = await fetch(url, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: token ? `Bearer ${token}` : "",
+			},
+		});
 
-  try {
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token ? `Bearer ${token}` : "",
-      },
-    });
+		const data = await response.json();
 
-    const data = await response.json();
-    
-    return  data ;
-  } catch (err) {
-    console.error("Error agregando a favoritos:", err);
-    return { status: 500, data: null, error: err.message };
-  }
+		return data;
+	} catch (err) {
+		console.error("Error agregando a favoritos:", err);
+		return { status: 500, data: null, error: err.message };
+	}
 }
 
 export async function getSchedule() {
-let token = await getToken();
-  const url = `${BASE_URL}/api/v1/schedule/getSchedule`;
-  const urlException = `${BASE_URL}/api/v1/schedule/getException`;
+	let token = await getToken();
+	const url = `${BASE_URL}/api/v1/schedule/getSchedule`;
+	const urlException = `${BASE_URL}/api/v1/schedule/getException`;
 
+	try {
+		const response = await fetch(url, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: token ? `Bearer ${token}` : "",
+			},
+		});
 
-  try {
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token ? `Bearer ${token}` : "",
-      },
-    });
+		const responseException = await fetch(urlException, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: token ? `Bearer ${token}` : "",
+			},
+		});
 
-    const responseException =await fetch(urlException, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token ? `Bearer ${token}` : "",
-      },
-    });
+		const dias_semana = await response.json();
+		const excepciones = await responseException.json();
 
-  const dias_semana = await response.json();
-  const excepciones = await responseException.json();
-    
-
-  return  {dias_semana, excepciones};
-  } catch (err) {
-    console.error("Error agregando a favoritos:", err);
-    return { status: 500, data: null, error: err.message };
-  }
+		return { dias_semana, excepciones };
+	} catch (err) {
+		console.error("Error agregando a favoritos:", err);
+		return { status: 500, data: null, error: err.message };
+	}
 }
 
 export async function updateSchedule(dia, datos) {
+	let token = await getToken();
+	const url = `${BASE_URL}/api/v1/schedule/updateSchedule/${dia}`;
 
-let token = await getToken();
-  const url = `${BASE_URL}/api/v1/schedule/updateSchedule/${dia}`;
+	try {
+		const response = await fetch(url, {
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: token ? `Bearer ${token}` : "",
+			},
+			body: JSON.stringify(datos),
+		});
 
+		const data = await response.json();
 
-
-  try {
-    const response = await fetch(url, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token ? `Bearer ${token}` : "",
-      },
-      body: JSON.stringify(datos),
-    });
-
-    const data = await response.json();
-
-    
-  
-    return data;
-  } catch (err) {
-    console.error("Error agregando a favoritos:", err);
-    return { status: 500, data: null, error: err.message };
-  }
+		return data;
+	} catch (err) {
+		console.error("Error agregando a favoritos:", err);
+		return { status: 500, data: null, error: err.message };
+	}
 }
 
 export async function createException(data) {
-let token = await getToken();
-let {fecha_excepcion, hora_apertura, hora_cierre, is_closed, descripcion} = data;
-  const url = `${BASE_URL}/api/v1/schedule/createException`;
+	let token = await getToken();
+	let { fecha_excepcion, hora_apertura, hora_cierre, is_closed, descripcion } =
+		data;
+	const url = `${BASE_URL}/api/v1/schedule/createException`;
 
-  const bodyData = {
-    "fecha_excepcion": fecha_excepcion,
-     "hora_apertura": hora_apertura,
-      "hora_cierre": hora_cierre,
-      "is_closed": is_closed,
-      "descripcion": descripcion
-  };
+	const bodyData = {
+		fecha_excepcion: fecha_excepcion,
+		hora_apertura: hora_apertura,
+		hora_cierre: hora_cierre,
+		is_closed: is_closed,
+		descripcion: descripcion,
+	};
 
-  try {
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token ? `Bearer ${token}` : "",
-      },
-      body: JSON.stringify(bodyData),
-    });
+	try {
+		const response = await fetch(url, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: token ? `Bearer ${token}` : "",
+			},
+			body: JSON.stringify(bodyData),
+		});
 
-    const data = await response.json();
-    console.log('que responde esa putada: ', data)
+		const data = await response.json();
+		console.log("que responde esa putada: ", data);
 
-
-    return data;
-  } catch (err) {
-    console.error("Error agregando a favoritos:", err);
-    return { status: 500, data: null, error: err.message };
-  }
+		return data;
+	} catch (err) {
+		console.error("Error agregando a favoritos:", err);
+		return { status: 500, data: null, error: err.message };
+	}
 }
 
 export async function deleteException(id_exception) {
-  console.log('llegando a la funcion',id_exception )
-let token = await getToken();
-  const url = `${BASE_URL}/api/v1/schedule/deleteException/${id_exception}`;
+	console.log("llegando a la funcion", id_exception);
+	let token = await getToken();
+	const url = `${BASE_URL}/api/v1/schedule/deleteException/${id_exception}`;
 
+	try {
+		const response = await fetch(url, {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: token ? `Bearer ${token}` : "",
+			},
+		});
 
-  try {
-    const response = await fetch(url, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token ? `Bearer ${token}` : "",
-      },
-    });
+		const data = await response.json();
+		console.log("data de respuestas: ", data);
 
-    const data = await response.json();
-    console.log('data de respuestas: ', data)
-
-    return  data;
-  } catch (err) {
-    console.error("Error agregando a favoritos:", err);
-    return { status: 500, data: null, error: err.message };
-  }
+		return data;
+	} catch (err) {
+		console.error("Error agregando a favoritos:", err);
+		return { status: 500, data: null, error: err.message };
+	}
 }
 
 export async function isOpenStore() {
 	let token = await getToken();
 	const url = `${BASE_URL}/api/v1/schedule/isOpen`;
 
-
 	try {
-		  const response = await fetch(url, {
-		    method: "GET",
-		    headers: {
-		      "Content-Type": "application/json",
-		      Authorization: token ? `Bearer ${token}` : "",
-		    },
-		  });
+		const response = await fetch(url, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: token ? `Bearer ${token}` : "",
+			},
+		});
 
-		  const data = await response.json();
+		const data = await response.json();
 
-      console.log('respuesta del horario en api: ', data)
-		return  data;
+		console.log("respuesta del horario en api: ", data);
+		return data;
 	} catch (err) {
 		console.error("Error  Trayendo horarios", err);
 		return { status: 500, data: null, error: err.message };
 	}
 }
 
-//Reportes Panel Administrativo 
+//Reportes Panel Administrativo
 
 export async function getReportOrder(from, to) {
 	try {
-	const token = await getToken();
-	const url = `${BASE_URL}/api/v1/reports/getAllOrdersByDates?from=${from}&to=${to}`;
+		const token = await getToken();
+		const url = `${BASE_URL}/api/v1/reports/getAllOrdersByDates?from=${from}&to=${to}`;
 
-	const response = await fetch(url, {
-		method: "GET",
-		headers: {
-		"Content-Type": "application/json",
-		...(token && { Authorization: `Bearer ${token}` }), 
-		},
-	});
+		const response = await fetch(url, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				...(token && { Authorization: `Bearer ${token}` }),
+			},
+		});
 
-	if (!response.ok) {
-		throw new Error(`Error al obtener órdenes: ${response.status}`);
-	}
+		if (!response.ok) {
+			throw new Error(`Error al obtener órdenes: ${response.status}`);
+		}
 
-	const data = await response.json();
-  console.log('data si es que devuelve: ', data)
+		const data = await response.json();
+		console.log("data si es que devuelve: ", data);
 
-	return data;
+		return data;
 	} catch (error) {
-	console.error("Error en getReportOrder:", error);
-	throw error;
+		console.error("Error en getReportOrder:", error);
+		throw error;
 	}
 }
 
 export async function horasPicoReport(from, to) {
 	try {
-	const token = await getToken();
+		const token = await getToken();
 
-	const url = `${BASE_URL}/api/v1/reports/getPeakHours?from=${from}&to=${to}`;
+		const url = `${BASE_URL}/api/v1/reports/getPeakHours?from=${from}&to=${to}`;
 
-	const response = await fetch(url, {
-		method: "GET",
-		headers: {
-		"Content-Type": "application/json",
-		...(token && { Authorization: `Bearer ${token}` }),
-		},
-	});
+		const response = await fetch(url, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				...(token && { Authorization: `Bearer ${token}` }),
+			},
+		});
 
-	if (!response.ok) {
-		throw new Error(`Error al obtener horas pico: ${response.status}`);
-	}
+		if (!response.ok) {
+			throw new Error(`Error al obtener horas pico: ${response.status}`);
+		}
 
-	const data = await response.json();
+		const data = await response.json();
 
-	return data;
+		return data;
 	} catch (error) {
-	console.error("Error en horasPicoReport:", error);
-	throw error;
+		console.error("Error en horasPicoReport:", error);
+		throw error;
 	}
 }
 
 export async function ventasReport(from, to) {
-  console.log('horarios enviados: ', from, to)
+	console.log("horarios enviados: ", from, to);
 	try {
-	const token = await getToken();
+		const token = await getToken();
 
-	const url = `${BASE_URL}/api/v1/reports/getAllSalesByDates?from=${from}&to=${to}`;
+		const url = `${BASE_URL}/api/v1/reports/getAllSalesByDates?from=${from}&to=${to}`;
 
-	const response = await fetch(url, {
-		method: "GET",
-		headers: {
-		"Content-Type": "application/json",
-		...(token && { Authorization: `Bearer ${token}` }),
-		},
-	});
+		const response = await fetch(url, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				...(token && { Authorization: `Bearer ${token}` }),
+			},
+		});
 
-	if (!response.ok) {
-		throw new Error(`Error al obtener ventas: ${response.status}`);
-	}
+		if (!response.ok) {
+			throw new Error(`Error al obtener ventas: ${response.status}`);
+		}
 
-	const data = await response.json();
+		const data = await response.json();
 
-	return data;
+		return data;
 	} catch (error) {
-	console.error("Error en ventasReport:", error);
-	throw error;
+		console.error("Error en ventasReport:", error);
+		throw error;
 	}
 }
 
 export async function masVendidosReport(from, to) {
 	try {
-	const token = await getToken();
+		const token = await getToken();
 
-	const url = `${BASE_URL}/api/v1/reports/getTopTenProductsByDates?from=${from}&to=${to}`;
+		const url = `${BASE_URL}/api/v1/reports/getTopTenProductsByDates?from=${from}&to=${to}`;
 
-	const response = await fetch(url, {
-		method: "GET",
-		headers: {
-		"Content-Type": "application/json",
-		...(token && { Authorization: `Bearer ${token}` }),
-		},
-	});
+		const response = await fetch(url, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				...(token && { Authorization: `Bearer ${token}` }),
+			},
+		});
 
-	if (!response.ok) {
-		throw new Error(`Error al obtener los productos más vendidos: ${response.status}`);
-	}
+		if (!response.ok) {
+			throw new Error(
+				`Error al obtener los productos más vendidos: ${response.status}`,
+			);
+		}
 
-	const data = await response.json();
+		const data = await response.json();
 
-	return data;
+		return data;
 	} catch (error) {
-	console.error("Error en masVendidosReport:", error);
-	throw error;
+		console.error("Error en masVendidosReport:", error);
+		throw error;
 	}
 }

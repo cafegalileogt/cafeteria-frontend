@@ -86,5 +86,6 @@ export default StyleSheet.create({
 		flexDirection: "row",
 		alignContent: "center",
 		justifyContent: "space-evenly",
+		paddingVertical: 10,
 	},
 });
