@@ -5,7 +5,7 @@ import { Dimensions } from "react-native";
 import { useState, useMemo } from "react";
 
 export default function ReporteHoraPico({ data = [], mostActive }) {
-	const [barDataText, setBarDataText] = useState(
+	const [barData, setBarData] = useState(
 		"Seleccione una barra para ver detalle.",
 	);
 
@@ -31,8 +31,8 @@ export default function ReporteHoraPico({ data = [], mostActive }) {
 
 	const handleBarPress = (item) => {
 		if (item.label !== "") {
-			const message = `Hora: ${item.label} | Órdenes: ${item.value}`;
-			setBarDataText(message);
+			let message = `Hora: ${item.label} | Órdenes: ${item.value}`;
+			setBarData(message);
 		}
 	};
 
@@ -41,7 +41,7 @@ export default function ReporteHoraPico({ data = [], mostActive }) {
 	const marginSpacing = 20;
 	const barSpacing =
 		normalizedData.length > 1
-			? (screenWidth * 0.85 - normalizedData.length * barWidth) /
+			? (screenWidth * 0.65 - normalizedData.length * barWidth) /
 					(normalizedData.length - 1) -
 				marginSpacing
 			: 30;
@@ -49,7 +49,6 @@ export default function ReporteHoraPico({ data = [], mostActive }) {
 	return (
 		<View style={Styles.table}>
 			<Text style={Styles.title}>Reporte de Hora Pico</Text>
-
 			{normalizedData.every((item) => item.value === 0) ? (
 				<Text style={Styles.noDataText}>No hay datos disponibles.</Text>
 			) : (
@@ -73,17 +72,17 @@ export default function ReporteHoraPico({ data = [], mostActive }) {
 						yAxisThickness={0}
 						xAxisThickness={1}
 					/>
-					<View>
-						<Text style={Styles.dataText}>{barDataText}</Text>
+					<View style={Styles.textRow}>
+						<Text style={Styles.dataText}>{barData}</Text>
 						<Text style={Styles.dataText}>Hora más activa: {mostActive}</Text>
 					</View>
 
 					{/* {mostActive && (
-            <View style={Styles.totalRow}>
-              <Text style={Styles.cell}>Hora más activa:</Text>
-              <Text style={Styles.cell}>{mostActive}</Text>
-            </View>
-          )}*/}
+						<View style={Styles.totalRow}>
+							<Text style={Styles.cell}>Hora más activa:</Text>
+							<Text style={Styles.cell}>{mostActive}</Text>
+						</View>
+					)}*/}
 				</>
 			)}
 		</View>

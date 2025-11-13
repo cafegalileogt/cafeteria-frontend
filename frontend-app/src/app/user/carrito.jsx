@@ -1,180 +1,231 @@
 import { useState, useEffect, useCallback } from "react";
-import { View, Text, TouchableOpacity, Image, ScrollView, Alert } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import styles from "../../styles/carritoStyle";
 import { useCart } from "../../../services/cartContext";
 import { createOrder, isOpenStore } from "../../../services/api";
 import { useRouter, useFocusEffect } from "expo-router";
 import Header from "../../components/header";
+import {
+	Nunito_900Black,
+	Nunito_400Regular,
+	Nunito_700Bold,
+	Inter_400Regular,
+	useFonts,
+} from "@expo-google-fonts/nunito";
+import { SplashScreen } from "expo-router";
 
 export default function Carrito() {
-  const router = useRouter();
-  const { clearCart, cartItems, addToCart, removeFromCart } = useCart();
+	const router = useRouter();
+	const { clearCart, cartItems, addToCart, removeFromCart } = useCart();
 
-  const [confirmando, setConfirmando] = useState(false);
-  const [orderId, setOrderId] = useState(null);
-  const [horario, setHorario] = useState(false);
+	const [confirmando, setConfirmando] = useState(false);
+	const [orderId, setOrderId] = useState(null);
+	const [horario, setHorario] = useState(false);
+	const [loaded, error] = useFonts({
+		Nunito_900Black,
+		Nunito_400Regular,
+		Nunito_700Bold,
+		Inter_400Regular,
+	});
 
-  // ✅ Se ejecuta cada vez que se entra o vuelve al carrito
-  useFocusEffect(
-    useCallback(() => {
-      async function fetchSchedule() {
-        try {
-          const response = await isOpenStore();
-          const cerrado = response[0]?.is_closed;
-          if (response) {
-            setHorario(cerrado);
+	useEffect(() => {
+		if (loaded || error) SplashScreen.hideAsync();
+	}, [loaded, error]);
 
-            if (cerrado === 1) {
-              Alert.alert("Cafetería cerrada", "En este momento la cafetería se encuentra cerrada.");
-            }
-          } else {
-            console.error("Error al obtener horario:", response);
-          }
-        } catch (err) {
-          console.error("Error trayendo el horario", err);
-        }
-      }
+	// ✅ Se ejecuta cada vez que se entra o vuelve al carrito
+	useFocusEffect(
+		useCallback(() => {
+			async function fetchSchedule() {
+				try {
+					const response = await isOpenStore();
+					const cerrado = response[0]?.is_closed;
+					if (response) {
+						setHorario(cerrado);
 
-      fetchSchedule();
-    }, [])
-  );
+						if (cerrado === 1) {
+							console.log("Cafetería Cerrada");
+							Alert.alert(
+								"Cafetería cerrada",
+								"En este momento la cafetería se encuentra cerrada.",
+							);
+						}
+					} else {
+						console.error("Error al obtener horario:", response);
+					}
+				} catch (err) {
+					console.error("Error trayendo el horario", err);
+				}
+			}
 
-  const aumentar = (id_producto) => {
-    const producto = cartItems.find((p) => p.id_producto === id_producto);
-    if (producto) addToCart({ ...producto, count: 1 });
-  };
+			fetchSchedule();
+		}, []),
+	);
 
-  const disminuir = (id_producto) => {
-    const producto = cartItems.find((p) => p.id_producto === id_producto);
-    if (producto) {
-      if (producto.count > 1) {
-        addToCart({ ...producto, count: -1 });
-      } else {
-        removeFromCart(id_producto);
-      }
-    }
-  };
+	const aumentar = (id_producto) => {
+		const producto = cartItems.find((p) => p.id_producto === id_producto);
+		if (producto) addToCart({ ...producto, count: 1 });
+	};
 
-  const total = cartItems.reduce(
-    (acc, item) => acc + parseFloat(item.price.replace("Q", "").trim()) * item.count,
-    0
-  );
+	const disminuir = (id_producto) => {
+		const producto = cartItems.find((p) => p.id_producto === id_producto);
+		if (producto) {
+			if (producto.count > 1) {
+				addToCart({ ...producto, count: -1 });
+			} else {
+				removeFromCart(id_producto);
+			}
+		}
+	};
 
-  const confirmarOrden = async () => {
-    if (horario === true) {
-      Alert.alert("Cafetería cerrada", "No puedes confirmar una orden cuando la cafetería está cerrada.");
-      return;
-    }
+	const total = cartItems.reduce(
+		(acc, item) =>
+			acc + parseFloat(item.price.replace("Q", "").trim()) * item.count,
+		0,
+	);
 
-    if (cartItems.length === 0) {
-      console.warn("El carrito está vacío");
-      return;
-    }
+	const confirmarOrden = async () => {
+		if (horario === true) {
+			Alert.alert(
+				"Cafetería cerrada",
+				"No puedes confirmar una orden cuando la cafetería está cerrada.",
+			);
+			return;
+		}
 
-    try {
-      const numeroOrden = Math.floor(10000 + Math.random() * 90000);
-      const productosFormateados = cartItems.map((item) => ({
-        id: item.id_producto,
-        cantidad: item.count,
-        precio_unitario: parseFloat(item.price.replace("Q", "").trim()),
-      }));
+		if (cartItems.length === 0) {
+			console.warn("El carrito está vacío");
+			return;
+		}
 
-      const response = await createOrder(productosFormateados, total, numeroOrden);
+		try {
+			const numeroOrden = Math.floor(10000 + Math.random() * 90000);
+			const productosFormateados = cartItems.map((item) => ({
+				id: item.id_producto,
+				cantidad: item.count,
+				precio_unitario: parseFloat(item.price.replace("Q", "").trim()),
+			}));
 
-      if (response.status === 200 || response.status === 201) {
-        setOrderId(numeroOrden);
-        setConfirmando(true);
-      } else {
-        console.warn("No se pudo crear la orden:", response.data);
-      }
-    } catch (error) {
-      console.error("Error al crear la orden:", error);
-    }
-  };
+			const response = await createOrder(
+				productosFormateados,
+				total,
+				numeroOrden,
+			);
 
-  const volverCarrito = () => {
-    setConfirmando(false);
-    setOrderId(null);
-    clearCart();
-    router.push("/user/home");
-  };
+			if (response.status === 200 || response.status === 201) {
+				setOrderId(numeroOrden);
+				setConfirmando(true);
+			} else {
+				console.warn("No se pudo crear la orden:", response.data);
+			}
+		} catch (error) {
+			console.error("Error al crear la orden:", error);
+		}
+	};
 
-  return (
-    <View style={styles.container}>
-      <Header />
+	const volverCarrito = () => {
+		setConfirmando(false);
+		setOrderId(null);
+		clearCart();
+		router.push("/user/home");
+	};
 
-      {!confirmando ? (
-        <>
-          <Text style={styles.title}>Carrito</Text>
+	return (
+		<View style={styles.container}>
+			<Header />
 
-          <ScrollView style={{ flex: 1 }}>
-            {cartItems.length === 0 ? (
-              <Text style={{ textAlign: "center", marginTop: 50, fontSize: 16 }}>
-                No hay productos en el carrito 🛒
-              </Text>
-            ) : (
-              cartItems.map((item) => (
-                <View key={item.id_producto} style={styles.productContainer}>
-                  <Text style={styles.productName}>{item.name}</Text>
+			{!confirmando ? (
+				<>
+					<Text style={styles.title}>Carrito</Text>
 
-                  <View style={styles.quantityContainer}>
-                    <TouchableOpacity onPress={() => disminuir(item.id_producto)}>
-                      <Ionicons name="remove-circle-outline" size={28} color="#B89A59" />
-                    </TouchableOpacity>
+					<ScrollView style={{ flex: 1 }}>
+						{cartItems.length === 0 ? (
+							<Text
+								style={{ textAlign: "center", marginTop: 50, fontSize: 16 }}
+							>
+								No hay productos en el carrito 🛒
+							</Text>
+						) : (
+							cartItems.map((item) => (
+								<View key={item.id_producto} style={styles.productContainer}>
+									<Text style={styles.productName}>{item.name}</Text>
 
-                    <Text style={styles.quantityText}>{item.count}</Text>
+									<View style={styles.quantityContainer}>
+										<TouchableOpacity
+											onPress={() => disminuir(item.id_producto)}
+										>
+											<Ionicons
+												name="remove-circle-outline"
+												size={28}
+												color="#B89A59"
+											/>
+										</TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => aumentar(item.id_producto)}>
-                      <Ionicons name="add-circle-outline" size={28} color="#B89A59" />
-                    </TouchableOpacity>
-                  </View>
+										<Text style={styles.quantityText}>{item.count}</Text>
 
-                  <Text style={styles.productPrice}>
-                    Q{(parseFloat(item.price.replace("Q", "").trim()) * item.count).toFixed(2)}
-                  </Text>
-                </View>
-              ))
-            )}
-          </ScrollView>
+										<TouchableOpacity
+											onPress={() => aumentar(item.id_producto)}
+										>
+											<Ionicons
+												name="add-circle-outline"
+												size={28}
+												color="#B89A59"
+											/>
+										</TouchableOpacity>
+									</View>
 
-          <View style={styles.totalContainer}>
-            <Text style={styles.totalText}>Total</Text>
-            <Text style={styles.totalAmount}>Q{total.toFixed(2)}</Text>
-          </View>
+									<Text style={styles.productPrice}>
+										Q
+										{(
+											parseFloat(item.price.replace("Q", "").trim()) *
+											item.count
+										).toFixed(2)}
+									</Text>
+								</View>
+							))
+						)}
+					</ScrollView>
 
-          <TouchableOpacity
-            style={[
-              styles.confirmButton,
-              horario === 1 && { backgroundColor: "gray", opacity: 0.6 },
-            ]}
-            disabled={horario === 1}
-            onPress={confirmarOrden}
-          >
-            <Text style={styles.confirmText}>
-              {horario === true ? "Cafetería cerrada" : "Confirmar"}
-            </Text>
-          </TouchableOpacity>
-        </>
-      ) : (
-        <View style={styles.confirmacionContainer}>
-          <Text style={styles.confirmTitle}>¡Ya casi está listo!</Text>
+					<View style={styles.totalContainer}>
+						<Text style={styles.totalText}>Total</Text>
+						<Text style={styles.totalAmount}>Q{total.toFixed(2)}</Text>
+					</View>
 
-          <View style={styles.confirmBox}>
-            <Text style={styles.orderText}>No. de Orden</Text>
-            <Text style={styles.orderNumber}>{orderId}</Text>
+					<TouchableOpacity
+						style={[
+							styles.confirmButton,
+							horario === 1 && { backgroundColor: "gray", opacity: 0.6 },
+						]}
+						disabled={horario === 1}
+						onPress={confirmarOrden}
+					>
+						<Text style={styles.confirmText}>
+							{horario === true ? "Cafetería cerrada" : "Confirmar"}
+						</Text>
+					</TouchableOpacity>
+				</>
+			) : (
+				<View style={styles.confirmacionContainer}>
+					<Text style={styles.confirmTitle}>¡Ya casi está listo!</Text>
 
-            <TouchableOpacity style={styles.confirmButton} onPress={volverCarrito}>
-              <Text style={styles.confirmText}>Aceptar</Text>
-            </TouchableOpacity>
-          </View>
+					<View style={styles.confirmBox}>
+						<Text style={styles.orderText}>No. de Orden</Text>
+						<Text style={styles.orderNumber}>{orderId}</Text>
 
-          <Text style={styles.note}>
-            ¡Ahora puedes acercarte a la cafetería a cancelar la orden, recuerda
-            dar tu nombre o número de orden!
-          </Text>
-        </View>
-      )}
-    </View>
-  );
+						<TouchableOpacity
+							style={styles.confirmButton}
+							onPress={volverCarrito}
+						>
+							<Text style={styles.confirmText}>Aceptar</Text>
+						</TouchableOpacity>
+					</View>
+
+					<Text style={styles.note}>
+						¡Ahora puedes acercarte a la cafetería a cancelar la orden, recuerda
+						dar tu nombre o número de orden!
+					</Text>
+				</View>
+			)}
+		</View>
+	);
 }
